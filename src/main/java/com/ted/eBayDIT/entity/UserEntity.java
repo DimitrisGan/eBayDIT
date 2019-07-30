@@ -17,11 +17,11 @@ public class UserEntity implements Serializable {
     @Column(name="id")
     private  int id;
 
-    @Column(name="public_id"/*,nullable = false*/)
+    @Column(name="public_id"/*,nullable = false*/,unique = true)
     private String userId;
 
 
-    @Column(name="username" ,nullable=false)
+    @Column(name="username" ,nullable=false ,unique = true)
     private String username;
 
     @Column(name="password")
