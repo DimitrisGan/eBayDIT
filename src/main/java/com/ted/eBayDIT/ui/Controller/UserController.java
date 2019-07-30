@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")  //http://localhost:8080/users
+@RequestMapping("register")  //http://localhost:8080/register [previous /users]
 public class UserController {
 
     @Autowired
