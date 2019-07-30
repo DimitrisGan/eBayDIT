@@ -1,0 +1,32 @@
+POST Request
+{
+  username: ,
+  firstName: ,
+  lastName: ,
+  email: ,
+  password:
+}
+
+Response gaggas an iparxei xristis
+{
+  userId: ,
+  username: ,
+  firstName: ,
+  lastName,
+  email: ,
+  OXI AKOMA  isAdmin : true/false,
+}
+
+
+/register/exists
+
+POST Request
+{
+  username: ,
+}
+
+Response AN IPARXEI
+{
+
+}
+

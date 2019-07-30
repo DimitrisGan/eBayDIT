@@ -1,0 +1,15 @@
+POST Request
+{
+  username: user,
+  password: password
+}
+
+Response gaggas an iparxei xristis
+{
+  userId: ,
+  username: ,
+  firstName: ,
+  lastName,
+  email: ,
+  isAdmin : true/false,
+}

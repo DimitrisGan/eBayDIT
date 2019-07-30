@@ -1,0 +1,27 @@
+GET Request
+
+
+
+RESPONSE
+{
+    [ user : {
+          userId: ,
+          username: ,
+          firstName: ,
+          lastName,
+          email: ,
+            OXI AKOMA  isAdmin : true/false,
+
+    }
+    ]
+
+
+
+}
+
+
+POST users/userId {
+
+
+
+}
