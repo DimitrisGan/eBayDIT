@@ -57,7 +57,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST , "/users")
+                .antMatchers(HttpMethod.POST , "/register")
                 .permitAll()
                 .anyRequest().authenticated();
 
