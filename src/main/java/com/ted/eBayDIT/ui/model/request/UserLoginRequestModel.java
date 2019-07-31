@@ -1,7 +1,7 @@
 package com.ted.eBayDIT.ui.model.request;
 
 
-public class UserLoginRequest {
+public class UserLoginRequestModel {
 
     private String username;
 

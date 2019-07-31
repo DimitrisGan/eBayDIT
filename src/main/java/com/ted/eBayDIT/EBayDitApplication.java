@@ -1,7 +1,9 @@
 package com.ted.eBayDIT;
 
+import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,4 +21,9 @@ public class EBayDitApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+
+	@Bean
+	public SpringApplicationContext SpringApplicationContext()  {
+		return new SpringApplicationContext();
+	}
 }

@@ -10,20 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("register")  //http://localhost:8080/register [previous /users]
+@RequestMapping/*("users")*/  //http://localhost:8080/register [previous /users]
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping
+    @GetMapping("users")
     public String getUser(){
 
 
         return "get usere was called";
     }
 
-    @PostMapping
+    @PostMapping("register")
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
 
         UserRest returnValue =new UserRest();

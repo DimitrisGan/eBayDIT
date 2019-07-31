@@ -8,10 +8,13 @@ import com.ted.eBayDIT.utility.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -61,12 +64,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    public UserDto getUser(String username) {
+
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        if (userEntity == null) throw new UsernameNotFoundException(username);
+
+        UserDto returnValue = new UserDto();
+        BeanUtils.copyProperties(userEntity,returnValue);
+
+        return returnValue;
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        return null;
-//    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(username);
+        }
+
+        return new User(userEntity.getUsername(),userEntity.getEncryptedPassword(),new ArrayList<>()); //ArrayList stands for the authorities
+    }
 }
