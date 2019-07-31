@@ -35,31 +35,51 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto user) {
 
 
-        //check if username already exists in db
+        //todo check if username already exists in db
 //        UserEntity storedUserDetails = userRepository.findByUsername(user.getUsername());
 //        if (storedUserDetails != null) throw new RuntimeException("Record(username) already exists");
 
         //we have to store/save this info to userEntity
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity2save = new UserEntity();
 
 
-        BeanUtils.copyProperties(user,userEntity);
+        BeanUtils.copyProperties(user,userEntity2save);
 
-        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));//todo na to allaksw apla
-        //todo to xreaizomai gt prepei na valw sto fiels tou encryptedpass timh
-        //gt de ginetai na einai null apo db h nullable=false
+        userEntity2save.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
 
         String publicUserId =utils.generateUserId(30);
-        userEntity.setUserId(publicUserId); //todo kai auto einai hardcoded
+        userEntity2save.setUserId(publicUserId);
 
-        UserEntity storedUserDetails =  userRepository.save(userEntity);
+        UserEntity storedUserDetails =  userRepository.save(userEntity2save);
 
 
         //now we have to return this back to our restcontroller
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(storedUserDetails ,returnValue);
 
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String userId ,UserDto user2update) {
+
+        UserDto returnValue =new UserDto();
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(userId);
+        }
+
+        //todo more fields maybe should be available for update
+        if (user2update.getEmail()      != null)    {userEntity.setEmail(user2update.getEmail()); }
+        if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
+        if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
+//        userEntity.setEncryptedPassword(user2update.getEncryptedPassword());
+
+        UserEntity updatedUserDetails = userRepository.save(userEntity);
+
+        BeanUtils.copyProperties(updatedUserDetails,returnValue);
         return returnValue;
     }
 
@@ -73,6 +93,19 @@ public class UserServiceImpl implements UserService {
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(userEntity,returnValue);
 
+        return returnValue;
+    }
+
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        UserDto returnValue =new UserDto();
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(userId);
+        }
+
+        BeanUtils.copyProperties(userEntity,returnValue);
         return returnValue;
     }
 

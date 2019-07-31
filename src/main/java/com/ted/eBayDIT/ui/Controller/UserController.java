@@ -23,11 +23,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("users")
-    public String getUser(){
+    @GetMapping(path ="users/{id}")
+    public UserRest getUser(@PathVariable String id){
 
+        UserRest returnUser =new UserRest();
 
-        return "get usere was called";
+        UserDto userDto = userService.getUserByUserId(id) ;
+        BeanUtils.copyProperties(userDto,returnUser);
+        return returnUser;
     }
 
     @PostMapping("register")
@@ -45,9 +48,22 @@ public class UserController {
         return returnValue;
     }
 
-    @PutMapping
-    public String updateUser(){
-        return "update user was called";
+    @PutMapping(path ="users/{id}")
+    public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
+
+        UserRest returnValue =new UserRest();
+
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userDetails,userDto);
+
+        UserDto updatedUser = userService.updateUser(id,userDto);
+
+        BeanUtils.copyProperties(updatedUser,returnValue);
+
+
+
+
+        return returnValue;
     }
 
     @DeleteMapping
