@@ -9,6 +9,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+// mou vgazei same origin provlima
+// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:8080/api/register.
+// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
+//
+// opote evala auto, an thes allakse to apla tsekare pws na to vgaloume
+// alla na min exoume tripes sto security
+//@CrossOrigin
 @RestController
 @RequestMapping/*("users")*/  //http://localhost:8080/register [previous /users]
 public class UserController {
