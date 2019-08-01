@@ -58,15 +58,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST , SecurityConstants.SIGN_UP_URL)
+//                .antMatchers(HttpMethod.POST , SecurityConstants.SIGN_UP_URL)
+//                .permitAll()
+                .antMatchers(SecurityConstants.SIGN_UP_URL)
+//                .antMatchers(HttpMethod.GET , SecurityConstants.SIGN_UP_URL)
                 .permitAll()
+
                 .anyRequest().authenticated()
                 .and()
 //                .addFilter(new AuthenticationFilter(authenticationManager())); //no more neede because we want our custom login form url
                 .addFilter(getAuthenticationFilter())
                 .addFilter(new AuthorizationFilter(authenticationManager()))
-                        .sessionManagement()
-                        .sessionCreationPolicy((SessionCreationPolicy.STATELESS));
+                .sessionManagement()
+                .sessionCreationPolicy((SessionCreationPolicy.STATELESS));
 
 
 

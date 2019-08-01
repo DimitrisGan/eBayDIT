@@ -13,6 +13,7 @@ public interface UserService extends UserDetailsService {
 
     UserDto getUser(String username);
     UserDto getUserByUserId(String userId);
+    boolean userExists(String username);
 
 //    UserDto getUser(String email);
 //    UserDto updateUser(String userId, UserDto user);

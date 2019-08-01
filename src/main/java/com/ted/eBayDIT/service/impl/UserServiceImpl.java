@@ -4,6 +4,7 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
+import com.ted.eBayDIT.ui.model.response.UserRest;
 import com.ted.eBayDIT.utility.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(String userId ,UserDto user2update) {
+    public UserDto  updateUser(String userId ,UserDto user2update) {
 
         UserDto returnValue =new UserDto();
         UserEntity userEntity = userRepository.findByUserId(userId);
@@ -109,6 +110,13 @@ public class UserServiceImpl implements UserService {
         return returnValue;
     }
 
+    @Override
+    public boolean userExists(String username) {
+        UserEntity userEntity = this.userRepository.findByUsername(username);
+
+        return userEntity != null; //if userEntity is null return false
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -121,4 +129,11 @@ public class UserServiceImpl implements UserService {
 
         return new User(userEntity.getUsername(),userEntity.getEncryptedPassword(),new ArrayList<>()); //ArrayList stands for the authorities
     }
+
+
+//todo    public List<> getUser
+
+
+
+
 }

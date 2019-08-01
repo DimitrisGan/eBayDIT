@@ -4,7 +4,9 @@ package com.ted.eBayDIT.ui.Controller;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
+import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
 import com.ted.eBayDIT.ui.model.response.UserRest;
+import com.ted.eBayDIT.ui.model.response.UsernameExistsRest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,10 @@ public class UserController {
         return returnUser;
     }
 
+
+
+
+
     @PostMapping("register")
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
 
@@ -47,6 +53,18 @@ public class UserController {
 
         return returnValue;
     }
+
+
+
+    @GetMapping(path = "register")
+    public UsernameExistsRest usernameExists(@RequestBody UsernameExistsRequestModel username){
+
+        UsernameExistsRest returnValue = new UsernameExistsRest();
+        boolean exists = userService.userExists(username.getUsername());
+        returnValue.setExists(exists);
+        return returnValue;
+    }
+
 
     @PutMapping(path ="users/{id}")
     public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
