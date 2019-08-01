@@ -13,6 +13,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // mou vgazei same origin provlima
 // Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:8080/api/register.
 // (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
@@ -38,6 +41,23 @@ public class UserController {
         UserDto userDto = userService.getUserByUserId(id) ;
         BeanUtils.copyProperties(userDto,returnUser);
         return returnUser;
+    }
+
+    @GetMapping(path ="users")
+    public List<UserRest> getUsers(){
+
+        List<UserRest> returnUsersList =new ArrayList<>();
+
+        List<UserDto> usersList = userService.getUsers() ;
+
+        for (UserDto userDto : usersList) {
+            UserRest userModel  = new UserRest();
+            BeanUtils.copyProperties(userDto,userModel);
+            returnUsersList.add(userModel);
+        }
+
+
+        return returnUsersList;
     }
 
 

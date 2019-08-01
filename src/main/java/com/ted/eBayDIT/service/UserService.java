@@ -18,6 +18,6 @@ public interface UserService extends UserDetailsService {
     int deleteUser(String userId);
 //    UserDto getUser(String email);
 //    UserDto updateUser(String userId, UserDto user);
-//    List<UserDto> getUsers(int page, int limit); //returns list of users
+    List<UserDto> getUsers(); //returns list of users
 
 }

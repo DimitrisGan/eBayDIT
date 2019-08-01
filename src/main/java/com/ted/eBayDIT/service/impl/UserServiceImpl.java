@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -98,6 +99,12 @@ public class UserServiceImpl implements UserService {
         return returnValue;
     }
 
+    //    public List<Us> getUser
+
+
+
+
+
     @Override
     public UserDto getUserByUserId(String userId) {
         UserDto returnValue =new UserDto();
@@ -118,7 +125,7 @@ public class UserServiceImpl implements UserService {
         return userEntity != null; //if userEntity is null return false
     }
 
-//    @Transactional
+    //    @Transactional
     @Override
     public int deleteUser(String userId) {
 
@@ -130,6 +137,20 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete(userEntity);
 
         return 0;
+    }
+
+    @Override
+    public List<UserDto> getUsers() {
+        List<UserDto> returnUsersList = new ArrayList<>();
+
+        List<UserEntity> usersEntity =this.userRepository.findAll();
+
+        for (UserEntity userEntity : usersEntity) {
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(userEntity,userDto);
+            returnUsersList.add(userDto);
+        }
+        return returnUsersList;
     }
 
 
@@ -145,8 +166,6 @@ public class UserServiceImpl implements UserService {
         return new User(userEntity.getUsername(),userEntity.getEncryptedPassword(),new ArrayList<>()); //ArrayList stands for the authorities
     }
 
-
-//todo    public List<> getUser
 
 
 
