@@ -85,7 +85,7 @@ public class UserController {
 
 
 
-    @PostMapping(path = "register/exists")
+    @PostMapping(path = "/exists")
     public UsernameExistsRest usernameExists(@RequestBody UsernameExistsRequestModel username){
 
         UsernameExistsRest returnValue = new UsernameExistsRest();
