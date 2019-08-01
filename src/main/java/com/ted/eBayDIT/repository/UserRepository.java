@@ -15,6 +15,8 @@ public interface  UserRepository extends JpaRepository<UserEntity,Integer> {
 
     /*userID is the public id*/
     UserEntity findByUserId(String userId);
+
+
     UserEntity deleteByUserId(String userId);
 
     //todo logika tha xwsw kai alla px findByLastName

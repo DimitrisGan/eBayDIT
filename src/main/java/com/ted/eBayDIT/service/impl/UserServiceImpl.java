@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -72,11 +73,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(userId);
         }
 
-        //todo more fields maybe should be available for update
+        //todo more fields should be available for update
         if (user2update.getEmail()      != null)    {userEntity.setEmail(user2update.getEmail()); }
         if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
         if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
-//        userEntity.setEncryptedPassword(user2update.getEncryptedPassword());
+
 
         UserEntity updatedUserDetails = userRepository.save(userEntity);
 
@@ -115,6 +116,20 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = this.userRepository.findByUsername(username);
 
         return userEntity != null; //if userEntity is null return false
+    }
+
+//    @Transactional
+    @Override
+    public int deleteUser(String userId) {
+
+        UserEntity userEntity = this.userRepository.findByUserId(userId);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(userId);
+        }
+        this.userRepository.delete(userEntity);
+
+        return 0;
     }
 
 

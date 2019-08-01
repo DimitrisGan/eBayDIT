@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SecurityConstants.SIGN_UP_URL)
 //                .antMatchers(HttpMethod.GET , SecurityConstants.SIGN_UP_URL)
                 .permitAll()
-
+                .antMatchers("/dashboard/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
 //                .addFilter(new AuthenticationFilter(authenticationManager())); //no more neede because we want our custom login form url

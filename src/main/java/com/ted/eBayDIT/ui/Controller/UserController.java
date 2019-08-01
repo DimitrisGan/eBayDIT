@@ -5,6 +5,8 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
+import com.ted.eBayDIT.ui.model.response.OperationStatusModel;
+import com.ted.eBayDIT.ui.model.response.RequestOperationStatus;
 import com.ted.eBayDIT.ui.model.response.UserRest;
 import com.ted.eBayDIT.ui.model.response.UsernameExistsRest;
 import org.springframework.beans.BeanUtils;
@@ -18,8 +20,11 @@ import org.springframework.web.bind.annotation.*;
 // opote evala auto, an thes allakse to apla tsekare pws na to vgaloume
 // alla na min exoume tripes sto security
 //@CrossOrigin
+   //http://localhost:8080/register [previous /users]
+
+
 @RestController
-@RequestMapping/*("users")*/  //http://localhost:8080/register [previous /users]
+@RequestMapping
 public class UserController {
 
     @Autowired
@@ -84,9 +89,16 @@ public class UserController {
         return returnValue;
     }
 
-    @DeleteMapping
-    public String deleteUser(){
-        return "delete user was called";
+    @DeleteMapping(path ="users/{id}")
+    public OperationStatusModel deleteUser(@PathVariable String id){
+        OperationStatusModel returnValue =  new OperationStatusModel();
+
+        this.userService.deleteUser(id);
+
+        returnValue.setOperationName("DELETE");
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
     }
 
 
