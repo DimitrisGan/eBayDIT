@@ -39,6 +39,8 @@ public class UserEntity implements Serializable {
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "role_id")
 //    private Role role;
+
+
 //
 //    //todo add it later
 //    @Column(name="verified" ,nullable=false ,columnDefinition="booelan default false")

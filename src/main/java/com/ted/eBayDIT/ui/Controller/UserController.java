@@ -2,6 +2,7 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
@@ -32,6 +33,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SecurityService securityService;
 
     @GetMapping(path ="users/{id}")
     public UserRest getUser(@PathVariable String id){
@@ -93,6 +97,8 @@ public class UserController {
 
     @PutMapping(path ="users/{id}")
     public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
+
+        UserDto currentUser = securityService.getCurrentUser(); //todo check if working
 
         UserRest returnValue =new UserRest();
 
