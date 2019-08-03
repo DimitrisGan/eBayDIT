@@ -2,18 +2,20 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.exception.UserServiceException;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
-import com.ted.eBayDIT.ui.model.response.OperationStatusModel;
-import com.ted.eBayDIT.ui.model.response.RequestOperationStatus;
-import com.ted.eBayDIT.ui.model.response.UserRest;
-import com.ted.eBayDIT.ui.model.response.UsernameExistsRest;
+import com.ted.eBayDIT.ui.model.response.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,15 +71,51 @@ public class UserController {
 
 
     @PostMapping("register")
-    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
+    public /*todo ResponseEntity<Object>*/ UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
         UserRest returnValue =new UserRest();
+
+        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        //todo add exception also for the other fields
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails,userDto);
 
         UserDto createdUser = userService.createUser(userDto);
         BeanUtils.copyProperties(createdUser,returnValue);
+
+
+
+
+
+//        if (!Validator.validateEmail(input.getEmail())) {
+//            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
+//        }
+//        if (input.getPassword() == null || input.getPassword().equals("")) {
+//            String msg = "Can't register with empty password";
+//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+//        }
+//        if (input.getName() == null || input.getName().equals("")
+//                || input.getSurname() == null || input.getSurname().equals("")) {
+//            String msg = "Can't register with empty name or surname";
+//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+//        }
+//        if (userService.findByEmail(input.getEmail()) != null) {
+//            String msg = "A user with this email is already registered";
+//            return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
+//        }
+//        try {
+//            UserEntity user = new UserEntity.UserBuilder(input.getEmail(), input.getPassword())
+//                    .name(input.getName())
+//                    .surname(input.getSurname())
+//                    .telNumber(input.getTelNumber())
+//                    .picture(sm.storeFile(input.getPicture())).build();
+//            userService.save(user);
+//            return new ResponseEntity<>(userEntityService.getUserOutputModelFromUser(user)
+//                    , HttpStatus.CREATED);
+//        } catch (IOException e) {
+//            return new ResponseEntity<>("Couldn't save picture", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
 
 
         return returnValue;

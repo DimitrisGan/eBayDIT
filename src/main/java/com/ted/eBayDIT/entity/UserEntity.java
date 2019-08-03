@@ -1,6 +1,8 @@
 package com.ted.eBayDIT.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -26,6 +28,7 @@ public class UserEntity implements Serializable {
 
     @Column(name="password")
     private String encryptedPassword;
+
 
     @Column(name="first_name",nullable=false)
     private String firstName;

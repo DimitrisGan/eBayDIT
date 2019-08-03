@@ -1,19 +1,27 @@
 package com.ted.eBayDIT.ui.model.request;
 
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 //todo edw tha to peiraksw otan thelw na xwsw XML leitourgikothta
 public class UserDetailsRequestModel {
 
 
+    @NotNull(message = "username cannot be missing")
     private String username;
 
+    @Size(min=8, max=16, message=" Password must be equal to or greater than 8 characters and less than 16 characters")
     private String password;
 
+    @Size(min=2, message="First name should have at least 2 characters")
     private String firstName;
 
+    @Size(min=2, message="Last name should have at least 2 characters")
     private String lastName;
 
+    @Email
     private String email;
 
 
