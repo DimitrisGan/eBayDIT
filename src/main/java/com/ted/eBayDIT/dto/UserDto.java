@@ -16,6 +16,13 @@ public class UserDto implements Serializable {
     private String email;
     private String encryptedPassword;
 
+
+    private String phoneNumber;
+    private String country;
+    private String address;
+    private String afm;
+
+
 //    private String emailVerificationToken;
 //    private Boolean emailVerificationStatus = false;
 
@@ -82,5 +89,38 @@ public class UserDto implements Serializable {
 
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAfm() {
+        return afm;
+    }
+
+    public void setAfm(String afm) {
+        this.afm = afm;
     }
 }

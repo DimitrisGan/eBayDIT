@@ -26,7 +26,7 @@ public class UserEntity implements Serializable {
     @Column(name="username" ,nullable=false ,unique = true)
     private String username;
 
-    @Column(name="password")
+    @Column(name="password",nullable=false)
     private String encryptedPassword;
 
 
@@ -38,6 +38,21 @@ public class UserEntity implements Serializable {
 
     @Column(name="email",nullable=false)
     private String email;
+
+    @Column(name="phone_number")
+    private String phoneNumber;
+
+    @Column(name="country")
+    private String country;
+
+    @Column(name="address")
+    private String address;
+
+    @Column(name="afm")
+    private String afm;
+
+
+
 
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "role_id")
@@ -113,7 +128,40 @@ public class UserEntity implements Serializable {
         this.email = email;
     }
 
-//    public Role getRole() {
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAfm() {
+        return afm;
+    }
+
+    public void setAfm(String afm) {
+        this.afm = afm;
+    }
+
+
+    //    public Role getRole() {
 //        return role;
 //    }
 //

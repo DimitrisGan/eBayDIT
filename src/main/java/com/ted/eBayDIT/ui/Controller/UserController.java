@@ -49,7 +49,7 @@ public class UserController {
         return returnUser;
     }
 
-    @GetMapping(path ="users")
+    @GetMapping(path ="users") //todo it should go to adminController not here
     public List<UserRest> getUsers(){
 
         List<UserRest> returnUsersList =new ArrayList<>();
