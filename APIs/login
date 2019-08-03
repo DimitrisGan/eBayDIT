@@ -4,6 +4,8 @@ POST Request
   password: password
 }
 
+
+
 Response gaggas an iparxei xristis
 {
   userId: ,
@@ -11,5 +13,10 @@ Response gaggas an iparxei xristis
   firstName: ,
   lastName,
   email: ,
-  isAdmin : true/false,
+  phoneNumber:,
+  country:,
+  address:,
+  afm:,
+
+  OXI AKOMA  isAdmin : true/false,
 }
