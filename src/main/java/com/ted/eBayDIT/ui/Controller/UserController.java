@@ -71,17 +71,18 @@ public class UserController {
 
 
     @PostMapping("register")
-    public /*todo ResponseEntity<Object>*/ UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
+    public ResponseEntity<Object> /*UserRest*/ createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
         UserRest returnValue =new UserRest();
 
-        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+//        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
         //todo add exception also for the other fields
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails,userDto);
 
         UserDto createdUser = userService.createUser(userDto);
+
         BeanUtils.copyProperties(createdUser,returnValue);
 
 
@@ -118,7 +119,7 @@ public class UserController {
 //        }
 
 
-        return returnValue;
+        return   new ResponseEntity<>(/*returnValue, */HttpStatus.CREATED);
     }
 
 
@@ -134,23 +135,27 @@ public class UserController {
 
 
     @PutMapping(path ="users/{id}")
-    public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
+    public ResponseEntity<Object> updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
 
         UserDto currentUser = securityService.getCurrentUser(); //todo check if working
 
-        UserRest returnValue =new UserRest();
+        if (! currentUser.getUserId().equals(id)){
+            String msg = "Not authorized to do that";
+            return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
+        }
+//        UserRest returnValue =new UserRest();
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails,userDto);
 
         UserDto updatedUser = userService.updateUser(id,userDto);
 
-        BeanUtils.copyProperties(updatedUser,returnValue);
+//        BeanUtils.copyProperties(updatedUser,returnValue);
 
 
 
 
-        return returnValue;
+        return new ResponseEntity<>(/*returnValue, */HttpStatus.OK);
     }
 
     @DeleteMapping(path ="users/{id}")
