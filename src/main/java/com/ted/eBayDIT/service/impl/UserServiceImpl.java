@@ -1,10 +1,11 @@
 package com.ted.eBayDIT.service.impl;
 
 import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.entity.RoleEntity;
 import com.ted.eBayDIT.entity.UserEntity;
+import com.ted.eBayDIT.repository.RoleRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
-import com.ted.eBayDIT.ui.model.response.UserRest;
 import com.ted.eBayDIT.utility.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepo;
+
+    @Autowired
     Utils utils;
 
     @Autowired
@@ -34,8 +38,53 @@ public class UserServiceImpl implements UserService {
 
 
 
+
+    //todo properly initialize db through hibernate instead
+    @PostConstruct
+    private void initDB() {
+        if (roleRepo.findByUserRole("ADMIN") == null) {
+            RoleEntity adminRole = new RoleEntity("ADMIN");
+            roleRepo.save(adminRole);
+        }
+        if (roleRepo.findByUserRole("USER") == null) {
+            RoleEntity userRole = new RoleEntity("USER");
+            roleRepo.save(userRole);
+        }
+        if (userRepository.findByEmail("dimgan@di.uoa.gr") == null) {
+            UserEntity admin1 = new UserEntity();
+            admin1.setUsername("Dim_gan");
+            admin1.setEncryptedPassword("admin1234");
+            admin1.setEmail("dimgan@di.uoa.gr");
+            admin1.setFirstName("Dimitris");
+            admin1.setLastName("Gangas");
+
+            saveAdmin(admin1);
+
+        }
+        if (userRepository.findByEmail("ylam@di.uoa.gr") == null) {
+            UserEntity admin2 = new UserEntity();
+            admin2.setUsername("Yannis_Lam");
+            admin2.setEncryptedPassword("admin1234");
+            admin2.setEmail("ylam@di.uoa.gr");
+            admin2.setFirstName("Yannis");
+            admin2.setLastName("Lamprou");
+
+            saveAdmin(admin2);
+
+        }
+    }
+
+
+    private void saveAdmin(UserEntity user) {
+        user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getEncryptedPassword()));
+        user.setRole(roleRepo.findByUserRole("ADMIN"));
+        //todo put exception if user is null
+        userRepository.save(user);
+    }
+
+
     @Override
-    public UserDto createUser(UserDto user) {
+    public int createUser(UserDto user) {
 
 
         //todo check if username already exists in db
@@ -54,14 +103,18 @@ public class UserServiceImpl implements UserService {
         String publicUserId =utils.generateUserId(30);
         userEntity2save.setUserId(publicUserId);
 
+        //set veridication =false to the newly created user
+        //todo maybe(?) add routine if its admin to me verified instantly
+        userEntity2save.setIsVerifiedByAdmin(false);
+
         UserEntity storedUserDetails =  userRepository.save(userEntity2save);
 
 
         //now we have to return this back to our restcontroller
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails ,returnValue);
+//        UserDto returnValue = new UserDto();
+//        BeanUtils.copyProperties(storedUserDetails ,returnValue);
 
-        return returnValue;
+        return 0;
     }
 
     @Override
@@ -127,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     //    @Transactional
     @Override
-    public int deleteUser(String userId) {
+    public void deleteUser(String userId) {
 
         UserEntity userEntity = this.userRepository.findByUserId(userId);
 
@@ -136,7 +189,6 @@ public class UserServiceImpl implements UserService {
         }
         this.userRepository.delete(userEntity);
 
-        return 0;
     }
 
     @Override

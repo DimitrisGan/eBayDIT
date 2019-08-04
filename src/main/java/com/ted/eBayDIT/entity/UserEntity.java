@@ -51,12 +51,26 @@ public class UserEntity implements Serializable {
     @Column(name="afm")
     private String afm;
 
+    @Column(name="verified")
+    private boolean isVerifiedByAdmin;
+
+
+    public boolean getIsVerifiedByAdmin() {
+        return isVerifiedByAdmin;
+    }
+
+    public void setIsVerifiedByAdmin(boolean isVerifiedByAdmin) {
+        this.isVerifiedByAdmin = isVerifiedByAdmin;
+    }
 
 
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "role_id")
-//    private Role role;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 
 
 //
@@ -161,13 +175,15 @@ public class UserEntity implements Serializable {
     }
 
 
-    //    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
+
+
+    public RoleEntity getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }
 //
 //    public Boolean getVerifiedByAdmin() {
 //        return verifiedByAdmin;

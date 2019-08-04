@@ -86,6 +86,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         //after web token JWT is generated then it will be added to the header
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         res.addHeader("UserID", userDto.getUserId());
+//todo        res.addHeader("IsVerified");
+//todo        res.addHeader("IsAdmin");
 
     }
 
