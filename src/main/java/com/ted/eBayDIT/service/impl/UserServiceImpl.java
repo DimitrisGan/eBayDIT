@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
             admin1.setEmail("dimgan@di.uoa.gr");
             admin1.setFirstName("Dimitris");
             admin1.setLastName("Gangas");
+            admin1.setIsVerifiedByAdmin(true);
 
             saveAdmin(admin1);
 
@@ -68,6 +69,8 @@ public class UserServiceImpl implements UserService {
             admin2.setEmail("ylam@di.uoa.gr");
             admin2.setFirstName("Yannis");
             admin2.setLastName("Lamprou");
+            admin2.setIsVerifiedByAdmin(true);
+
 
             saveAdmin(admin2);
 
@@ -82,6 +85,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+//    @Override
+//    public void save(UserEntity user) {
+//        user.setPassword(bCryptEncoder.encode(user.getPassword()));
+//        //only users are created after the first configuration
+//        user.setRole(roleRepo.findByName("ROLE_USER"));
+//        userRepo.save(user);
+//    }
+//
 
     @Override
     public int createUser(UserDto user) {
@@ -98,12 +109,11 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user,userEntity2save);
 
         userEntity2save.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
-
         String publicUserId =utils.generateUserId(30);
         userEntity2save.setUserId(publicUserId);
+        userEntity2save.setRole(this.roleRepo.findByUserRole("USER"));
 
-        //set veridication =false to the newly created user
+        //set verification =false to the newly created user
         //todo maybe(?) add routine if its admin to me verified instantly
         userEntity2save.setIsVerifiedByAdmin(false);
 

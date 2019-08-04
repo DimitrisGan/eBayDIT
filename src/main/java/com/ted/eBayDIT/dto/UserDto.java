@@ -22,6 +22,9 @@ public class UserDto implements Serializable {
     private String address;
     private String afm;
 
+    private boolean isVerified;
+    private RoleDto roleDto;
+
 
 //    private String emailVerificationToken;
 //    private Boolean emailVerificationStatus = false;
@@ -122,5 +125,22 @@ public class UserDto implements Serializable {
 
     public void setAfm(String afm) {
         this.afm = afm;
+    }
+
+    
+    public RoleDto getRoleDto() {
+        return roleDto;
+    }
+
+    public void setRoleDto(RoleDto roleDto) {
+        this.roleDto = roleDto;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }

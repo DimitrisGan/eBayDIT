@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // add our users for in memory authentication
 //        auth.inMemoryAuthentication()
-//                .withUser(users..username("john").password("test123").roles("EMPLOYEE"))
+//                .withUser("adminUser").password(bCryptPasswordEncoder.encode("admin1234")).roles("ADMIN");
 //                .withUser(users.username("mary").password("test123").roles("MANAGER"))
 //                .withUser(users.username("susan").password("test123").roles("ADMIN"));
 
@@ -64,12 +64,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SecurityConstants.SIGN_UP_URL)
                 .permitAll()
 
+                .antMatchers("/api/**").permitAll()
+
                 .antMatchers(HttpMethod.POST ,"/exists/**")
 //                .antMatchers(HttpMethod.GET , SecurityConstants.SIGN_UP_URL)
                 .permitAll()
 
+                .antMatchers("/index").permitAll()
+                .antMatchers("/profile").authenticated()
 
-                .antMatchers("/dashboard/**").hasAuthority("ADMIN")
+
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
 //                .addFilter(new AuthenticationFilter(authenticationManager())); //no more neede because we want our custom login form url

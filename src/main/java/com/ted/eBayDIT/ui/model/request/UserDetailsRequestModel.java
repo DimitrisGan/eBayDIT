@@ -1,6 +1,8 @@
 package com.ted.eBayDIT.ui.model.request;
 
 
+import com.ted.eBayDIT.dto.RoleDto;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +31,17 @@ public class UserDetailsRequestModel {
     private String country;
     private String address;
     private String afm;
+
+    private RoleDto role;
+
+    public RoleDto getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDto role) {
+        this.role = role;
+    }
+
 
 
 

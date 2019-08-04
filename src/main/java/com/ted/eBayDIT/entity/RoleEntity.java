@@ -29,7 +29,7 @@ public class RoleEntity {
 
     public RoleEntity() {
     }
-    
+
 
     public RoleEntity(String userRole) {
         this.userRole = userRole;
