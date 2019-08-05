@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class RoleDto implements Serializable {
 
 
-    private static final long serialVersionUID = -7414254535801645787L;
+    private static final long serialVersionUID = 4L;
 
     private int id;
-    private String userRole;
+    private String name;
 
     public int getId() {
         return id;
@@ -18,11 +18,11 @@ public class RoleDto implements Serializable {
         this.id = id;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getName() {
+        return name;
     }
 
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
+    public void setName(String name) {
+        this.name = name;
     }
 }

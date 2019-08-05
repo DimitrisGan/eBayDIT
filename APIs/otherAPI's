@@ -1,0 +1,23 @@
+--GET localhost:8080/api/users/  = returns all users [it will go to admin Controller /admin]
+
+--μετα το login αμα ειναι successful [status code=200 ok] pairneis to userId apo to header kai skas url sto
+
+localhost:8080/api/users/{userId}     opou px userId = 0JjqDA3izZcWloKUcYOVXYEnaDsdsD
+
+--gia to update to path einai auto:
+
+localhost:8080/api/users/{userId}     opou px userId = 0JjqDA3izZcWloKUcYOVXYEnaDsdsD
+
+sto update mexri stigmhs mporeis na allakseis to email ,firstName kai lastName ksexwra se JSON
+Opote px mporeis na steileis auto :
+
+{
+    "email": "user1@sd.com",
+    "firstName": "Nikos"
+}
+
+ή ακομα και αυτο:
+
+{
+    "firstName": "Nikos"
+}

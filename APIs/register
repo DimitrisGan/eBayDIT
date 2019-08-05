@@ -11,11 +11,25 @@ POST Request
   afm:,
 }
 
-Response gaggas an iparxei xristis
-200
+Response gaggas an egine CREATED o xristis
+201
 
 401
 
+Example
+
+{
+    "username": "user1",
+    "firstName": "Giorgos",
+    "lastName": "Antonpoulos",
+    "email": "test1.luv2code@codfgm",
+    "password": "user1234",
+
+    "phoneNumber": 23432432432,
+    "country": "Albania",
+    "address": "dsfsdf",
+    "afm": "d3244543"
+}
 
 
 

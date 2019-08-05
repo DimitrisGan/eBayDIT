@@ -5,6 +5,7 @@ import java.util.List;
 
 public class UserDto implements Serializable {
 
+
     private static final long serialVersionUID = 4L;
 
     private int id;
