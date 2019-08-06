@@ -1,13 +1,13 @@
 package com.ted.eBayDIT.repository;
 
 
+import com.ted.eBayDIT.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.ted.eBayDIT.entity.Role;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
 
-    Role findByUserRole(String userRole);
+    RoleEntity findByUserRole(String userRole);
 }

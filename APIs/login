@@ -5,7 +5,15 @@ POST Request
 }
 
 
+Example :
 
+{
+    "username": "user1",
+    "password": "user1234"
+}
+
+
+---------------<OXI>-----------------
 Response gaggas an iparxei xristis
 {
   userId: ,
@@ -20,3 +28,12 @@ Response gaggas an iparxei xristis
 
   OXI AKOMA  isAdmin : true/false,
 }
+
+---------------</OXI>-----------------
+
+
+
+Response : ok=200 if correct
+
+
+

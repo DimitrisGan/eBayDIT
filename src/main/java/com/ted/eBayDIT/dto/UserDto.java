@@ -5,6 +5,7 @@ import java.util.List;
 
 public class UserDto implements Serializable {
 
+
     private static final long serialVersionUID = 4L;
 
     private int id;
@@ -21,6 +22,9 @@ public class UserDto implements Serializable {
     private String country;
     private String address;
     private String afm;
+
+    private boolean isVerified;
+    private RoleDto roleDto;
 
 
 //    private String emailVerificationToken;
@@ -122,5 +126,22 @@ public class UserDto implements Serializable {
 
     public void setAfm(String afm) {
         this.afm = afm;
+    }
+
+    
+    public RoleDto getRoleDto() {
+        return roleDto;
+    }
+
+    public void setRoleDto(RoleDto roleDto) {
+        this.roleDto = roleDto;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }
