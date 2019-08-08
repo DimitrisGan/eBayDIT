@@ -8,7 +8,7 @@ public class RoleDto implements Serializable {
     private static final long serialVersionUID = 4L;
 
     private int id;
-    private String name;
+    private String userRole;
 
     public int getId() {
         return id;
@@ -19,10 +19,10 @@ public class RoleDto implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return userRole;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.userRole = name;
     }
 }
