@@ -2,6 +2,7 @@ package com.ted.eBayDIT.security;
 
 
 import com.ted.eBayDIT.service.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,7 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 
 
 @Configuration
@@ -48,7 +53,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    //
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+//        configuration.setAllowedOrigins(Arrays.asList(FRONT_END_SERVER));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization"));
+
+        // This allow us to expose the headers
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+
 //
 //    /*Configure security of web paths in application, login, logout etc
 //     */
@@ -58,13 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.cors().and().csrf().disable().authorizeRequests()
-//                .antMatchers(HttpMethod.POST , SecurityConstants.SIGN_UP_URL)
-//                .permitAll()
+
 
                 .antMatchers(SecurityConstants.SIGN_UP_URL)
                 .permitAll()
 
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/login").permitAll()
 
                 .antMatchers(HttpMethod.POST ,"/exists/**")
 //                .antMatchers(HttpMethod.GET , SecurityConstants.SIGN_UP_URL)
