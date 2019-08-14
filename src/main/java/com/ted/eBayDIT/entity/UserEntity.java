@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="user")
-public class UserEntity implements Serializable {
+public class UserEntity /*implements Serializable */{
 
 
-    private static final long serialVersionUID = 4L;
+//    private static final long serialVersionUID = 4L;
 
     // define fields
 
