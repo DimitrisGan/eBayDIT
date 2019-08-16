@@ -55,6 +55,12 @@ public class UserEntity /*implements Serializable */{
     private boolean isVerifiedByAdmin;
 
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
+
+
+
     public boolean getIsVerifiedByAdmin() {
         return isVerifiedByAdmin;
     }
@@ -66,11 +72,6 @@ public class UserEntity /*implements Serializable */{
 
 
 
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
 
 
 //

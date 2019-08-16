@@ -1,5 +1,6 @@
 package com.ted.eBayDIT;
 
+import com.ted.eBayDIT.xmlParser.Items;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +16,16 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 import java.util.Collections;
 
+import java.io.*; // will be using only File class from this package
+import javax.xml.bind.*; // will be using JAXBContext,Marshaller and JAXBException classes from this package
 
 @SpringBootApplication
 public class EBayDitApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(EBayDitApplication.class, args);
+
     }
 
 
@@ -53,4 +58,7 @@ public class EBayDitApplication {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
+
+
 }
