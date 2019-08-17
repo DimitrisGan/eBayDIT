@@ -8,6 +8,7 @@ import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserLoginRequestModel;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+
+    @Autowired
+    SecurityService securityService;
+
+
+
 
     private final AuthenticationManager authenticationManager; //it will be used to authenticate user
 
@@ -85,8 +93,18 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         //after web token JWT is generated then it will be added to the header
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+
+//        UserDto currUser = new UserDto();
+
+//        String roleName = userService.getUser(userName).getRoleDto().getName();
+
+//        res.getWriter().append("OK!!");
+
+
+//        RoleEntity r = currUser.getCurrentUser().getRole();userName
+
         res.addHeader("UserID", userDto.getUserId());
-//todo        res.addHeader("IsVerified");
+//        res.addHeader("Role",roleName);
 //todo        res.addHeader("IsAdmin");
 
     }
