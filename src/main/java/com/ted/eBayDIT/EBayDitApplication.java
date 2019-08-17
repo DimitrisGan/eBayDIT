@@ -24,6 +24,10 @@ public class EBayDitApplication {
 
     public static void main(String[] args) {
 
+//        populateDataToDb test = new populateDataToDb();
+//        test.extractXml();
+//        test.sacw2
+
         SpringApplication.run(EBayDitApplication.class, args);
 
     }

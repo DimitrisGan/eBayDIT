@@ -12,19 +12,19 @@ import java.io.File;
 
 public class populateDataToDb {
 
-    @PostConstruct
-    private void extractXml() {
-        try {
-            File file = new File("/home/dimitrisgan/Desktop/eBayD_v2/ebay-data/items-2.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Items.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Items allItems = (Items) jaxbUnmarshaller.unmarshal(file);
-            System.out.println(allItems);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-    }
+//    @PostConstruct
+//    public void extractXml() {
+//        try {
+//            File file = new File("/home/dimitrisgan/Desktop/eBayD_v2/ebay-data/items-2.xml");
+//            JAXBContext jaxbContext = JAXBContext.newInstance(Items.class);
+//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//            Items allItems = (Items) jaxbUnmarshaller.unmarshal(file);
+//            System.out.println(allItems);
+//
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 //    @PostConstruct

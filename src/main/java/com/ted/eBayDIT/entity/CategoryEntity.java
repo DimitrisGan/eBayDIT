@@ -1,7 +1,7 @@
-package com.ted.eBayDIT.entity;
-
-
-import javax.persistence.*;
+//package com.ted.eBayDIT.entity;
+//
+//
+//import javax.persistence.*;
 
 //todo
 //@Entity
