@@ -1,16 +1,15 @@
 package com.ted.eBayDIT.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+@Data
 
 @Entity
 @Table(name="user")
-public class UserEntity /*implements Serializable */{
+public class UserEntity {
 
-
-//    private static final long serialVersionUID = 4L;
 
     // define fields
 
@@ -55,6 +54,20 @@ public class UserEntity /*implements Serializable */{
     private boolean isVerifiedByAdmin;
 
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
+
+
+    //no need for cascade = CascadeType.ALL because by default
+    //no operations are cascaded
+    @OneToOne(mappedBy = "user")
+    private BidderDetailsEntity bidder;
+
+    @OneToOne(mappedBy = "user")
+    private SellerDetailsEntity seller;
+
+
     public boolean getIsVerifiedByAdmin() {
         return isVerifiedByAdmin;
     }
@@ -66,11 +79,6 @@ public class UserEntity /*implements Serializable */{
 
 
 
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
 
 
 //
@@ -86,115 +94,115 @@ public class UserEntity /*implements Serializable */{
 
     // define getter/setter
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAfm() {
-        return afm;
-    }
-
-    public void setAfm(String afm) {
-        this.afm = afm;
-    }
-
-
-
-
-    public RoleEntity getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEntity role) {
-        this.role = role;
-    }
-//
-//    public Boolean getVerifiedByAdmin() {
-//        return verifiedByAdmin;
+//    public int getId() {
+//        return id;
 //    }
 //
-//    public void setVerifiedByAdmin(Boolean verifiedByAdmin) {
-//        this.verifiedByAdmin = verifiedByAdmin;
+//    public void setId(int id) {
+//        this.id = id;
 //    }
-
-
-    // define tostring
+//
+//    public String getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(String userId) {
+//        this.userId = userId;
+//    }
+//
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public String getEncryptedPassword() {
+//        return encryptedPassword;
+//    }
+//
+//    public void setEncryptedPassword(String encryptedPassword) {
+//        this.encryptedPassword = encryptedPassword;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getPhoneNumber() {
+//        return phoneNumber;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+//
+//    public String getCountry() {
+//        return country;
+//    }
+//
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
+//
+//    public String getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//
+//    public String getAfm() {
+//        return afm;
+//    }
+//
+//    public void setAfm(String afm) {
+//        this.afm = afm;
+//    }
+//
+//
+//
+//
+//    public RoleEntity getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(RoleEntity role) {
+//        this.role = role;
+//    }
+////
+////    public Boolean getVerifiedByAdmin() {
+////        return verifiedByAdmin;
+////    }
+////
+////    public void setVerifiedByAdmin(Boolean verifiedByAdmin) {
+////        this.verifiedByAdmin = verifiedByAdmin;
+////    }
+//
+//
+//    // define tostring
 
 
 

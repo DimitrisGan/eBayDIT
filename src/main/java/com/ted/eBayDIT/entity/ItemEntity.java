@@ -1,8 +1,9 @@
 package com.ted.eBayDIT.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 //@Entity
@@ -77,145 +78,92 @@ import java.util.List;
 //        Rating CDATA #REQUIRED>
 //<!ELEMENT Description	   (#PCDATA)>
 
+@Data
 
 @Entity
-@Table(name="Item")
+@Table(name="item")
 public class ItemEntity {
+/*
+    //todoneed to add these columns
 
-    private String ItemID;
+    protected String name;
+    protected Integer itemID;
+    protected List<String> category;
+    protected String currently;
+    protected String buyPrice;
+    protected String firstBid;
+    protected byte numberOfBids;
+    protected String country;
+    protected String started;
+    protected String ends;
+    protected String description;
 
-    private String Name;
-//    private List<CategoryEntity> Category = new ArrayList<>();
-    private List<String> Category = new ArrayList<>();
-    private String Currently;
+    //    protected Items.Item.Bids bids;
+    //    protected Items.Item.Location location;
+    //    protected Items.Item.Seller seller;
 
-    private String Buy_Price;
-
-    private String First_Bid;
-    private String Number_of_Bids;
-
-    private BidsEntity Bids ; //todo check if needs new table Bids
-
-    private LocationEntity Location;
-    private String Country;
-    private String Started;
-
-    private String Ends;
-
-
-    private SellerEntity Seller;
-    private String Description;
+*/
 
 
-    public String getItemID() {
-        return ItemID;
-    }
+    @Id
+    @Column(name="item_id"/*,nullable = false*/,unique = true)
+    private Long itemID;
 
-    public void setItemID(String itemID) {
-        ItemID = itemID;
-    }
+    @Column(name="name" ,nullable=false)
+    private String name;
 
-    public String getName() {
-        return Name;
-    }
+    @Column(name="currently" /*,nullable=false */)
+    private String currently;
 
-    public void setName(String name) {
-        Name = name;
-    }
+    @Column(name="buy_price" /*,nullable=false */)
+    private String buyPrice;
 
-    public List<String> getCategory() {
-        return Category;
-    }
+    @Column(name="first_bid" /*,nullable=false */)
+    private String firstBid;
 
-    public void setCategory(List<String> category) {
-        Category = category;
-    }
+    @Column(name="number_of_bids" /*,nullable=false */)
+    private int numberOfBids;
 
-    public String getCurrently() {
-        return Currently;
-    }
+    @Column
+    private String country;
+    @Column
+    private String started;
+    @Column
+    private String ends;
+    @Column
+    private String description;
 
-    public void setCurrently(String currently) {
-        Currently = currently;
-    }
+    @Column
+    private String category ;
+//    private List<String> category ;
+    //    private List<CategoryEntity> Category = new ArrayList<>();
 
-    public String getBuy_Price() {
-        return Buy_Price;
-    }
+    @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
+    private List<BidEntity> bids ; //todo check if needs new table Bids
 
-    public void setBuy_Price(String buy_Price) {
-        Buy_Price = buy_Price;
-    }
 
-    public String getFirst_Bid() {
-        return First_Bid;
-    }
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="seller_id")
+    private SellerDetailsEntity seller;
 
-    public void setFirst_Bid(String first_Bid) {
-        First_Bid = first_Bid;
-    }
 
-    public String getNumber_of_Bids() {
-        return Number_of_Bids;
-    }
+    //    private LocationEntity Location;
+    //    private SellerDetailsEntity Seller;
 
-    public void setNumber_of_Bids(String number_of_Bids) {
-        Number_of_Bids = number_of_Bids;
-    }
+//    @ManyToOne
+//    @JoinColumn(name="users_id")
+//    private UserEntity userDetails;
 
-    public BidsEntity getBids() {
-        return Bids;
-    }
+//    @OneToOne()
+//    @JoinColumn(name = "users_id")
+//    private UserEntity userDetails;
+//    @OneToOne(cascade=CascadeType.ALL)
+//    @JoinColumn(name="instructor_detail_ide" +
+//            "")
 
-    public void setBids(BidsEntity bids) {
-        Bids = bids;
-    }
 
-    public LocationEntity getLocation() {
-        return Location;
-    }
 
-    public void setLocation(LocationEntity location) {
-        Location = location;
-    }
 
-    public String getCountry() {
-        return Country;
-    }
 
-    public void setCountry(String country) {
-        Country = country;
-    }
-
-    public String getStarted() {
-        return Started;
-    }
-
-    public void setStarted(String started) {
-        Started = started;
-    }
-
-    public String getEnds() {
-        return Ends;
-    }
-
-    public void setEnds(String ends) {
-        Ends = ends;
-    }
-
-    public SellerEntity getSeller() {
-        return Seller;
-    }
-
-    public void setSeller(SellerEntity seller) {
-        Seller = seller;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
 }
