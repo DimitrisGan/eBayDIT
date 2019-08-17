@@ -122,7 +122,7 @@ public class ItemEntity {
     private String firstBid;
 
     @Column(name="number_of_bids" /*,nullable=false */)
-    private int numberOfBids;
+    private Integer numberOfBids;
 
     @Column
     private String country;
@@ -135,8 +135,8 @@ public class ItemEntity {
 
     @Column
     private String category ;
-//    private List<String> category ;
-    //    private List<CategoryEntity> Category = new ArrayList<>();
+    //    private List<String> category ;
+    //todo    private List<CategoryEntity> Category = new ArrayList<>();
 
     @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
     private List<BidEntity> bids ; //todo check if needs new table Bids
@@ -148,21 +148,9 @@ public class ItemEntity {
     private SellerDetailsEntity seller;
 
 
-    //    private LocationEntity Location;
-    //    private SellerDetailsEntity Seller;
-
-//    @ManyToOne
-//    @JoinColumn(name="users_id")
-//    private UserEntity userDetails;
-
-//    @OneToOne()
-//    @JoinColumn(name = "users_id")
-//    private UserEntity userDetails;
-//    @OneToOne(cascade=CascadeType.ALL)
-//    @JoinColumn(name="instructor_detail_ide" +
-//            "")
-
-
+    @OneToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private LocationEntity location;
 
 
 

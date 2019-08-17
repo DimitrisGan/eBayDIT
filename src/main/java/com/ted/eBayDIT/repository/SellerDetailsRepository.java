@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SellerDetailsRepository extends JpaRepository<SellerDetailsEntity, Integer> {
 
-
+//    SellerDetailsEntity findAllBy
 }

@@ -1,43 +1,35 @@
-//package com.ted.eBayDIT.entity;
-//
-//import javax.persistence.*;
-//
-//@Entity
-//@Table(name="Location")
-//public class LocationEntity {
-//
-//    @Id
-//    @GeneratedValue(strategy= GenerationType.IDENTITY)
-//    @Column(name="id")
-//    private  int id;
-//
-//    private String Latitude;
-//
-//    private String Longitude;
-//
-//    private String content;
-//
-//    public String getLatitude() {
-//        return Latitude;
-//    }
-//
-//    public void setLatitude(String latitude) {
-//        Latitude = latitude;
-//    }
-//
-//    public String getLongitude() {
-//        return Longitude;
-//    }
-//
-//    public void setLongitude(String longitude) {
-//        Longitude = longitude;
-//    }
-//
-//    public String getContent() {
-//        return content;
-//    }
-//
-//    public void setContent(String content) {
-//        this.content = content;
-//    }
+package com.ted.eBayDIT.entity;
+
+import lombok.Data;
+
+import javax.persistence.*;
+
+
+//<Location Latitude="43.108241" Longitude="-88.48935">Oconomowoc, WI</Location>
+//{
+//        "@Latitude": "37.680181",
+//        "@Longitude": "-121.921498",
+//        "#text": "Hayward, CA"
 //}
+@Data
+@Entity
+@Table(name="Location")
+public class LocationEntity {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private  Long id;
+
+    @Column
+    private String latitude;
+    @Column
+    private String longitude;
+    @Column
+    private String text;
+
+    @OneToOne(mappedBy = "location")
+    private ItemEntity item;
+
+
+}
