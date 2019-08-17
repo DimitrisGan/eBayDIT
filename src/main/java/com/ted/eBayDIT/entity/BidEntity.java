@@ -16,7 +16,7 @@ public class BidEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="id")
-    private  int id;
+    private  Integer id;
 
     @ManyToOne
     @JoinColumn(name="item_id")
