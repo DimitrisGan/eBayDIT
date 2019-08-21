@@ -1,5 +1,6 @@
 GET Request
-
+    orderBy: 'onomapedio',
+    order: 'asc OR desc'
 
 
 RESPONSE
@@ -14,6 +15,10 @@ RESPONSE
 
     }
     ]
+
+    currPage: int,
+    totalPages: int,
+
 
 
 
