@@ -25,6 +25,7 @@ public class UserDto implements Serializable {
 
     private boolean isVerified;
 
+    private String userRole;
 
 
     public String getUserRole() {
@@ -34,12 +35,6 @@ public class UserDto implements Serializable {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-
-    private String userRole;
-
-
-//    private String emailVerificationToken;
-//    private Boolean emailVerificationStatus = false;
 
 
     public int getId() {

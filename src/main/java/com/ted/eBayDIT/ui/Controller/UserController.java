@@ -8,6 +8,7 @@ import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
 import com.ted.eBayDIT.ui.model.response.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,11 @@ public class UserController {
         UserRest returnUser =new UserRest();
 
         UserDto userDto = userService.getUserByUserId(id) ;
-        BeanUtils.copyProperties(userDto,returnUser);
+
+//        BeanUtils.copyProperties(userDto,returnUser);
+        ModelMapper modelMapper = new ModelMapper();
+        returnUser = modelMapper.map(userDto, UserRest.class);
+
         return returnUser;
     }
 

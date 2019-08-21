@@ -59,7 +59,8 @@ public class UserServiceImpl implements UserService {
             admin1.setEmail("dimgan@di.uoa.gr");
             admin1.setFirstName("Dimitris");
             admin1.setLastName("Gangas");
-            admin1.setIsVerifiedByAdmin(true);
+            admin1.setVerified(true);
+            admin1.setUserId("admin1");
 
             saveAdmin(admin1);
 
@@ -71,7 +72,8 @@ public class UserServiceImpl implements UserService {
             admin2.setEmail("ylam@di.uoa.gr");
             admin2.setFirstName("Yannis");
             admin2.setLastName("Lamprou");
-            admin2.setIsVerifiedByAdmin(true);
+            admin2.setVerified(true);
+            admin2.setUserId("admin2");
 
             saveAdmin(admin2);
 
@@ -121,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
         //set verification =false to the newly created user
         //todo maybe(?) add routine if its admin to me verified instantly
-        userEntity2save.setIsVerifiedByAdmin(false);
+        userEntity2save.setVerified(false);
 
         storedUserDetails =  userRepo.save(userEntity2save);
 
@@ -225,13 +227,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserByUserId(String userId) {
         UserDto returnValue =new UserDto();
-        UserEntity userEntity = userRepo.findByUserId(userId);
+        UserEntity user = userRepo.findByUserId(userId);
 
-        if (userEntity == null) { //if username was not found throw exception
+        if (user == null) { //if username was not found throw exception
             throw new UsernameNotFoundException(userId);
         }
 
-        BeanUtils.copyProperties(userEntity,returnValue);
+        ModelMapper modelMapper = new ModelMapper();
+        returnValue = modelMapper.map(user, UserDto.class);
+
+//        BeanUtils.copyProperties(userEntity,returnValue);
+        //EDWWWW FILARAAAA ALLLAAKSE ME 1821
         return returnValue;
     }
 

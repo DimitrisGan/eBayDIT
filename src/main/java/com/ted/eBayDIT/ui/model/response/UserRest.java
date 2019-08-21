@@ -17,6 +17,8 @@ public class UserRest {
 
     private boolean isVerified;
 
+    private String userRole;
+
     //in response model we should not contain password
 
 
@@ -100,5 +102,13 @@ public class UserRest {
 
     public void setVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

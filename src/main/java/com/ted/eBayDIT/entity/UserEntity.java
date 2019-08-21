@@ -48,6 +48,7 @@ public class UserEntity {
     @Column(name="afm")
     private String afm;
 
+
     @Column(name="verified")
     private boolean isVerified;
 
@@ -72,13 +73,7 @@ public class UserEntity {
 //    private Boolean verifiedByAdmin;
 
 
-    public boolean getIsVerifiedByAdmin() {
-        return isVerified;
-    }
 
-    public void setIsVerifiedByAdmin(boolean isVerifiedByAdmin) {
-        this.isVerified = isVerifiedByAdmin;
-    }
 
     public int getId() {
         return id;
@@ -194,6 +189,11 @@ public class UserEntity {
     }
 
 
+    public boolean isVerified() {
+        return isVerified;
+    }
 
-
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
 }
