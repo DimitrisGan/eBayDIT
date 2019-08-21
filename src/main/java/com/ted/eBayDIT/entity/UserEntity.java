@@ -49,7 +49,7 @@ public class UserEntity {
     private String afm;
 
     @Column(name="verified")
-    private boolean isVerifiedByAdmin;
+    private boolean isVerified;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -73,11 +73,11 @@ public class UserEntity {
 
 
     public boolean getIsVerifiedByAdmin() {
-        return isVerifiedByAdmin;
+        return isVerified;
     }
 
     public void setIsVerifiedByAdmin(boolean isVerifiedByAdmin) {
-        this.isVerifiedByAdmin = isVerifiedByAdmin;
+        this.isVerified = isVerifiedByAdmin;
     }
 
     public int getId() {
@@ -168,13 +168,6 @@ public class UserEntity {
         this.afm = afm;
     }
 
-    public boolean isVerifiedByAdmin() {
-        return isVerifiedByAdmin;
-    }
-
-    public void setVerifiedByAdmin(boolean verifiedByAdmin) {
-        isVerifiedByAdmin = verifiedByAdmin;
-    }
 
     public RoleEntity getRole() {
         return role;

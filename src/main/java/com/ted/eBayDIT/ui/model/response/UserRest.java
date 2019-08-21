@@ -15,6 +15,8 @@ public class UserRest {
     private String address;
     private String afm;
 
+    private boolean isVerified;
+
     //in response model we should not contain password
 
 
@@ -89,5 +91,14 @@ public class UserRest {
 
     public void setAfm(String afm) {
         this.afm = afm;
+    }
+
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }
