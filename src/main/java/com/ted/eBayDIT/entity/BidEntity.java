@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
+//@Data
 
 @Entity
 @Table(name="bid")
@@ -14,7 +14,7 @@ public class BidEntity {
 
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private  Integer id;
 
@@ -22,8 +22,8 @@ public class BidEntity {
     @JoinColumn(name="item_id")
     private ItemEntity itemDetails;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})*/
     @JoinColumn(name = "bidder_id")
     private BidderDetailsEntity bidder;
 
@@ -33,7 +33,45 @@ public class BidEntity {
     private String amount;
 
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public ItemEntity getItemDetails() {
+        return itemDetails;
+    }
+
+    public void setItemDetails(ItemEntity itemDetails) {
+        this.itemDetails = itemDetails;
+    }
+
+    public BidderDetailsEntity getBidder() {
+        return bidder;
+    }
+
+    public void setBidder(BidderDetailsEntity bidder) {
+        this.bidder = bidder;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 }
 
 

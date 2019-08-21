@@ -1,6 +1,7 @@
 package com.ted.eBayDIT;
 
-import com.ted.eBayDIT.xmlParser.Items;
+//import com.ted.eBayDIT.xmlParser.Items;
+
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

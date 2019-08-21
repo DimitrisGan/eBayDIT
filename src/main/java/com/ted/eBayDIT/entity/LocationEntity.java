@@ -11,9 +11,9 @@ import javax.persistence.*;
 //        "@Longitude": "-121.921498",
 //        "#text": "Hayward, CA"
 //}
-@Data
+//@Data
 @Entity
-@Table(name="Location")
+@Table(name="location")
 public class LocationEntity {
 
     @Id
@@ -32,4 +32,43 @@ public class LocationEntity {
     private ItemEntity item;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ItemEntity getItem() {
+        return item;
+    }
+
+    public void setItem(ItemEntity item) {
+        this.item = item;
+    }
 }

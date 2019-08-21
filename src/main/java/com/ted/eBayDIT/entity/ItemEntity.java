@@ -78,7 +78,7 @@ import java.util.List;
 //        Rating CDATA #REQUIRED>
 //<!ELEMENT Description	   (#PCDATA)>
 
-@Data
+//@Data
 
 @Entity
 @Table(name="item")
@@ -130,28 +130,143 @@ public class ItemEntity {
     private String started;
     @Column
     private String ends;
+
+    @Lob //LONGTEXT for description column
     @Column
     private String description;
 
-    @Column
-    private String category ;
-    //    private List<String> category ;
-    //todo    private List<CategoryEntity> Category = new ArrayList<>();
+    //-----------------------------
 
-    @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "item_category",
+            joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
+            inverseJoinColumns = @JoinColumn(name = "category_id") //refers to "category_id" column in "item_category" join  table
+    )
+//    @OneToMany(mappedBy="itemDetails" )
+    private List<CategoryEntity> categories;
+
+    @OneToMany(mappedBy="itemDetails"/*, cascade=CascadeType.ALL*/)
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
-
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="seller_id")
     private SellerDetailsEntity seller;
-
 
     @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationEntity location;
 
 
+    public Long getItemID() {
+        return itemID;
+    }
 
+    public void setItemID(Long itemID) {
+        this.itemID = itemID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCurrently() {
+        return currently;
+    }
+
+    public void setCurrently(String currently) {
+        this.currently = currently;
+    }
+
+    public String getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(String buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public String getFirstBid() {
+        return firstBid;
+    }
+
+    public void setFirstBid(String firstBid) {
+        this.firstBid = firstBid;
+    }
+
+    public Integer getNumberOfBids() {
+        return numberOfBids;
+    }
+
+    public void setNumberOfBids(Integer numberOfBids) {
+        this.numberOfBids = numberOfBids;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStarted() {
+        return started;
+    }
+
+    public void setStarted(String started) {
+        this.started = started;
+    }
+
+    public String getEnds() {
+        return ends;
+    }
+
+    public void setEnds(String ends) {
+        this.ends = ends;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<CategoryEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
+    }
+
+    public List<BidEntity> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<BidEntity> bids) {
+        this.bids = bids;
+    }
+
+    public SellerDetailsEntity getSeller() {
+        return seller;
+    }
+
+    public void setSeller(SellerDetailsEntity seller) {
+        this.seller = seller;
+    }
+
+    public LocationEntity getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationEntity location) {
+        this.location = location;
+    }
 }
