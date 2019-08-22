@@ -65,28 +65,19 @@ public class UserController {
 
 
     @PostMapping("register")
-    public ResponseEntity<Object> /*UserRest*/ createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
         UserRest returnValue =new UserRest();
 
 //        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
-        //todo add exception also for the other fields
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userDetails,userDto);
 
-        /*UserDto createdUser =*/ userService.createUser(userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
-/* //todo SOOOOOOOOOOOOOOOOOOOOOOS NA MPOUN AYTA!!!!!!!!
+        userService.createUser(userDto);
 
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginUser.getUsername(),
-                        loginUser.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-*/
+
 
 //        BeanUtils.copyProperties(createdUser,returnValue);
 
@@ -120,7 +111,7 @@ public class UserController {
 //        }
 
 
-        return   new ResponseEntity<>(/*returnValue, */HttpStatus.CREATED);
+        return   new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
@@ -146,8 +137,8 @@ public class UserController {
         }
 //        UserRest returnValue =new UserRest();
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userDetails,userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id,userDto);
 

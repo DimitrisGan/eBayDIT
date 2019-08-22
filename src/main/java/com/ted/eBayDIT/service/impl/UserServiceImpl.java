@@ -7,10 +7,8 @@ import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.RoleRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
-import com.ted.eBayDIT.ui.model.response.UserRest;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.User;
@@ -102,7 +100,7 @@ public class UserServiceImpl implements UserService {
 //
 
     @Override
-    public int createUser(UserDto user) {
+    public void createUser(UserDto user) {
 
 
         //todo check if username already exists in db
@@ -133,7 +131,6 @@ public class UserServiceImpl implements UserService {
 //        UserDto returnValue = new UserDto();
 //        BeanUtils.copyProperties(storedUserDetails ,returnValue);
 
-        return 0;
     }
 
     @Override
