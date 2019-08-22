@@ -50,7 +50,7 @@ public class UserEntity {
 
 
     @Column(name="verified")
-    private boolean isVerified;
+    private boolean verified;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -190,10 +190,10 @@ public class UserEntity {
 
 
     public boolean isVerified() {
-        return isVerified;
+        return verified;
     }
 
     public void setVerified(boolean verified) {
-        isVerified = verified;
+        this.verified = verified;
     }
 }

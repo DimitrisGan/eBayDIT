@@ -15,7 +15,7 @@ public class UserRest {
     private String address;
     private String afm;
 
-    private boolean isVerified;
+    private boolean verified;
 
     private String userRole;
 
@@ -95,13 +95,12 @@ public class UserRest {
         this.afm = afm;
     }
 
-
     public boolean isVerified() {
-        return isVerified;
+        return verified;
     }
 
     public void setVerified(boolean verified) {
-        isVerified = verified;
+        this.verified = verified;
     }
 
     public String getUserRole() {

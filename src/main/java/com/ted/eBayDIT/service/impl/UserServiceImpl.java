@@ -7,6 +7,7 @@ import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.RoleRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
+import com.ted.eBayDIT.ui.model.response.UserRest;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -214,9 +215,11 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> usersEntity =this.userRepo.findAll();
 
+        ModelMapper modelMapper = new ModelMapper();
         for (UserEntity userEntity : usersEntity) {
-            UserDto userDto = new UserDto();
-            BeanUtils.copyProperties(userEntity,userDto);
+
+            UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+
             returnUsersList.add(userDto);
         }
         return returnUsersList;
@@ -235,9 +238,8 @@ public class UserServiceImpl implements UserService {
 
         ModelMapper modelMapper = new ModelMapper();
         returnValue = modelMapper.map(user, UserDto.class);
+        //BeanUtils.copyProperties(userEntity,returnValue);
 
-//        BeanUtils.copyProperties(userEntity,returnValue);
-        //EDWWWW FILARAAAA ALLLAAKSE ME 1821
         return returnValue;
     }
 
@@ -256,6 +258,23 @@ public class UserServiceImpl implements UserService {
 
 
 
+    @Override
+    public List<UserDto> getNotVerifiedUsers() {
+        List<UserDto> returnList = new ArrayList<>();
+
+        List<UserEntity> notVerifiedUsersList = new ArrayList<>();
+        notVerifiedUsersList = userRepo.findByVerifiedFalse();
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (UserEntity user : notVerifiedUsersList) {
+            new UserDto();
+
+            UserDto userDto = modelMapper.map(user, UserDto.class);
+            returnList.add(userDto);
+        }
+
+        return returnList;
+    }
 
 
 }

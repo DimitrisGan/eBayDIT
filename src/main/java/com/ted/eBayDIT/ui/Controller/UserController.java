@@ -54,22 +54,7 @@ public class UserController {
         return returnUser;
     }
 
-    @GetMapping(path ="users") //todo it should go to adminController not here
-    public List<UserRest> getUsers(){
 
-        List<UserRest> returnUsersList =new ArrayList<>();
-
-        List<UserDto> usersList = userService.getUsers() ;
-
-        for (UserDto userDto : usersList) {
-            UserRest userModel  = new UserRest();
-            BeanUtils.copyProperties(userDto,userModel);
-            returnUsersList.add(userModel);
-        }
-
-
-        return returnUsersList;
-    }
 
 
 

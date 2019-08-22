@@ -23,7 +23,7 @@ public class UserDto implements Serializable {
     private String address;
     private String afm;
 
-    private boolean isVerified;
+    private boolean verified;
 
     private String userRole;
 
@@ -136,10 +136,10 @@ public class UserDto implements Serializable {
 
 
     public boolean isVerified() {
-        return isVerified;
+        return verified;
     }
 
     public void setVerified(boolean verified) {
-        isVerified = verified;
+        this.verified = verified;
     }
 }
