@@ -73,11 +73,18 @@ public class UserController {
 
         /*UserDto createdUser =*/ userService.createUser(userDto);
 
+/* //todo SOOOOOOOOOOOOOOOOOOOOOOS NA MPOUN AYTA!!!!!!!!
+
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginUser.getUsername(),
+                        loginUser.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+*/
+
 //        BeanUtils.copyProperties(createdUser,returnValue);
-
-
-
-
 
 //        if (!Validator.validateEmail(input.getEmail())) {
 //            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
