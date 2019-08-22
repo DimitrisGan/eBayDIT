@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,7 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -84,21 +85,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
 
 
-                .antMatchers(SecurityConstants.SIGN_UP_URL)
-                .permitAll()
+                .antMatchers(SecurityConstants.SIGN_UP_URL).permitAll()
 
-                .antMatchers("/api/login").permitAll()
+                .antMatchers("/login").permitAll()
 
-                .antMatchers(HttpMethod.POST ,"/exists/**")
-//                .antMatchers(HttpMethod.GET , SecurityConstants.SIGN_UP_URL)
-                .permitAll()
+                .antMatchers(HttpMethod.POST ,"/exists/**").permitAll()
 
-                .antMatchers("/index").permitAll()
                 .antMatchers("/profile").authenticated()
 
-
-                .antMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/admin/**").hasAuthority("ADMIN") //.hasRole("ADMIN")
+                .anyRequest().hasAuthority("USER")
                 .and()
 //                .addFilter(new AuthenticationFilter(authenticationManager())); //no more neede because we want our custom login form url
                 .addFilter(getAuthenticationFilter())
