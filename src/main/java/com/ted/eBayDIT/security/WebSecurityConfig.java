@@ -93,8 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/profile").authenticated()
 
-                .antMatchers("/admin/**").hasAuthority("ADMIN") //.hasRole("ADMIN")
-                .anyRequest().hasAuthority("USER")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .anyRequest().hasAnyAuthority("USER","ADMIN")
                 .and()
 //                .addFilter(new AuthenticationFilter(authenticationManager())); //no more neede because we want our custom login form url
                 .addFilter(getAuthenticationFilter())

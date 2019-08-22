@@ -41,17 +41,21 @@ public class UserController {
     SecurityService securityService;
 
     @GetMapping(path ="users/{id}")
-    public UserRest getUser(@PathVariable String id){
+    public ResponseEntity<Object> getUser(@PathVariable String id){
 
-        UserRest returnUser =new UserRest();
+        String currUserId = securityService.getCurrentUser().getUserId();
+        if (!(currUserId.equals(id))){
+            return   new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         UserDto userDto = userService.getUserByUserId(id) ;
 
 //        BeanUtils.copyProperties(userDto,returnUser);
         ModelMapper modelMapper = new ModelMapper();
-        returnUser = modelMapper.map(userDto, UserRest.class);
+        UserRest returnUser = modelMapper.map(userDto, UserRest.class);
 
-        return returnUser;
+        return   new ResponseEntity<>(returnUser, HttpStatus.OK);
+
     }
 
 
