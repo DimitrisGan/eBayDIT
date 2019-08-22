@@ -2,7 +2,6 @@ package com.ted.eBayDIT.entity;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.util.List;
 //Source: https://www.baeldung.com/jpa-one-to-one

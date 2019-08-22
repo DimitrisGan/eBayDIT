@@ -2,7 +2,6 @@ package com.ted.eBayDIT.entity;
 
 
 
-import lombok.Data;
 
 import javax.persistence.*;
 
