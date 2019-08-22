@@ -34,7 +34,7 @@ public class AdminController {
     UserService userService;
 
     @GetMapping("/userlist")
-    public ResponseEntity<Object> userList() {
+    public ResponseEntity<Object> getNotVerifiedUsersList() {
 
         List<UserRest> returnUsersList = new ArrayList<>();
 
