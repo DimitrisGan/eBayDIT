@@ -10,10 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,11 +31,14 @@ public class AdminController {
     UserService userService;
 
     @GetMapping("/userlist")
-    public ResponseEntity<Object> getNotVerifiedUsersList() {
+    public ResponseEntity<Object> getNotVerifiedUsersList(@RequestParam(value = "page",defaultValue = "0") int page,
+                                                          @RequestParam(value = "limit",defaultValue = "2") int limit,
+                                                          @RequestParam(value = "orderBy",defaultValue = "username") int sortBy) {
 
         List<UserRest> returnUsersList = new ArrayList<>();
 
         List<UserDto> allNotVerifiedUsersList = userService.getNotVerifiedUsers();
+
 
 
         ModelMapper modelMapper = new ModelMapper();
@@ -56,14 +56,18 @@ public class AdminController {
     }
 
     @GetMapping(path ="/allUsers") //todo it should go to adminController not here
-    public ResponseEntity<Object> getUsers(){
+    public ResponseEntity<Object> getUsers(@RequestParam(value = "page",defaultValue = "1") int pageNo,
+                                           @RequestParam(value = "limit",defaultValue = "2") int pageSize,
+                                           @RequestParam(value = "orderBy",defaultValue = "username") String sortBy) {
+
+
+        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy);
 
         List<UserRest> returnUsersList =new ArrayList<>();
 
-        List<UserDto> usersList = userService.getUsers() ;
 
         ModelMapper modelMapper = new ModelMapper();
-        for (UserDto userDto : usersList) {
+        for (UserDto userDto : list) {
 
             UserRest returnUser = modelMapper.map(userDto, UserRest.class);
             returnUsersList.add(returnUser);
@@ -71,6 +75,7 @@ public class AdminController {
 
 
         return new ResponseEntity<>(returnUsersList, HttpStatus.OK);
+
     }
 
 //        UserListOutputModel output = new UserListOutputModel();

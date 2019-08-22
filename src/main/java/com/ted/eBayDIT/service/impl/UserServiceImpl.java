@@ -9,8 +9,11 @@ import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +23,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -223,6 +229,28 @@ public class UserServiceImpl implements UserService {
         return returnUsersList;
     }
 
+    @Override
+    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy) {
+
+        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
+
+        List<UserDto> returnValue = new ArrayList<>();
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<UserEntity> pagedResult = userRepo.findAll(paging);
+
+        List<UserEntity> users = pagedResult.getContent();
+
+        for (UserEntity userEntity: users){
+            ModelMapper modelMapper = new ModelMapper();
+            UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+            returnValue.add(userDto);
+        }
+
+        return returnValue;
+
+    }
 
 
     @Override
