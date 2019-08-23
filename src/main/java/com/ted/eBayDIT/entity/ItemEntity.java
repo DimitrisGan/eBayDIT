@@ -154,7 +154,7 @@ public class ItemEntity {
 
     @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private LocationEntity location;
+    private ItemLocationEntity location;
 
 
     public Long getItemID() {
@@ -261,11 +261,11 @@ public class ItemEntity {
         this.seller = seller;
     }
 
-    public LocationEntity getLocation() {
+    public ItemLocationEntity getLocation() {
         return location;
     }
 
-    public void setLocation(LocationEntity location) {
+    public void setLocation(ItemLocationEntity location) {
         this.location = location;
     }
 }

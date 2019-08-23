@@ -130,7 +130,7 @@ public class UserController {
     @PutMapping(path ="users/change_password")
     public ResponseEntity<Object> updateUsersPassword(@RequestBody UserChangePasswordRequest userPassRequestModel){
 
-        UserDto currentUser = securityService.getCurrentUser(); //todo check if working
+        UserDto currentUser = securityService.getCurrentUser();
 
         if (! this.userService.isPasswordEqual(currentUser.getUserId() , userPassRequestModel.getCurrPassword()) ) //if passwords are not equal return forbidden status code
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -146,7 +146,7 @@ public class UserController {
     @PutMapping(path ="users/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
 
-        UserDto currentUser = securityService.getCurrentUser(); //todo check if working
+        UserDto currentUser = securityService.getCurrentUser();
 
         if (! currentUser.getUserId().equals(id)){
             String msg = "Not authorized to do that";

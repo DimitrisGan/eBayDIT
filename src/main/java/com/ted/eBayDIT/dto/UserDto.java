@@ -3,8 +3,16 @@ package com.ted.eBayDIT.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserDto implements Serializable {
+/*
+DTO is a pattern and it is implementation (POJO/POCO) independent.
+DTO says, since each call to any remote interface is expensive, response to each call should bring as much data as possible.
+So, if multiple requests are required to bring data for a particular task, data to be brought can be combined in a DTO so that only one request can bring all the required data.
+Catalog of Patterns of Enterprise Application Architecture has more details.
+DTO's are a fundamental concept, not outdated
+Source: https://softwareengineering.stackexchange.com/questions/171457/what-is-the-point-of-using-dto-data-transfer-objects
+*/
 
+public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 4L;
 

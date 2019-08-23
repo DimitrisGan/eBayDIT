@@ -9,4 +9,13 @@ import org.springframework.stereotype.Service;
 public class ItemServiceImpl implements ItemService {
 
 
+    @Override
+    public int addItem() {
+        return 0;
+    }
+
+    @Override
+    public int updateItemInfo() {
+        return 0;
+    }
 }

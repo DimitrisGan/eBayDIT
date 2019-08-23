@@ -13,7 +13,7 @@ import javax.persistence.*;
 //@Data
 @Entity
 @Table(name="location")
-public class LocationEntity {
+public class ItemLocationEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
