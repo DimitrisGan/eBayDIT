@@ -28,4 +28,5 @@ public interface UserService extends UserDetailsService {
 
     UserDto verifyUser(String userId);
     void verifyAll();
+    int usersNumber();
 }

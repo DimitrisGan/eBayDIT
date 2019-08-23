@@ -206,6 +206,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public int usersNumber() {
+        return this.userRepo.findAll().size();
+    }
+
 
     @Override
     public UserDto getUser(String username) {

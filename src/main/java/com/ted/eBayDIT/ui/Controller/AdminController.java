@@ -71,8 +71,8 @@ public class AdminController {
         AdminRest adminRest= new AdminRest();
         adminRest.setUsers(returnUsersList);
         adminRest.setTotalPages(list.get(0).getTotalPages());
-        adminRest.setTotalUsers(list.size());
-
+        adminRest.setTotalUsers(this.userService.usersNumber());
+        
         return new ResponseEntity<>(adminRest, HttpStatus.OK);
 
     }
