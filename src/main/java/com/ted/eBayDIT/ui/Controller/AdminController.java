@@ -51,7 +51,7 @@ public class AdminController {
     }
 
     @GetMapping(path ="/users") //ex : /allUsers
-    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                            @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
                                            @RequestParam(value = "order",defaultValue = "asc") String orderType) { //asc or desc
@@ -72,7 +72,7 @@ public class AdminController {
         adminRest.setUsers(returnUsersList);
         adminRest.setTotalPages(list.get(0).getTotalPages());
         adminRest.setTotalUsers(this.userService.usersNumber());
-        
+
         return new ResponseEntity<>(adminRest, HttpStatus.OK);
 
     }

@@ -315,7 +315,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortType) {
 
-        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
+//        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
 
         List<UserDto> returnValue = new ArrayList<>();
         Pageable paging;
