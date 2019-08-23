@@ -54,7 +54,7 @@ public class AdminController {
     public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
                                            @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
-                                           @RequestParam(value = "orderType",defaultValue = "asc") String orderType) { //asc or desc
+                                           @RequestParam(value = "order",defaultValue = "asc") String orderType) { //asc or desc
 
 
         List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy, orderType);
