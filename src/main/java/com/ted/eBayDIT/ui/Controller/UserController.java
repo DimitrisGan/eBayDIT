@@ -126,6 +126,10 @@ public class UserController {
     }
 
 
+//    @PutMapping(path ="users/change_password")
+
+
+
     @PutMapping(path ="users/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
 
@@ -135,6 +139,8 @@ public class UserController {
             String msg = "Not authorized to do that";
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
         }
+
+
 //        UserRest returnValue =new UserRest();
 
         ModelMapper modelMapper = new ModelMapper();

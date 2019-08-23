@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
             admin1.setVerified(true);
             admin1.setUserId("admin1");
 
+            admin1.setCountry("Greece");
+            admin1.setPhoneNumber("6967510111");
+            admin1.setAddress("DI");
+
+
             saveAdmin(admin1);
 
         }
@@ -78,6 +83,11 @@ public class UserServiceImpl implements UserService {
             admin2.setLastName("Lamprou");
             admin2.setVerified(true);
             admin2.setUserId("admin2");
+
+            admin2.setCountry("Greece");
+            admin2.setPhoneNumber("6967510112");
+            admin2.setAddress("DI");
+
 
             saveAdmin(admin2);
 
