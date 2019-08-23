@@ -53,7 +53,7 @@ public class AdminController {
 
     @GetMapping(path ="/users") //ex : /allUsers
     public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
-                                           @RequestParam(value = "pageSize",defaultValue = "2") int pageSize,
+                                           @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy) {
 
 
