@@ -5,6 +5,7 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.exception.UserServiceException;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
+import com.ted.eBayDIT.ui.model.request.UserChangePasswordRequest;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
 import com.ted.eBayDIT.ui.model.response.*;
@@ -27,7 +28,7 @@ import java.util.List;
 // opote evala auto, an thes allakse to apla tsekare pws na to vgaloume
 // alla na min exoume tripes sto security
 //@CrossOrigin
-   //http://localhost:8080/register [previous /users]
+//http://localhost:8080/register [previous /users]
 
 
 @RestController
@@ -126,7 +127,19 @@ public class UserController {
     }
 
 
-//    @PutMapping(path ="users/change_password")
+    @PutMapping(path ="users/change_password")
+    public ResponseEntity<Object> updateUsersPassword(@RequestBody UserChangePasswordRequest userPassRequestModel){
+
+        UserDto currentUser = securityService.getCurrentUser(); //todo check if working
+
+        if (! this.userService.isPasswordEqual(currentUser.getUserId() , userPassRequestModel.getCurrPassword()) ) //if passwords are not equal return forbidden status code
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        UserDto updatedUser =  this.userService.updatePassword(currentUser.getUserId() , userPassRequestModel.getNewPassword());
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
 
 
 

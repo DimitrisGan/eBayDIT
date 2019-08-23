@@ -166,7 +166,6 @@ public class UserServiceImpl implements UserService {
         if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
         if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
         if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }
-        if (user2update.getPassword()       != null)    {userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user2update.getPassword())); }
 
 
 
@@ -219,6 +218,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public int usersNumber() {
         return this.userRepo.findAll().size();
+    }
+
+    @Override
+    public UserDto updatePassword(String userId, String newPassword) {
+        UserDto returnValue =new UserDto();
+
+        UserEntity userEntity = userRepo.findByUserId(userId);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(userId);
+        }
+
+        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(newPassword));
+
+        UserEntity updatedUserDetails = userRepo.save(userEntity);
+
+        //        BeanUtils.copyProperties(updatedUserDetails,returnValue);
+        ModelMapper modelMapper = new ModelMapper();
+        returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
+
+        return returnValue;
+
+    }
+
+    @Override
+    public boolean isPasswordEqual(String userId, String pass) {
+        UserEntity userEntity = userRepo.findByUserId(userId);
+
+        return bCryptPasswordEncoder.matches(pass, userEntity.getEncryptedPassword());
     }
 
 

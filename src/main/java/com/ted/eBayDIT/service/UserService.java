@@ -29,4 +29,6 @@ public interface UserService extends UserDetailsService {
     UserDto verifyUser(String userId);
     void verifyAll();
     int usersNumber();
+    UserDto updatePassword(String userId, String newPassword);
+    boolean isPasswordEqual(String userId, String pass);
 }
