@@ -148,10 +148,18 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(userId);
         }
 
-        //todo more fields should be available for update
         if (user2update.getEmail()      != null)    {userEntity.setEmail(user2update.getEmail()); }
         if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
         if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
+
+        if (user2update.getAddress()        != null)    {userEntity.setAddress(user2update.getAddress()); }
+        if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
+        if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
+        if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }
+        if (user2update.getPassword()       != null)    {userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user2update.getPassword())); }
+
+
+
 
 
         UserEntity updatedUserDetails = userRepo.save(userEntity);
