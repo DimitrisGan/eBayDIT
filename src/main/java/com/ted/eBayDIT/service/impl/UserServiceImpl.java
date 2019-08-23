@@ -300,13 +300,18 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy) {
+    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortType) {
 
         if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
 
         List<UserDto> returnValue = new ArrayList<>();
+        Pageable paging;
 
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        if (sortType.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
 
         Page<UserEntity> pagedResult = userRepo.findAll(paging);
         int totalPages = pagedResult.getTotalPages();

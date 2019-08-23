@@ -3,7 +3,6 @@ package com.ted.eBayDIT.ui.Controller;
 
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.service.UserService;
-import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.response.AdminRest;
 import com.ted.eBayDIT.ui.model.response.UserRest;
 import org.modelmapper.ModelMapper;
@@ -54,10 +53,11 @@ public class AdminController {
     @GetMapping(path ="/users") //ex : /allUsers
     public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
                                            @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
-                                           @RequestParam(value = "orderBy",defaultValue = "username") String sortBy) {
+                                           @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
+                                           @RequestParam(value = "orderType",defaultValue = "asc") String orderType) { //asc or desc
 
 
-        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy);
+        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy, orderType);
 
         List<UserRest> returnUsersList =new ArrayList<>();
 
