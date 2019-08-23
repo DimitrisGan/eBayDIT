@@ -309,12 +309,14 @@ public class UserServiceImpl implements UserService {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<UserEntity> pagedResult = userRepo.findAll(paging);
+        int totalPages = pagedResult.getTotalPages();
 
         List<UserEntity> users = pagedResult.getContent();
 
         for (UserEntity userEntity: users){
             ModelMapper modelMapper = new ModelMapper();
             UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+            userDto.setTotalPages(totalPages);
             returnValue.add(userDto);
         }
 

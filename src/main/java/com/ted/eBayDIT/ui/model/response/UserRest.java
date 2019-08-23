@@ -110,4 +110,6 @@ public class UserRest {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+
+
 }

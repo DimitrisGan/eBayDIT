@@ -27,6 +27,8 @@ public class UserDto implements Serializable {
 
     private String userRole;
 
+    private int totalPages;
+
 
     public String getUserRole() {
         return userRole;
@@ -141,5 +143,13 @@ public class UserDto implements Serializable {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 }

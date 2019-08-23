@@ -4,6 +4,7 @@ package com.ted.eBayDIT.ui.Controller;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
+import com.ted.eBayDIT.ui.model.response.AdminRest;
 import com.ted.eBayDIT.ui.model.response.UserRest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,11 @@ public class AdminController {
             returnUsersList.add(returnUser);
         }
 
-        return new ResponseEntity<>(returnUsersList, HttpStatus.OK);
+        AdminRest adminRest= new AdminRest();
+        adminRest.setUsers(returnUsersList);
+        adminRest.setTotalPages(list.get(0).getTotalPages());
+
+        return new ResponseEntity<>(adminRest, HttpStatus.OK);
 
     }
 
