@@ -51,8 +51,8 @@ public class AdminController {
     }
 
     @GetMapping(path ="/users") //ex : /allUsers
-    public ResponseEntity<Object> getUsers(@RequestParam(value = "page",defaultValue = "1") int pageNo,
-                                           @RequestParam(value = "limit",defaultValue = "2") int pageSize,
+    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "1") int pageNo,
+                                           @RequestParam(value = "pageSize",defaultValue = "2") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy) {
 
 
@@ -83,7 +83,7 @@ public class AdminController {
 
 
 //    @PutMapping(path ="/verifyPartial") //verify some users!
-//    public ResponseEntity<Object> verifyPartialUsers(List<UserDetailsRequestModel> userDetailsReq) {
+//    public ResponseEntity<Object> verifyPartialUsers(List<UserDetailsRequestModel> userDetailsReq) { //I will take ids? or
 //
 //        for (UserDetailsRequestModel userDetailsRequestModel : userDetailsReq) {
 //            user.
@@ -105,7 +105,7 @@ public class AdminController {
         UserRest returnValue = modelMapper.map(userDto, UserRest.class);
 
 
-        return new ResponseEntity<>(returnValue, HttpStatus.OK);
+        return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
 
