@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ItemRepository  extends JpaRepository<ItemEntity, Long> {
 
 
-//    ItemEntity findAllBy
-
+    ItemEntity findByItemID(Long id);
 }
+

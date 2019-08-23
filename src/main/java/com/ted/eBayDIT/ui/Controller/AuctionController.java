@@ -1,11 +1,13 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
+import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
-import com.ted.eBayDIT.ui.model.request.createAuctionRequestModel;
+import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +30,15 @@ public class AuctionController {
 
 
     @PostMapping(/*path ="/create"*/)
-    public ResponseEntity<Object> createAuction(@RequestBody createAuctionRequestModel createAuctionRequestModel){
+    public ResponseEntity<Object> createAuction(@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
 
         UserDto currentUser = securityService.getCurrentUser();
 
-//        this.itemService
+        ModelMapper modelMapper = new ModelMapper();
+        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class); //todo first step here
 
+
+        this.itemService.addNewItem(itemDto); //create item-auction
 
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -41,7 +46,7 @@ public class AuctionController {
 
 
     @PutMapping(path ="/{id}") //add new bid for example
-    public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody createAuctionRequestModel createAuctionRequestModel){
+    public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
 
         //todo findAuctionById(auctionID)
 
@@ -51,7 +56,7 @@ public class AuctionController {
 
 
     @GetMapping(path ="/{id}") //add new bid for example
-    public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody createAuctionRequestModel createAuctionRequestModel){
+    public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
 
         //todo findAuctionById(auctionID)
 

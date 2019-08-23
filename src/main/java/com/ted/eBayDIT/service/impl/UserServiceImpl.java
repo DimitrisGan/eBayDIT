@@ -31,16 +31,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    UserRepository userRepo;
+    private UserRepository userRepo;
 
     @Autowired
     private RoleRepository roleRepo;
 
     @Autowired
-    Utils utils;
+    private Utils utils;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 
 
