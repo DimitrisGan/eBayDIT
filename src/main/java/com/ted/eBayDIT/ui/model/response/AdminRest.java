@@ -6,6 +6,7 @@ public class AdminRest {
 
     private List<UserRest> users;
     private int totalPages;
+    private int totalUsers;
 
     public List<UserRest> getUsers() {
         return users;
@@ -21,5 +22,13 @@ public class AdminRest {
 
     public void setTotalPages(int totalPages) {
         this.totalPages = totalPages;
+    }
+
+    public int getTotalUsers() {
+        return totalUsers;
+    }
+
+    public void setTotalUsers(int totalUsers) {
+        this.totalUsers = totalUsers;
     }
 }

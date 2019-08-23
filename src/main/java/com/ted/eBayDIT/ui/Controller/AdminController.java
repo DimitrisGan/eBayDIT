@@ -28,7 +28,7 @@ public class AdminController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/notVerifiedUsers") //ex : /userlist
+    @GetMapping("/not_verified_users") //ex : /userlist
     public ResponseEntity<Object> getNotVerifiedUsersList(/*@RequestParam(value = "page",defaultValue = "0") int page,
                                                           @RequestParam(value = "limit",defaultValue = "2") int limit,
                                                           @RequestParam(value = "orderBy",defaultValue = "username") int sortBy*/) {
@@ -71,6 +71,7 @@ public class AdminController {
         AdminRest adminRest= new AdminRest();
         adminRest.setUsers(returnUsersList);
         adminRest.setTotalPages(list.get(0).getTotalPages());
+        adminRest.setTotalUsers(list.size());
 
         return new ResponseEntity<>(adminRest, HttpStatus.OK);
 
