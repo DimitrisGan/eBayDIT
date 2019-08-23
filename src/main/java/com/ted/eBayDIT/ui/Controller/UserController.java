@@ -144,9 +144,6 @@ public class UserController {
 
 //        BeanUtils.copyProperties(updatedUser,returnValue);
 
-
-
-
         return new ResponseEntity<>(/*returnValue, */HttpStatus.OK);
     }
 

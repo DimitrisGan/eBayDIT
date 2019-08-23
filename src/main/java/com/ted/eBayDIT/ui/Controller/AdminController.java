@@ -2,17 +2,15 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.UserDto;
-import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.service.UserService;
+import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.response.UserRest;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +28,14 @@ public class AdminController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/userlist")
-    public ResponseEntity<Object> getNotVerifiedUsersList(@RequestParam(value = "page",defaultValue = "0") int page,
+    @GetMapping("/notVerifiedUsers") //ex : /userlist
+    public ResponseEntity<Object> getNotVerifiedUsersList(/*@RequestParam(value = "page",defaultValue = "0") int page,
                                                           @RequestParam(value = "limit",defaultValue = "2") int limit,
-                                                          @RequestParam(value = "orderBy",defaultValue = "username") int sortBy) {
+                                                          @RequestParam(value = "orderBy",defaultValue = "username") int sortBy*/) {
 
         List<UserRest> returnUsersList = new ArrayList<>();
 
-        List<UserDto> allNotVerifiedUsersList = userService.getNotVerifiedUsers();
-
+        List<UserDto> allNotVerifiedUsersList = userService.getAllNotVerifiedUsers();
 
 
         ModelMapper modelMapper = new ModelMapper();
@@ -49,13 +46,11 @@ public class AdminController {
             returnUsersList.add(returnUser);
         }
 
-
-//        return returnUsersList;
         return new ResponseEntity<>(returnUsersList, HttpStatus.OK);
 
     }
 
-    @GetMapping(path ="/allUsers") //todo it should go to adminController not here
+    @GetMapping(path ="/users") //ex : /allUsers
     public ResponseEntity<Object> getUsers(@RequestParam(value = "page",defaultValue = "1") int pageNo,
                                            @RequestParam(value = "limit",defaultValue = "2") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy) {
@@ -65,7 +60,6 @@ public class AdminController {
 
         List<UserRest> returnUsersList =new ArrayList<>();
 
-
         ModelMapper modelMapper = new ModelMapper();
         for (UserDto userDto : list) {
 
@@ -73,44 +67,48 @@ public class AdminController {
             returnUsersList.add(returnUser);
         }
 
-
         return new ResponseEntity<>(returnUsersList, HttpStatus.OK);
 
     }
 
-//        UserListOutputModel output = new UserListOutputModel();
-//        for (UserEntity u : allUsers) {
-//            try {
-//                output.addUser(userEntityService.getUserOutputModelFromUser(u));
-//            } catch (IOException e) {
-//                return new ResponseEntity<>("Could not load images", HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
+    //verify all the users
+    @PutMapping(path ="/verify") //verify all users!
+    public ResponseEntity<Object> verifyAllUsers() {
+
+        userService.verifyAll();
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+
+//    @PutMapping(path ="/verifyPartial") //verify some users!
+//    public ResponseEntity<Object> verifyPartialUsers(List<UserDetailsRequestModel> userDetailsReq) {
+//
+//        for (UserDetailsRequestModel userDetailsRequestModel : userDetailsReq) {
+//            user.
 //        }
-
-
-
-
-//    @GetMapping("/dashboard")
-//    public ResponseEntity<Object> dashboard(){
+//        userService.verifyAll();
 //
+//        return new ResponseEntity<>(HttpStatus.CREATED);
 //
-////        return new ResponseEntity<>(output, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/userDetails")
-//    public ResponseEntity<Object> getUserDetails(){
-//
-//
-////        return new ResponseEntity<>(output, HttpStatus.OK);
-//    }
-//
-//
-//
-//    @PostMapping("/verify/{id}")
-//    public ResponseEntity<Object> dashboard(){
-//
-//
-////        return new ResponseEntity<>(output, HttpStatus.OK);
 //    }
 
+
+    @PutMapping(path ="/verify/{id}") //verify all
+    public ResponseEntity<Object> verifyUser(@PathVariable String id ){
+        UserDto userDto;
+
+        userDto = this.userService.verifyUser(id);
+
+        ModelMapper modelMapper = new ModelMapper();
+        UserRest returnValue = modelMapper.map(userDto, UserRest.class);
+
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
+    }
+
+
+
+    //todo exportInXML()
 }

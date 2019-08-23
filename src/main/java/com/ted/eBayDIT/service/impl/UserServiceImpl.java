@@ -9,7 +9,6 @@ import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -164,6 +163,42 @@ public class UserServiceImpl implements UserService {
         return returnValue;
     }
 
+
+    @Override
+    public UserDto verifyUser(String userId) {
+        UserDto returnValue =new UserDto();
+
+        UserEntity userEntity = userRepo.findByUserId(userId);
+
+        if (userEntity == null) { //if username was not found throw exception
+            throw new UsernameNotFoundException(userId);
+        }
+
+        userEntity.setVerified(true);
+
+        this.userRepo.save(userEntity);
+
+        ModelMapper modelMapper = new ModelMapper();
+        returnValue = modelMapper.map(userEntity, UserDto.class);
+
+        return returnValue;
+
+    }
+
+    @Override
+    public void verifyAll() {
+
+        List<UserEntity> allNotVerifiedList = this.userRepo.findByVerifiedFalse();
+
+        for (UserEntity userEntity : allNotVerifiedList) {
+            userEntity.setVerified(true);
+            this.userRepo.save(userEntity);
+
+        }
+
+    }
+
+
     @Override
     public UserDto getUser(String username) {
 
@@ -229,29 +264,6 @@ public class UserServiceImpl implements UserService {
         return returnUsersList;
     }
 
-    @Override
-    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy) {
-
-        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
-
-        List<UserDto> returnValue = new ArrayList<>();
-
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
-        Page<UserEntity> pagedResult = userRepo.findAll(paging);
-
-        List<UserEntity> users = pagedResult.getContent();
-
-        for (UserEntity userEntity: users){
-            ModelMapper modelMapper = new ModelMapper();
-            UserDto userDto = modelMapper.map(userEntity, UserDto.class);
-            returnValue.add(userDto);
-        }
-
-        return returnValue;
-
-    }
-
 
     @Override
     public UserDto getUserByUserId(String userId) {
@@ -284,9 +296,40 @@ public class UserServiceImpl implements UserService {
 
 
 
+
+
+
     @Override
-    public List<UserDto> getNotVerifiedUsers() {
+    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy) {
+
+        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
+
+        List<UserDto> returnValue = new ArrayList<>();
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<UserEntity> pagedResult = userRepo.findAll(paging);
+
+        List<UserEntity> users = pagedResult.getContent();
+
+        for (UserEntity userEntity: users){
+            ModelMapper modelMapper = new ModelMapper();
+            UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+            returnValue.add(userDto);
+        }
+
+        return returnValue;
+
+    }
+
+
+    @Override
+    public List<UserDto> getAllNotVerifiedUsers() {
+
+
         List<UserDto> returnList = new ArrayList<>();
+
+
 
         List<UserEntity> notVerifiedUsersList = new ArrayList<>();
         notVerifiedUsersList = userRepo.findByVerifiedFalse();
