@@ -8,7 +8,7 @@ public class CategoryDto implements Serializable {
 
     private  int id;
     private String name;
-    private List<ItemDto> itemDetails;
+//    private List<ItemDto> itemDetails;
 
     public int getId() {
         return id;
@@ -26,11 +26,11 @@ public class CategoryDto implements Serializable {
         this.name = name;
     }
 
-    public List<ItemDto> getItemDetails() {
-        return itemDetails;
-    }
-
-    public void setItemDetails(List<ItemDto> itemDetails) {
-        this.itemDetails = itemDetails;
-    }
+//    public List<ItemDto> getItemDetails() {
+//        return itemDetails;
+//    }
+//
+//    public void setItemDetails(List<ItemDto> itemDetails) {
+//        this.itemDetails = itemDetails;
+//    }
 }
