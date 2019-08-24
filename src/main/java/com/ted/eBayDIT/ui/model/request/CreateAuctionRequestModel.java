@@ -1,13 +1,17 @@
-package com.ted.eBayDIT.dto;
+package com.ted.eBayDIT.ui.model.request;
 
-import java.io.Serializable;
+
+import com.ted.eBayDIT.dto.CategoryDto;
+import com.ted.eBayDIT.dto.ItemLocationDto;
+import com.ted.eBayDIT.dto.SellerDto;
+
 import java.util.List;
 
-public class ItemDto implements Serializable {
+public class CreateAuctionRequestModel {
 
-    private static final long serialVersionUID = -8580425406485881385L;
+//    private Long itemID;
+//    private String currently;
 
-    private Long itemID;
     private String name;
     private String buyPrice;
     private String firstBid;
@@ -15,24 +19,11 @@ public class ItemDto implements Serializable {
     private String started;
     private String ends;
     private String description;
+
     private List<CategoryDto> categories;
     private SellerDto seller;
     private ItemLocationDto location;
 
-
-    private Integer numberOfBids;
-    private String currently;
-
-    private List<BidDto> bids ;
-
-
-    public Long getItemID() {
-        return itemID;
-    }
-
-    public void setItemID(Long itemID) {
-        this.itemID = itemID;
-    }
 
     public String getName() {
         return name;
@@ -40,14 +31,6 @@ public class ItemDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCurrently() {
-        return currently;
-    }
-
-    public void setCurrently(String currently) {
-        this.currently = currently;
     }
 
     public String getBuyPrice() {
@@ -64,14 +47,6 @@ public class ItemDto implements Serializable {
 
     public void setFirstBid(String firstBid) {
         this.firstBid = firstBid;
-    }
-
-    public Integer getNumberOfBids() {
-        return numberOfBids;
-    }
-
-    public void setNumberOfBids(Integer numberOfBids) {
-        this.numberOfBids = numberOfBids;
     }
 
     public String getCountry() {
@@ -106,22 +81,6 @@ public class ItemDto implements Serializable {
         this.description = description;
     }
 
-    public ItemLocationDto getLocation() {
-        return location;
-    }
-
-    public void setLocation(ItemLocationDto location) {
-        this.location = location;
-    }
-
-    public List<BidDto> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<BidDto> bids) {
-        this.bids = bids;
-    }
-
     public List<CategoryDto> getCategories() {
         return categories;
     }
@@ -136,5 +95,13 @@ public class ItemDto implements Serializable {
 
     public void setSeller(SellerDto seller) {
         this.seller = seller;
+    }
+
+    public ItemLocationDto getLocation() {
+        return location;
+    }
+
+    public void setLocation(ItemLocationDto location) {
+        this.location = location;
     }
 }

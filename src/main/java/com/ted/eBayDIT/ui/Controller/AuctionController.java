@@ -6,7 +6,9 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
+import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
+import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,23 +32,24 @@ public class AuctionController {
 
 
     @PostMapping(/*path ="/create"*/)
-    public ResponseEntity<Object> createAuction(@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
+    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel){
 
         UserDto currentUser = securityService.getCurrentUser();
 
         ModelMapper modelMapper = new ModelMapper();
-        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class); //todo first step here
+        ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class); //todo first step here
 
 
         this.itemService.addNewItem(itemDto); //create item-auction
 
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
 
     @PutMapping(path ="/{id}") //add new bid for example
-    public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
+    public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody AddBidAuctionRequestModel newBid){
 
         //todo findAuctionById(auctionID)
 
