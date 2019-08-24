@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping
 public class CategoriesController { //todo needs testing
 
 
     @Autowired
     CategoryRepository categRepo;
 
-    @GetMapping(path ="/{id}") //add new bid for example
+    @GetMapping("/categories")
     public ResponseEntity<Object> getAllCategories(){
 
         List<CategoriesResponse> returnCategList =new ArrayList<>();
