@@ -1,6 +1,6 @@
 package com.ted.eBayDIT.ui.model.request;
 
-public class UserChangePasswordRequest {
+public class UserChangePasswordRequestModel {
 
     private String currPassword;
     private String newPassword;

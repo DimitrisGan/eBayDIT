@@ -2,24 +2,19 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.UserDto;
-import com.ted.eBayDIT.exception.UserServiceException;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
-import com.ted.eBayDIT.ui.model.request.UserChangePasswordRequest;
+import com.ted.eBayDIT.ui.model.request.UserChangePasswordRequestModel;
 import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
 import com.ted.eBayDIT.ui.model.response.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 // mou vgazei same origin provlima
 // Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:8080/api/register.
@@ -128,7 +123,7 @@ public class UserController {
 
 
     @PutMapping(path ="users/change_password")
-    public ResponseEntity<Object> updateUsersPassword(@RequestBody UserChangePasswordRequest userPassRequestModel){
+    public ResponseEntity<Object> updateUsersPassword(@RequestBody UserChangePasswordRequestModel userPassRequestModel){
 
         UserDto currentUser = securityService.getCurrentUser();
 
