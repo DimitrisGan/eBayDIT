@@ -14,7 +14,7 @@ public class CategoryEntity {
     @Column(name="id")
     private  int id;
 
-    @Column(name="name" ,nullable=false )
+    @Column(name="name" ,nullable=false,unique = true)
     private String name;
 
 

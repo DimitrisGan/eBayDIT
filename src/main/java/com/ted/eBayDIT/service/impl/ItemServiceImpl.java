@@ -2,7 +2,9 @@ package com.ted.eBayDIT.service.impl;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.entity.CategoryEntity;
 import com.ted.eBayDIT.entity.ItemEntity;
+import com.ted.eBayDIT.repository.CategoryRepository;
 import com.ted.eBayDIT.repository.ItemRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.ItemService;
@@ -10,6 +12,8 @@ import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -24,6 +28,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private Utils utils;
 
+    @Autowired
+    private CategoryRepository categRepo;
+
+
 
     private static long newItemID=0;
 
@@ -35,6 +43,17 @@ public class ItemServiceImpl implements ItemService {
     private boolean itemIdExists(Long itemID){
         ItemEntity itemCheck = this.itemRepo.findByItemID(itemID);
         return itemCheck != null;
+    }
+
+
+    private boolean categoriesExist(List<CategoryEntity> categories){
+
+        for (CategoryEntity category : categories) {
+            CategoryEntity categ = categRepo.findByName(category.getName());
+            if (categ == null)
+                return false;
+        }
+        return true;
     }
 
 
@@ -61,8 +80,10 @@ public class ItemServiceImpl implements ItemService {
             newItemID++; //utils.generateItemID();
         }while(itemIdExists(newItemID));
 
-        //check if item already exists in db and throw exceptions
+        //check if itemID already exists in db and throw exceptions
         if (itemExists(item)) throw new RuntimeException("item Record already exists");
+
+        if (! categoriesExist(itemEntity2save.getCategories())) throw new RuntimeException("Categories Record dont exist");
 
         //todo edw prepei na prosthesw ola ta epipleon pedia pou thelw gia to new auction
 

@@ -2,15 +2,17 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 //@Data
 
 @Entity
 @Table(name="user")
-public class UserEntity {
+public class UserEntity implements Serializable {
 
-
+    private static final long serialVersionUID = -7915207677438866300L;
     // define fields
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private  int id;
@@ -18,7 +20,6 @@ public class UserEntity {
     @Column(name="public_id"/*,nullable = false*/,unique = true)
     private String userId;
 
-    @Id
     @Column(name="username" ,nullable=false ,unique = true)
     private String username;
 
@@ -62,7 +63,7 @@ public class UserEntity {
     @OneToOne(mappedBy = "user")
     private BidderDetailsEntity bidder;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private SellerDetailsEntity seller;
 
 
