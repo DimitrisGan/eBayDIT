@@ -17,6 +17,10 @@ public class Utils {
         return generateRandomString(length);
     }
 
+//    public long generateItemId(Long length) {
+//        return generateRandomString(length);
+//    }
+
 //    public String generateAddressId(int length) {
 //        return generateRandomString(length);
 //    }

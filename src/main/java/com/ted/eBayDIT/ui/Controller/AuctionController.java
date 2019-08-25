@@ -3,6 +3,7 @@ package com.ted.eBayDIT.ui.Controller;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.entity.ItemEntity;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
@@ -16,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auctions")
+@RequestMapping(/*"/auctions"*/)
 public class AuctionController {
 
 
@@ -31,7 +32,7 @@ public class AuctionController {
     ItemService itemService;
 
 
-    @PostMapping(/*path ="/create"*/)
+    @PostMapping(path ="/auctions")
     public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel){
 
         UserDto currentUser = securityService.getCurrentUser();
@@ -48,7 +49,7 @@ public class AuctionController {
     }
 
 
-    @PutMapping(path ="/{id}") //add new bid for example
+    @PutMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody AddBidAuctionRequestModel newBid){
 
         //todo findAuctionById(auctionID)
@@ -58,7 +59,7 @@ public class AuctionController {
     }
 
 
-    @GetMapping(path ="/{id}") //add new bid for example
+    @GetMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
 
         //todo findAuctionById(auctionID)

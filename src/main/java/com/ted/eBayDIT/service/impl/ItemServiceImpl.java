@@ -25,25 +25,78 @@ public class ItemServiceImpl implements ItemService {
     private Utils utils;
 
 
+    private static long newItemID=0;
 
     private boolean itemExists(ItemDto item){
         ItemEntity itemCheck = this.itemRepo.findByItemID(item.getItemID());
         return itemCheck != null;
     }
 
+    private boolean itemIdExists(Long itemID){
+        ItemEntity itemCheck = this.itemRepo.findByItemID(itemID);
+        return itemCheck != null;
+    }
+
+
+    private void saveAuction(ItemEntity item) {
+//        user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getEncryptedPassword()));
+//        user.setRole(roleRepo.findByUserRole(RoleName.ADMIN.name()));
+//        //todo put exception if user is null
+        item.setItemID(newItemID);
+        item.setNumberOfBids(0);
+        item.setCurrently("None");
+        this.itemRepo.save(item);
+    }
+
+
+
     @Override
     public int addNewItem(ItemDto item) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
+
+
+        do { //generate a unique primary key for item
+            newItemID++; //utils.generateItemID();
+        }while(itemIdExists(newItemID));
 
         //check if item already exists in db and throw exceptions
         if (itemExists(item)) throw new RuntimeException("item Record already exists");
 
+        //todo edw prepei na prosthesw ola ta epipleon pedia pou thelw gia to new auction
+
+        itemEntity2save.setItemID(newItemID);
+        itemEntity2save.setNumberOfBids(0);
+        itemEntity2save.setCurrently("None");
+//        itemEntity2save.set
+
+        ItemEntity storedUserDetails =itemRepo.save(itemEntity2save);
+        //todo isws convert se Dto kai epistrofh sto postman
+
+
+        //todo add seller if not exist to table
+        //private SellerDto seller;
+
+
+
+//        private String name;
+//        private String buyPrice;
+//        private String firstBid;
+//        private String country;
+//        private String started;
+//        private String ends;
+//        private String description;
+//
+//        private List<CategoryDto> categories;
+//        private SellerDto seller;
+//        private ItemLocationDto location;
+
+
         //we have to store/save this info to itemEntity
-        ItemEntity itemEntity2save = new ItemEntity();
-        ModelMapper modelMapper = new ModelMapper();
-        itemEntity2save = modelMapper.map(item, ItemEntity.class);
 
 
-//        itemEntity2save.setItemID(utils.generateUserId());
+
 
 //
 //        String publicUserId =utils.generateUserId(30);
