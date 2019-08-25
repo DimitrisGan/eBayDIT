@@ -3,14 +3,8 @@ package com.ted.eBayDIT.service.impl;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
-import com.ted.eBayDIT.entity.CategoryEntity;
-import com.ted.eBayDIT.entity.ItemEntity;
-import com.ted.eBayDIT.entity.SellerDetailsEntity;
-import com.ted.eBayDIT.entity.UserEntity;
-import com.ted.eBayDIT.repository.CategoryRepository;
-import com.ted.eBayDIT.repository.ItemRepository;
-import com.ted.eBayDIT.repository.SellerDetailsRepository;
-import com.ted.eBayDIT.repository.UserRepository;
+import com.ted.eBayDIT.entity.*;
+import com.ted.eBayDIT.repository.*;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.UserService;
@@ -45,9 +39,12 @@ public class ItemServiceImpl implements ItemService {
     SecurityService securityService;
 
     @Autowired
-    SellerDetailsRepository seller;
+    SellerDetailsRepository sellerRepo;
 
 
+
+    @Autowired
+    ItemLocationRepo itemLocationRepo;
 
 
 
@@ -91,11 +88,14 @@ public class ItemServiceImpl implements ItemService {
 
         currSellerUser.setUser(currUser);
         currSellerUser.setRating(0);
-//        this.seller.save(currSellerUser);
+        this.sellerRepo.save(currSellerUser);
+        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());
 
+        item.setLocation(location);
 //        currSellerUser = modelMapper.map(currUser , SellerDetailsEntity.class);
 
         item.setSeller(currSellerUser);
+
 
         this.itemRepo.save(item);
     }

@@ -18,7 +18,7 @@ public class CategoryEntity {
     private String name;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany/*(cascade = CascadeType.ALL)*/
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "category_id"), //refers to "category_id" column in "item_category" join  table
