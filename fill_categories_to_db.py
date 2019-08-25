@@ -30,7 +30,7 @@ else:
 	print "Connection unsuccessful"
 
 cur = db.cursor()
-for x in range(0,39):
+for x in range(0,10):
 
 	file_name = 'ebay-data/items-' + str(x) + '.xml'
 	print '\nfile_name = '+file_name + '\n'
@@ -52,5 +52,8 @@ for x in range(0,39):
 				query_categ = "INSERT INTO category(name) VALUES (%s)"
 				sql_tuple_categ= (category.text,)
 				cur.execute(query_categ,sql_tuple_categ)
+
+				db.commit()
+				#print(cur.rowcount, "record inserted.")
 
 print 'Number of Categories added: '+str(categories_counter)
