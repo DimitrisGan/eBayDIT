@@ -14,10 +14,10 @@ import java.util.List;
 public class SellerDetailsEntity implements Serializable {
 
     private static final long serialVersionUID = -2570021379769487425L;
-        @Id
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
-    private Integer id;
+    private int id;
 
 //    @OneToOne(/*cascade = CascadeType*/)
 //
@@ -26,7 +26,6 @@ public class SellerDetailsEntity implements Serializable {
 
 
     @OneToOne/*(cascade = CascadeType.ALL)*/
-//    @JoinColumn(name = "user_username")
     @JoinColumn(name="user_username",nullable = false)
 //    @MapsId
     private UserEntity user;
@@ -39,7 +38,7 @@ public class SellerDetailsEntity implements Serializable {
 //    private List<ItemEntity> items;
 
     @Column
-    private Integer rating;
+    private int rating;
 
 
 //    public Integer getId() {

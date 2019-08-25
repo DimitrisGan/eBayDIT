@@ -2,12 +2,18 @@ package com.ted.eBayDIT.service.impl;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.CategoryEntity;
 import com.ted.eBayDIT.entity.ItemEntity;
+import com.ted.eBayDIT.entity.SellerDetailsEntity;
+import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.CategoryRepository;
 import com.ted.eBayDIT.repository.ItemRepository;
+import com.ted.eBayDIT.repository.SellerDetailsRepository;
 import com.ted.eBayDIT.repository.UserRepository;
+import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.ItemService;
+import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +36,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private CategoryRepository categRepo;
+
+//    @Autowired
+//    UserService userService;
+
+
+    @Autowired
+    SecurityService securityService;
+
+    @Autowired
+    SellerDetailsRepository seller;
+
+
+
 
 
 
@@ -63,7 +82,21 @@ public class ItemServiceImpl implements ItemService {
 //        //todo put exception if user is null
         item.setItemID(newItemID);
         item.setNumberOfBids(0);
-        item.setCurrently("None");
+        item.setCurrently("---");
+
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity currUser =  modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
+
+        SellerDetailsEntity currSellerUser = new SellerDetailsEntity();
+
+        currSellerUser.setUser(currUser);
+        currSellerUser.setRating(0);
+//        this.seller.save(currSellerUser);
+
+//        currSellerUser = modelMapper.map(currUser , SellerDetailsEntity.class);
+
+        item.setSeller(currSellerUser);
+
         this.itemRepo.save(item);
     }
 
@@ -87,12 +120,11 @@ public class ItemServiceImpl implements ItemService {
 
         //todo edw prepei na prosthesw ola ta epipleon pedia pou thelw gia to new auction
 
-        itemEntity2save.setItemID(newItemID);
-        itemEntity2save.setNumberOfBids(0);
-        itemEntity2save.setCurrently("None");
+
 //        itemEntity2save.set
 
-        ItemEntity storedUserDetails =itemRepo.save(itemEntity2save);
+        saveAuction(itemEntity2save);
+//        ItemEntity storedUserDetails =itemRepo.save(itemEntity2save);
         //todo isws convert se Dto kai epistrofh sto postman
 
 

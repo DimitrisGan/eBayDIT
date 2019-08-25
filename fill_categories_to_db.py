@@ -30,7 +30,7 @@ else:
 	print "Connection unsuccessful"
 
 cur = db.cursor()
-for x in range(0,10):
+for x in range(0,4):
 
 	file_name = 'ebay-data/items-' + str(x) + '.xml'
 	print '\nfile_name = '+file_name + '\n'

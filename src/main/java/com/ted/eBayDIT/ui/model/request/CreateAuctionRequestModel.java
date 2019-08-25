@@ -21,7 +21,7 @@ public class CreateAuctionRequestModel {
     private String description;
 
     private List<CategoryDto> categories;
-    private SellerDto seller;
+//    private SellerDto seller;
     private ItemLocationDto location;
 
 
@@ -89,13 +89,13 @@ public class CreateAuctionRequestModel {
         this.categories = categories;
     }
 
-    public SellerDto getSeller() {
-        return seller;
-    }
-
-    public void setSeller(SellerDto seller) {
-        this.seller = seller;
-    }
+//    public SellerDto getSeller() {
+//        return seller;
+//    }
+//
+//    public void setSeller(SellerDto seller) {
+//        this.seller = seller;
+//    }
 
     public ItemLocationDto getLocation() {
         return location;
