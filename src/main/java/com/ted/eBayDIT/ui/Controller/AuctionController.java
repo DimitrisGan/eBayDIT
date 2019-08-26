@@ -50,7 +50,7 @@ public class AuctionController {
 
 
     @PutMapping(path ="/auctions/{id}") //add new bid for example
-    public ResponseEntity<Object> updateAuction(@PathVariable String auctionId,@RequestBody AddBidAuctionRequestModel newBid){
+    public ResponseEntity<Object> updateAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBid){
 
         //todo findAuctionById(auctionID)
 
@@ -64,7 +64,6 @@ public class AuctionController {
     @PutMapping(path ="/start_auction/{id}") //add new bid for example
     public ResponseEntity<Object> startAuction(@PathVariable Long id){//id : auctionId
 
-        //todo findAuctionById(auctionID)
 
         //check first if item/auction exists to start it!
         if (! itemService.itemExists(id)){
@@ -100,7 +99,6 @@ public class AuctionController {
             auctionsRespList.add(auctionsResp);
         }
 
-
         return new ResponseEntity<>(auctionsRespList,HttpStatus.OK);
 
     }
@@ -120,7 +118,7 @@ public class AuctionController {
 
 
 
-//    -------------------------------------------------
+//    -------------------- UNDER CONSTRUCTON -----------------------------
 
     @GetMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
