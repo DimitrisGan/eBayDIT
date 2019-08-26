@@ -54,6 +54,19 @@ public class AuctionController {
 
         //todo findAuctionById(auctionID)
 
+        //todo send back exception if startedEvent == true
+        //todo this.itemService.updateAuction(id);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+    @PutMapping(path ="/auction_start/{id}") //add new bid for example
+    public ResponseEntity<Object> startAuction(@PathVariable String auctionId,@RequestBody AddBidAuctionRequestModel newBid){
+
+        //todo findAuctionById(auctionID)
+        //todo  this.itemService.startAuction(id)
+
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
@@ -67,6 +80,16 @@ public class AuctionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+    @DeleteMapping(path ="/auctions/{id}")
+    public ResponseEntity<Object> deleteAuction(@PathVariable String id){
+
+    //todo this.itemService.deleteAuction(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 
 

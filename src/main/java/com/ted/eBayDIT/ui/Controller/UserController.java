@@ -56,10 +56,6 @@ public class UserController {
 
 
 
-
-
-
-
     @PostMapping("register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
