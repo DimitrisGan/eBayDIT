@@ -28,7 +28,7 @@ POST localhost:8080/api/auctions
 //=================================================
 ~~START AUCTION~~
 
-PUT localhost:8080/api/start_auction/{id}
+PUT localhost:8080/api/auction/start/{id}
 
 //=================================================
 ~~GET ALL USER'S AUCTIONS~~
@@ -43,5 +43,5 @@ DELETE localhost:8080/api/auctions/{id}
 //=================================================
 
 under construction :
-1# edit auction fields
-2# add bit in auction
+1# edit auction fields --> PUT localhost:8080/api/auctions/{id}"
+2# add bit in auction  --> PUT localhost:8080/api/auctions/add_bid/{id}

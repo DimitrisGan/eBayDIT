@@ -1,6 +1,8 @@
 package com.ted.eBayDIT.service.impl;
 
 
+import com.ted.eBayDIT.dto.BIdderDto;
+import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.repository.*;
@@ -190,6 +192,7 @@ public class ItemServiceImpl implements ItemService {
 
         return 0;
     }
+
     private boolean auctionIsStarted(Long id) {
         int num = this.itemRepo.findByItemID(id).getNumberOfBids();
         return num != 0;
@@ -198,6 +201,20 @@ public class ItemServiceImpl implements ItemService {
 //    private boolean auctionIsStarted(Long id) {
 //        return this.itemRepo.findByItemID(id).isEventStarted();
 //    }
+
+
+    @Override
+    public void editAuction(Long id) {
+        //todo edit fields of auction!!!
+    }
+
+
+    @Override
+    public void addBid(Long id, BIdderDto bidder, BidDto bid){
+
+
+        //todo add bid to auctionID
+    }
 
 
 }

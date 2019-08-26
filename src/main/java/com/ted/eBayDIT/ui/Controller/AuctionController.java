@@ -2,9 +2,6 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
-import com.ted.eBayDIT.dto.UserDto;
-import com.ted.eBayDIT.entity.ItemEntity;
-import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
@@ -49,8 +46,8 @@ public class AuctionController {
     }
 
 
-    @PutMapping(path ="/auctions/{id}") //add new bid for example
-    public ResponseEntity<Object> updateAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBid){
+    @PutMapping(path ="/auctions/add_bid/{id}") //add new bid for example
+    public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBid){
 
         //todo findAuctionById(auctionID)
 
@@ -61,7 +58,20 @@ public class AuctionController {
 
     }
 
-    @PutMapping(path ="/start_auction/{id}") //add new bid for example
+    @PutMapping(path ="/auctions/{id}") //add new bid for example
+    public ResponseEntity<Object> editAuction(@PathVariable Long id,@RequestBody AuctionDetailsRequestModel editAuctionDetails){
+
+        //todo findAuctionById(auctionID)
+
+        //todo send back exception if startedEvent == true
+        //todo this.itemService.updateAuction(id);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+
+    @PutMapping(path ="/auctions/start/{id}") //add new bid for example
     public ResponseEntity<Object> startAuction(@PathVariable Long id){//id : auctionId
 
 

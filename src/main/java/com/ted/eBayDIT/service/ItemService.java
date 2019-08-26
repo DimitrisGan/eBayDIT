@@ -1,6 +1,8 @@
 package com.ted.eBayDIT.service;
 
 
+import com.ted.eBayDIT.dto.BIdderDto;
+import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 
 import java.util.List;
@@ -22,4 +24,8 @@ public interface ItemService {
     List<ItemDto> getAllUserAuctions();
 
     int deleteAuction(Long id);
+
+    void editAuction(Long id);
+
+    void addBid(Long id, BIdderDto bidder, BidDto bid);
 }
