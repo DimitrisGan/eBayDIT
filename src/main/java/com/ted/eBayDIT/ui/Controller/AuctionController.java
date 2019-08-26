@@ -4,17 +4,22 @@ package com.ted.eBayDIT.ui.Controller;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.ItemEntity;
+import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
+import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(/*"/auctions"*/)
@@ -66,11 +71,17 @@ public class AuctionController {
 
         //todo findAuctionById(auctionID)
 
-        //todo check if currUser owns the auction
+        //check first if item/auction exists to start it!
+        if (! itemService.itemExists(id)){
+            String msg = "Auction doesn't exist to start!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        //check if currUser owns the auction!
         if (! itemService.userOwnsTheAuction(id)){
             String msg = "Not authorized to change auction that you don't own!";
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
         }
+
 
         itemService.startAuction(id);
 
@@ -78,6 +89,26 @@ public class AuctionController {
 
     }
 
+
+    @GetMapping(path ="/auctions")
+    public ResponseEntity<Object> getAllAuctions(){
+
+        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+
+        List<ItemDto> auctionsList = itemService.getAllUserAuctions();
+
+        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (ItemDto itemDto : auctionsList) {
+            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            auctionsRespList.add(auctionsResp);
+        }
+
+
+        return new ResponseEntity<>(auctionsRespList,HttpStatus.OK);
+
+    }
 
     @GetMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){

@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
     private static long newItemID=0;
 
 
-    
+
     private boolean itemExists(ItemDto item){
         ItemEntity itemCheck = this.itemRepo.findByItemID(item.getItemID());
         return itemCheck != null;
@@ -110,7 +111,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public int addNewItem(ItemDto item) {
+    public void addNewItem(ItemDto item) {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
@@ -124,12 +125,14 @@ public class ItemServiceImpl implements ItemService {
 
         //todo maybe convert to Dto objeect and send it back to response
 
-        return 0;
     }
 
+    @Override
+    public boolean itemExists(Long id) {
+        ItemEntity itemEntity = this.itemRepo.findByItemID(id);
 
-
-
+        return itemEntity != null; //if userEntity is null return false
+    }
 
 
     @Override
@@ -157,5 +160,24 @@ public class ItemServiceImpl implements ItemService {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ItemDto> getAllUserAuctions() {
+        List<ItemDto> returnList = new ArrayList<>();
+        String userId = this.securityService.getCurrentUser().getUserId();
+        UserEntity currUser = this.userRepo.findByUserId(userId);
+
+        SellerDetailsEntity seller = sellerRepo.findById(currUser.getId());
+        List<ItemEntity> returnEntitiesList = seller.getItems();
+        ModelMapper modelMapper = new ModelMapper();
+
+        /*cinvert items/auctions List from Entity to Dto datatype*/
+        for (ItemEntity itemEntity : returnEntitiesList) {
+            ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
+            returnList.add(itemDto);
+        }
+
+        return returnList;
     }
 }

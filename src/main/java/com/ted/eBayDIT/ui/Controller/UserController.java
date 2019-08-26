@@ -41,7 +41,7 @@ public class UserController {
 
         String currUserId = securityService.getCurrentUser().getUserId();
         if (!(currUserId.equals(id))){
-            return   new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return   new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         UserDto userDto = userService.getUserByUserId(id) ;

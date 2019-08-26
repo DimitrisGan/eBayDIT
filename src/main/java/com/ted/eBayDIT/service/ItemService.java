@@ -3,9 +3,14 @@ package com.ted.eBayDIT.service;
 
 import com.ted.eBayDIT.dto.ItemDto;
 
+import java.util.List;
+
 public interface ItemService {
 
-    int addNewItem(ItemDto item);
+    void addNewItem(ItemDto item);
+
+    boolean itemExists(Long id);
+
 
     int updateItemInfo(/*todo ItemInfoDto*/);
 
@@ -13,4 +18,6 @@ public interface ItemService {
     void startAuction(Long id);
 
     boolean userOwnsTheAuction(Long id);
+
+    List<ItemDto> getAllUserAuctions();
 }
