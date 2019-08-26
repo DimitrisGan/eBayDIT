@@ -45,12 +45,18 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private SellerDetailsRepository selerRepo;
+    private SellerDetailsRepository sellerRepo;
 
 
 
 
-
+    private void saveNewSellerRecord(UserEntity admin1){
+        SellerDetailsEntity seller = new SellerDetailsEntity();
+        seller.setRating(5); //set starting rating value to 5
+        seller.setUser(admin1);
+        admin1.setSeller(seller);
+        sellerRepo.save(seller);
+    }
 
     //todo initialize db properly
     @PostConstruct
@@ -77,11 +83,10 @@ public class UserServiceImpl implements UserService {
             admin1.setPhoneNumber("6967510111");
             admin1.setAddress("DI");
 
-            SellerDetailsEntity seller = new SellerDetailsEntity();
-            seller.setUser(admin1);
-            admin1.setSeller(seller);
-            selerRepo.save(seller);
-
+//            SellerDetailsEntity seller = new SellerDetailsEntity();
+//            seller.setUser(admin1);
+//            admin1.setSeller(seller);
+//            sellerRepo.save(seller);
 
             saveAdmin(admin1);
 
@@ -113,7 +118,8 @@ public class UserServiceImpl implements UserService {
     private void saveAdmin(UserEntity user) {
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getEncryptedPassword()));
         user.setRole(roleRepo.findByUserRole(RoleName.ADMIN.name()));
-        //todo put exception if user is null
+
+        saveNewSellerRecord(user);
         userRepo.save(user);
     }
 
@@ -151,6 +157,7 @@ public class UserServiceImpl implements UserService {
         //todo maybe(?) add routine if its admin to me verified instantly
         userEntity2save.setVerified(false);
 
+        saveNewSellerRecord(userEntity2save);
         storedUserDetails =  userRepo.save(userEntity2save);
 
 
@@ -188,6 +195,7 @@ public class UserServiceImpl implements UserService {
 //        BeanUtils.copyProperties(updatedUserDetails,returnValue);
         ModelMapper modelMapper = new ModelMapper();
         returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
+
 
         return returnValue;
     }

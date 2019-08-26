@@ -73,13 +73,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-    private void saveAuction(ItemEntity item) {
-        /*set default values for item*/
-        item.setItemID(newItemID);
-        item.setNumberOfBids(0);
-        item.setCurrently("---");
-
-
+    private void connectCategoriesToNewItem(ItemEntity item){
         /*here set-insert items_categories table*/
         List<CategoryEntity> categoriesToAddList = item.getCategories();
         int i=0;
@@ -89,27 +83,27 @@ public class ItemServiceImpl implements ItemService {
             item.getCategories().set(i, categ);
             i++;
         }
+    }
+
+    private void saveAuction(ItemEntity item) {
+        /*set default values for item*/
+        item.setItemID(newItemID);
+        item.setNumberOfBids(0);
+        item.setCurrently("---");
+        item.setEventStarted(false);
+
+
+        connectCategoriesToNewItem(item); //join item_categories table
+        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
 
 
         //----------------------
 
-        ModelMapper modelMapper = new ModelMapper();
-        UserEntity currUser =  modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
-
+        UserEntity currUser =  userRepo.findByUserId(this.securityService.getCurrentUser().getUserId());//modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
         SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
-        currSellerUser.setRating(5);
-//        currSellerUser.setUser(currUser);
-
-//        currUser.setSeller(currSellerUser);
-
-        /*item.setSeller(*/ SellerDetailsEntity storedSeller = this.sellerRepo.save(currSellerUser) ;
-//        currUser.setSeller(storedSeller);
-//
-//
-//        UserEntity storedUserDetails= this.userRepo.save(currUser);
+        //currSellerUser.getItems().add(item);
 
         //----------------------
-//        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location);
 
         item.setSeller(currSellerUser);
 

@@ -82,26 +82,6 @@ import java.util.List;
 @Entity
 @Table(name="item")
 public class ItemEntity {
-/*
-    //todoneed to add these columns
-
-    protected String name;
-    protected Integer itemID;
-    protected List<String> category;
-    protected String currently;
-    protected String buyPrice;
-    protected String firstBid;
-    protected byte numberOfBids;
-    protected String country;
-    protected String started;
-    protected String ends;
-    protected String description;
-
-    //    protected Items.Item.Bids bids;
-    //    protected Items.Item.Location location;
-    //    protected Items.Item.Seller seller;
-
-*/
 
 
     @Id
@@ -134,28 +114,24 @@ public class ItemEntity {
     @Column
     private String description;
 
-    //-----------------------------
 
-    @ManyToMany(cascade = CascadeType.ALL)/*(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-    )*/
-
+    //Do not apply cascading deletes!
+    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
             inverseJoinColumns = @JoinColumn(name = "category_id") //refers to "category_id" column in "item_category" join  table
     )
-    //    @OneToMany(mappedBy="itemDetails" )
     private List<CategoryEntity> categories;
-
 
 
 
     @OneToMany(mappedBy="itemDetails"/*, cascade=CascadeType.ALL*/)
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="seller_id")
     private SellerDetailsEntity seller;
 
@@ -163,6 +139,7 @@ public class ItemEntity {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private ItemLocationEntity location;
 
+    private boolean eventStarted;
 
     public Long getItemID() {
         return itemID;
@@ -274,5 +251,13 @@ public class ItemEntity {
 
     public void setLocation(ItemLocationEntity location) {
         this.location = location;
+    }
+
+    public boolean isEventStarted() {
+        return eventStarted;
+    }
+
+    public void setEventStarted(boolean eventStarted) {
+        this.eventStarted = eventStarted;
     }
 }

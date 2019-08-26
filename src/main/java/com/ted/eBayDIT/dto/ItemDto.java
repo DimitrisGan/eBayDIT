@@ -25,6 +25,8 @@ public class ItemDto implements Serializable {
 
     private List<BidDto> bids ;
 
+    private boolean eventStarted;
+
 
     public Long getItemID() {
         return itemID;
@@ -136,5 +138,13 @@ public class ItemDto implements Serializable {
 
     public void setSeller(SellerDto seller) {
         this.seller = seller;
+    }
+
+    public boolean isEventStarted() {
+        return eventStarted;
+    }
+
+    public void setEventStarted(boolean eventStarted) {
+        this.eventStarted = eventStarted;
     }
 }

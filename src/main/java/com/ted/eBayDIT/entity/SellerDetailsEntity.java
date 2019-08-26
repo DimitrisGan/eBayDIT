@@ -33,12 +33,11 @@ public class SellerDetailsEntity implements Serializable {
 
     private UserEntity user;
 
-    //Do not apply
-    //cascading deletes!
-
-//    @OneToMany(mappedBy="seller",
-//            cascade = CascadeType.ALL)
-//    private List<ItemEntity> items;
+    //Do not apply cascading deletes!
+    @OneToMany(mappedBy="seller",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private List<ItemEntity> items;
 
     @Column
     private int rating;
@@ -66,5 +65,13 @@ public class SellerDetailsEntity implements Serializable {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public List<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemEntity> items) {
+        this.items = items;
     }
 }
