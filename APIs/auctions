@@ -1,0 +1,47 @@
+~~CREATE NEW AUCTION~~
+
+POST localhost:8080/api/auctions
+
+{
+    "name": "item1",
+    "buyPrice": "$7.50",
+    "firstBid": "$2.50",
+    "country": "USA",
+    "started": "Dec-11-01 11:21:48",
+    "ends": "Dec-16-01 11:21:48",
+    "description": "This is a Hallmark Santa Head Cookie Cutter",
+    "categories": [
+        {
+            "name": "Collectibles"
+        },
+        {
+            "name": "Decorative & Holiday"
+        }
+    ],
+    "location": {
+        "latitude": "45.255392",
+        "longitude": "-122.4749"
+    }
+
+}
+
+//=================================================
+~~START AUCTION~~
+
+PUT localhost:8080/api/start_auction/{id}
+
+//=================================================
+~~GET ALL USER'S AUCTIONS~~
+
+GET localhost:8080/api/auctions
+
+//=================================================
+~~DELETE AUCTION~~
+
+DELETE localhost:8080/api/auctions/{id}
+
+//=================================================
+
+under construction :
+1# edit auction fields
+2# add bit in auction
