@@ -90,26 +90,30 @@ public class ItemServiceImpl implements ItemService {
             i++;
         }
 
-        ItemEntity storedUserDetails =itemRepo.save(item);
-
-
 
         //----------------------
 
         ModelMapper modelMapper = new ModelMapper();
         UserEntity currUser =  modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
 
-        SellerDetailsEntity currSellerUser = new SellerDetailsEntity();
-        currSellerUser.setUser(currUser);
-        currSellerUser.setRating(0);
-        item.setSeller( this.sellerRepo.save(currSellerUser) );
+        SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
+        currSellerUser.setRating(5);
+//        currSellerUser.setUser(currUser);
+
+//        currUser.setSeller(currSellerUser);
+
+        /*item.setSeller(*/ SellerDetailsEntity storedSeller = this.sellerRepo.save(currSellerUser) ;
+//        currUser.setSeller(storedSeller);
+//
+//
+//        UserEntity storedUserDetails= this.userRepo.save(currUser);
 
         //----------------------
 //        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location);
 
-//        item.setSeller(currSellerUser);
+        item.setSeller(currSellerUser);
 
-        this.itemRepo.save(item);
+        ItemEntity storedItemDetails =itemRepo.save(item);
 
 
     }

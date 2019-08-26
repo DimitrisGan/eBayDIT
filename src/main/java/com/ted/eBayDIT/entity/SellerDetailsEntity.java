@@ -14,20 +14,23 @@ import java.util.List;
 public class SellerDetailsEntity implements Serializable {
 
     private static final long serialVersionUID = -2570021379769487425L;
+
+//    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-//    @OneToOne(/*cascade = CascadeType*/)
-//
-//    @PrimaryKeyJoinColumn(name="user_username", referencedColumnName="username")
 
-
-
-    @OneToOne/*(cascade = CascadeType.ALL)*/
-    @JoinColumn(name="user_username",nullable = false)
+//    @OneToOne/*(cascade = CascadeType.ALL)*/
+////    @JoinColumn(name="user_username",nullable = false)
 //    @MapsId
+//    public String username ;
+
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @MapsId
+//    @JoinColumn(name = "RequestID")
+
     private UserEntity user;
 
     //Do not apply
@@ -41,13 +44,13 @@ public class SellerDetailsEntity implements Serializable {
     private int rating;
 
 
-//    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public UserEntity getUser() {
         return user;
@@ -57,19 +60,11 @@ public class SellerDetailsEntity implements Serializable {
         this.user = user;
     }
 
-//    public List<ItemEntity> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<ItemEntity> items) {
-//        this.items = items;
-//    }
-
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 }

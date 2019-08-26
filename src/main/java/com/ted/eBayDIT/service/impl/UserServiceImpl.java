@@ -3,8 +3,10 @@ package com.ted.eBayDIT.service.impl;
 import com.ted.eBayDIT.entity.RoleName;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.RoleEntity;
+import com.ted.eBayDIT.entity.SellerDetailsEntity;
 import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.RoleRepository;
+import com.ted.eBayDIT.repository.SellerDetailsRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Utils;
@@ -42,6 +44,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private SellerDetailsRepository selerRepo;
+
+
 
 
 
@@ -70,6 +76,11 @@ public class UserServiceImpl implements UserService {
             admin1.setCountry("Greece");
             admin1.setPhoneNumber("6967510111");
             admin1.setAddress("DI");
+
+            SellerDetailsEntity seller = new SellerDetailsEntity();
+            seller.setUser(admin1);
+            admin1.setSeller(seller);
+            selerRepo.save(seller);
 
 
             saveAdmin(admin1);
