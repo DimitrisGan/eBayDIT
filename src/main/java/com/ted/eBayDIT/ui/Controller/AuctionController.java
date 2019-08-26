@@ -61,11 +61,18 @@ public class AuctionController {
 
     }
 
-    @PutMapping(path ="/auction_start/{id}") //add new bid for example
-    public ResponseEntity<Object> startAuction(@PathVariable String auctionId,@RequestBody AddBidAuctionRequestModel newBid){
+    @PutMapping(path ="/start_auction/{id}") //add new bid for example
+    public ResponseEntity<Object> startAuction(@PathVariable Long id){//id : auctionId
 
         //todo findAuctionById(auctionID)
-        //todo  this.itemService.startAuction(id)
+
+        //todo check if currUser owns the auction
+        if (! itemService.userOwnsTheAuction(id)){
+            String msg = "Not authorized to change auction that you don't own!";
+            return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
+        }
+
+        itemService.startAuction(id);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 

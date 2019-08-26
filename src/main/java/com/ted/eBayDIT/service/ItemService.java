@@ -10,4 +10,7 @@ public interface ItemService {
     int updateItemInfo(/*todo ItemInfoDto*/);
 
 
+    void startAuction(Long id);
+
+    boolean userOwnsTheAuction(Long id);
 }

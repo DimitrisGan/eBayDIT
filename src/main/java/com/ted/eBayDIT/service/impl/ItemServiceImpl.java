@@ -2,12 +2,10 @@ package com.ted.eBayDIT.service.impl;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
-import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.repository.*;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.ItemService;
-import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,5 +135,27 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int updateItemInfo() {
         return 0;
+    }
+
+    @Override
+    public void startAuction(Long id) {
+        ItemEntity item = this.itemRepo.findByItemID(id);
+
+        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
+
+        item.setEventStarted(true);
+        this.itemRepo.save(item);
+    }
+
+    @Override
+    public boolean userOwnsTheAuction(Long id) {
+        ItemEntity item = this.itemRepo.findByItemID(id);
+        int userId = this.securityService.getCurrentUser().getId();
+        List<ItemEntity> usersItems = this.sellerRepo.findById(userId).getItems();
+        for (ItemEntity usersItem : usersItems) {
+            if (usersItem.getItemID().equals(id))
+                return true;
+        }
+        return false;
     }
 }
