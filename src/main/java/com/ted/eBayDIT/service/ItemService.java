@@ -20,4 +20,6 @@ public interface ItemService {
     boolean userOwnsTheAuction(Long id);
 
     List<ItemDto> getAllUserAuctions();
+
+    int deleteAuction(Long id);
 }

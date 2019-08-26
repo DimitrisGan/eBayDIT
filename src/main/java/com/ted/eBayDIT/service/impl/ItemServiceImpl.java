@@ -176,4 +176,23 @@ public class ItemServiceImpl implements ItemService {
 
         return returnList;
     }
+
+    @Override
+    public int deleteAuction(Long id) {
+
+        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
+
+        if (auctionIsStarted(id)) throw new RuntimeException("Auction-Item has already started! Can't delete it now!");
+
+        ItemEntity item = this.itemRepo.findByItemID(id);
+
+        itemRepo.delete(item);
+
+        return 0;
+    }
+
+    private boolean auctionIsStarted(Long id) {
+
+        return this.itemRepo.findByItemID(id).isEventStarted();
+    }
 }

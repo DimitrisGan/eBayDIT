@@ -113,7 +113,7 @@ public class UserController {
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id,userDto);
-        
+
         return new ResponseEntity<>(/*returnValue, */HttpStatus.OK);
     }
 

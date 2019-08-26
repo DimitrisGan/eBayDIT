@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping(/*"/auctions"*/)
 public class AuctionController {
 
-
     @Autowired
     UserService userService;
 
@@ -40,14 +39,10 @@ public class AuctionController {
     @PostMapping(path ="/auctions")
     public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel){
 
-        UserDto currentUser = securityService.getCurrentUser();
-
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class); //todo first step here
 
-
         this.itemService.addNewItem(itemDto); //create item-auction
-
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -110,24 +105,31 @@ public class AuctionController {
 
     }
 
-    @GetMapping(path ="/auctions/{id}") //add new bid for example
-    public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
-
-        //todo findAuctionById(auctionID)
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
 
     @DeleteMapping(path ="/auctions/{id}")
-    public ResponseEntity<Object> deleteAuction(@PathVariable String id){
-
-    //todo this.itemService.deleteAuction(id);
+    public ResponseEntity<Object> deleteAuction(@PathVariable Long id){
+        //check if currUser owns the auction!
+        if (! itemService.userOwnsTheAuction(id)){
+            String msg = "Not authorized to delete auction that you don't own!";
+            return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
+        }
+        int  i = this.itemService.deleteAuction(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
+
+//    -------------------------------------------------
+
+    @GetMapping(path ="/auctions/{id}") //add new bid for example
+    public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
+
+        //todo findAuctionById(auctionID)
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
 
 
