@@ -60,7 +60,7 @@ public class UserEntity implements Serializable {
 
     //no need for cascade = CascadeType.ALL because by default
     //no operations are cascaded
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private BidderDetailsEntity bidder;
 
     @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)

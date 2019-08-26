@@ -88,13 +88,13 @@ public class ItemServiceImpl implements ItemService {
 
         currSellerUser.setUser(currUser);
         currSellerUser.setRating(0);
-        this.sellerRepo.save(currSellerUser);
-        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());
+//        this.sellerRepo.save(currSellerUser);
+//        ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());
 
-        item.setLocation(location);
+//        item.setLocation(location);
 //        currSellerUser = modelMapper.map(currUser , SellerDetailsEntity.class);
 
-        item.setSeller(currSellerUser);
+//        item.setSeller(currSellerUser);
 
 
         this.itemRepo.save(item);
@@ -123,8 +123,30 @@ public class ItemServiceImpl implements ItemService {
 
 //        itemEntity2save.set
 
-        saveAuction(itemEntity2save);
-//        ItemEntity storedUserDetails =itemRepo.save(itemEntity2save);
+//        saveAuction(itemEntity2save);
+
+        itemEntity2save.setItemID(newItemID);
+        itemEntity2save.setNumberOfBids(0);
+        itemEntity2save.setCurrently("---");
+//        categRepo.
+
+        List<CategoryEntity> categoriesToAddList = itemEntity2save.getCategories();
+//        itemEntity2save.getCategories().clear();
+
+        int i=0;
+        for (CategoryEntity cat : categoriesToAddList ) {
+            CategoryEntity categ = categRepo.findByName(cat.getName());
+//            categ.getItemDetails().add(itemEntity2save)
+//;
+
+            itemEntity2save.getCategories().set(i, categ);
+//            itemEntity2save.getCategories().add(categ);
+//            categRepo.save(categ);
+            i++;
+        }
+
+        ItemEntity storedUserDetails =itemRepo.save(itemEntity2save);
+
         //todo isws convert se Dto kai epistrofh sto postman
 
 

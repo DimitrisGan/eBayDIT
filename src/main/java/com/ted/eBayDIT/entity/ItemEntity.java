@@ -136,20 +136,28 @@ public class ItemEntity {
 
     //-----------------------------
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)/*(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )*/
+
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
             inverseJoinColumns = @JoinColumn(name = "category_id") //refers to "category_id" column in "item_category" join  table
     )
+    //    @OneToMany(mappedBy="itemDetails" )
     private List<CategoryEntity> categories;
+
+
+
 
     @OneToMany(mappedBy="itemDetails"/*, cascade=CascadeType.ALL*/)
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="seller_id")
-    private SellerDetailsEntity seller;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="seller_id")
+//    private SellerDetailsEntity seller;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
@@ -248,17 +256,17 @@ public class ItemEntity {
         return bids;
     }
 
-    public void setBids(List<BidEntity> bids) {
-        this.bids = bids;
-    }
-
-    public SellerDetailsEntity getSeller() {
-        return seller;
-    }
-
-    public void setSeller(SellerDetailsEntity seller) {
-        this.seller = seller;
-    }
+//    public void setBids(List<BidEntity> bids) {
+//        this.bids = bids;
+//    }
+//
+//    public SellerDetailsEntity getSeller() {
+//        return seller;
+//    }
+//
+//    public void setSeller(SellerDetailsEntity seller) {
+//        this.seller = seller;
+//    }
 
     public ItemLocationEntity getLocation() {
         return location;

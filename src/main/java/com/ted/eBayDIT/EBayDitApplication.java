@@ -27,7 +27,11 @@ public class EBayDitApplication {
 
 //        populateDataToDb test = new populateDataToDb();
 //        test.extractXml();
-//        test.sacw2
+//        test.sacw2'
+
+//        String fetching = "python " + "c:\\Fetch.py \"" + songDetails + "\"";
+//        String[] commandToExecute = new String[]{"cmd.exe", "/c", fetching};
+//        Runtime.getRuntime().exec(commandToExecute);
 
         SpringApplication.run(EBayDitApplication.class, args);
 
