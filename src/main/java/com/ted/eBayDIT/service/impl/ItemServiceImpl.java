@@ -42,15 +42,13 @@ public class ItemServiceImpl implements ItemService {
     SellerDetailsRepository sellerRepo;
 
 
-
     @Autowired
     ItemLocationRepo itemLocationRepo;
 
-
-
-
     private static long newItemID=0;
 
+
+    
     private boolean itemExists(ItemDto item){
         ItemEntity itemCheck = this.itemRepo.findByItemID(item.getItemID());
         return itemCheck != null;
@@ -87,32 +85,31 @@ public class ItemServiceImpl implements ItemService {
 
     private void saveAuction(ItemEntity item) {
         /*set default values for item*/
-        item.setItemID(newItemID);
+        long itemID = generateNewItemID();  item.setItemID(itemID);
+
         item.setNumberOfBids(0);
         item.setCurrently("---");
         item.setEventStarted(false);
-
-
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
-
-
         //----------------------
-
         UserEntity currUser =  userRepo.findByUserId(this.securityService.getCurrentUser().getUserId());//modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
         SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
         //currSellerUser.getItems().add(item);
-
         //----------------------
-
         item.setSeller(currSellerUser);
-
         ItemEntity storedItemDetails =itemRepo.save(item);
-
 
     }
 
 
+    private long generateNewItemID(){
+        do { //generate a unique primary key for item
+            newItemID++; //utils.generateItemID();
+        }while(itemIdExists(newItemID));
+
+        return newItemID;
+    }
 
     @Override
     public int addNewItem(ItemDto item) {
@@ -120,60 +117,14 @@ public class ItemServiceImpl implements ItemService {
         ModelMapper modelMapper = new ModelMapper();
         ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
 
-
-        do { //generate a unique primary key for item
-            newItemID++; //utils.generateItemID();
-        }while(itemIdExists(newItemID));
-
         //check if itemID already exists in db and throw exceptions
         if (itemExists(item)) throw new RuntimeException("item Record already exists");
 
         if (! categoriesExist(itemEntity2save.getCategories())) throw new RuntimeException("Categories Record dont exist");
 
-        //todo edw prepei na prosthesw ola ta epipleon pedia pou thelw gia to new auction
-
-
-
         saveAuction(itemEntity2save);
 
-
-
-        //todo isws convert se Dto kai epistrofh sto postman
-
-
-        //todo add seller if not exist to table
-        //private SellerDto seller;
-
-
-
-//        private String name;
-//        private String buyPrice;
-//        private String firstBid;
-//        private String country;
-//        private String started;
-//        private String ends;
-//        private String description;
-//
-//        private List<CategoryDto> categories;
-//        private SellerDto seller;
-//        private ItemLocationDto location;
-
-
-        //we have to store/save this info to itemEntity
-
-
-
-
-//
-//        String publicUserId =utils.generateUserId(30);
-//        userEntity2save.setUserId(publicUserId);
-//        userEntity2save.setRole(this.roleRepo.findByUserRole(RoleName.USER.name()));
-//
-//        //set verification =false to the newly created user
-//        //todo maybe(?) add routine if its admin to me verified instantly
-//        userEntity2save.setVerified(false);
-//
-//        storedUserDetails =  userRepo.save(userEntity2save);
+        //todo maybe convert to Dto objeect and send it back to response
 
         return 0;
     }
