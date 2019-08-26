@@ -46,14 +46,12 @@ public class UserController {
 
         UserDto userDto = userService.getUserByUserId(id) ;
 
-//        BeanUtils.copyProperties(userDto,returnUser);
         ModelMapper modelMapper = new ModelMapper();
         UserRest returnUser = modelMapper.map(userDto, UserRest.class);
 
         return   new ResponseEntity<>(returnUser, HttpStatus.OK);
 
     }
-
 
 
     @PostMapping("register")
@@ -63,45 +61,10 @@ public class UserController {
 
 //        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         userService.createUser(userDto);
-
-
-
-//        BeanUtils.copyProperties(createdUser,returnValue);
-
-//        if (!Validator.validateEmail(input.getEmail())) {
-//            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
-//        }
-//        if (input.getPassword() == null || input.getPassword().equals("")) {
-//            String msg = "Can't register with empty password";
-//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-//        }
-//        if (input.getName() == null || input.getName().equals("")
-//                || input.getSurname() == null || input.getSurname().equals("")) {
-//            String msg = "Can't register with empty name or surname";
-//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-//        }
-//        if (userService.findByEmail(input.getEmail()) != null) {
-//            String msg = "A user with this email is already registered";
-//            return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
-//        }
-//        try {
-//            UserEntity user = new UserEntity.UserBuilder(input.getEmail(), input.getPassword())
-//                    .name(input.getName())
-//                    .surname(input.getSurname())
-//                    .telNumber(input.getTelNumber())
-//                    .picture(sm.storeFile(input.getPicture())).build();
-//            userService.save(user);
-//            return new ResponseEntity<>(userEntityService.getUserOutputModelFromUser(user)
-//                    , HttpStatus.CREATED);
-//        } catch (IOException e) {
-//            return new ResponseEntity<>("Couldn't save picture", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-
 
         return   new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -144,16 +107,13 @@ public class UserController {
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
         }
 
-
 //        UserRest returnValue =new UserRest();
 
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id,userDto);
-
-//        BeanUtils.copyProperties(updatedUser,returnValue);
-
+        
         return new ResponseEntity<>(/*returnValue, */HttpStatus.OK);
     }
 

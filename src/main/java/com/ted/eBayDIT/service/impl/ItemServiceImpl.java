@@ -30,10 +30,6 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private CategoryRepository categRepo;
 
-//    @Autowired
-//    UserService userService;
-
-
     @Autowired
     SecurityService securityService;
 

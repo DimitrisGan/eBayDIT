@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AuctionsResponseModel {
 
-
+    //todo needs to add bidder !!!!
     private Long itemID;
     private String name;
     private String buyPrice;
