@@ -227,6 +227,8 @@ public class ItemServiceImpl implements ItemService {
         BidEntity bidEntity2save = new BidEntity();
         bidEntity2save.setAmount(bidAmount);
         bidEntity2save.setBidder(bidder);
+        bidEntity2save.setItemDetails(item2save);
+
 
         item2save.getBids().add(bidEntity2save);
         item2save.setNumberOfBids(item2save.getNumberOfBids()+1); // numOfBids++;
