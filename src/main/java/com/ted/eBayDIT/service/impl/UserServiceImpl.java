@@ -1,10 +1,8 @@
 package com.ted.eBayDIT.service.impl;
 
-import com.ted.eBayDIT.entity.RoleName;
+import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.dto.UserDto;
-import com.ted.eBayDIT.entity.RoleEntity;
-import com.ted.eBayDIT.entity.SellerDetailsEntity;
-import com.ted.eBayDIT.entity.UserEntity;
+import com.ted.eBayDIT.repository.BidderDetailsRepository;
 import com.ted.eBayDIT.repository.RoleRepository;
 import com.ted.eBayDIT.repository.SellerDetailsRepository;
 import com.ted.eBayDIT.repository.UserRepository;
@@ -47,18 +45,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SellerDetailsRepository sellerRepo;
 
+    @Autowired
+    private BidderDetailsRepository bidderRepo;
 
 
-
-    private void saveNewSellerRecord(UserEntity admin1){
+    private void saveNewSellerRecord(UserEntity user){
         SellerDetailsEntity seller = new SellerDetailsEntity();
         seller.setRating(5); //set starting rating value to 5
-        seller.setUser(admin1);
-        admin1.setSeller(seller);
+        seller.setUser(user);
+        user.setSeller(seller);
         sellerRepo.save(seller);
     }
 
-    //todo initialize db properly
+    private void saveNewBidderRecord(UserEntity user) {
+        BidderDetailsEntity bidder = new BidderDetailsEntity();
+        bidder.setRating(3); //set starting rating value to 3
+        bidder.setUser(user);
+        user.setBidder(bidder);
+        bidderRepo.save(bidder);
+    }
+
+    //initialize db with 2 admins
     @PostConstruct
     private void initDB() {
         if (roleRepo.findByUserRole(RoleName.ADMIN.name()) == null) {
@@ -83,11 +90,6 @@ public class UserServiceImpl implements UserService {
             admin1.setPhoneNumber("6967510111");
             admin1.setLocation("DI");
 
-//            SellerDetailsEntity seller = new SellerDetailsEntity();
-//            seller.setUser(admin1);
-//            admin1.setSeller(seller);
-//            sellerRepo.save(seller);
-
             saveAdmin(admin1);
 
         }
@@ -105,7 +107,6 @@ public class UserServiceImpl implements UserService {
             admin2.setPhoneNumber("6967510112");
             admin2.setLocation("DI");
 
-
             saveAdmin(admin2);
 
         }
@@ -120,17 +121,12 @@ public class UserServiceImpl implements UserService {
         user.setRole(roleRepo.findByUserRole(RoleName.ADMIN.name()));
 
         saveNewSellerRecord(user);
+//        saveNewBidderRecord(user);
+
         userRepo.save(user);
     }
 
-//    @Override
-//    public void save(UserEntity user) {
-//        user.setPassword(bCryptEncoder.encode(user.getPassword()));
-//        //only users are created after the first configuration
-//        user.setRole(roleRepo.findByName("ROLE_USER"));
-//        userRepo.save(user);
-//    }
-//
+
 
     @Override
     public void createUser(UserDto user) {
@@ -158,6 +154,8 @@ public class UserServiceImpl implements UserService {
         userEntity2save.setVerified(false);
 
         saveNewSellerRecord(userEntity2save);
+//        saveNewSellerRecord(userEntity2save);
+
         storedUserDetails =  userRepo.save(userEntity2save);
 
 

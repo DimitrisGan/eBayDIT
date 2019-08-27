@@ -13,10 +13,10 @@ public class BidderDetailsEntity {
 
     @Id
     @Column(name="id")
-    private Integer id;
+    private int id;
 
-
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "ID")
+    @OneToOne(/*fetch = FetchType.LAZY,*/cascade = CascadeType.MERGE)
     @MapsId
     private UserEntity user;
 
@@ -28,17 +28,17 @@ public class BidderDetailsEntity {
     private List<BidEntity> bids;
 
     @Column
-    private Integer rating;
-    @Column
-    private String country;
-    @Column
-    private String location;
+    private int rating;
+//    @Column
+//    private String country;
+//    @Column
+//    private String location;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,27 +58,27 @@ public class BidderDetailsEntity {
         this.bids = bids;
     }
 
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
+//    public String getCountry() {
+//        return country;
+//    }
+//
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
+//
+//    public String getLocation() {
+//        return location;
+//    }
+//
+//    public void setLocation(String location) {
+//        this.location = location;
+//    }
 }

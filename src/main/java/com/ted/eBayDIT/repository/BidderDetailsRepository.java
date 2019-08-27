@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BidderDetailsRepository extends JpaRepository<BidderDetailsEntity, Integer> {
 
-
+    BidderDetailsRepository findById(int id);
 
 }
