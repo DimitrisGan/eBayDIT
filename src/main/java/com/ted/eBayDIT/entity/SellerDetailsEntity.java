@@ -21,7 +21,7 @@ public class SellerDetailsEntity implements Serializable {
     private int id;
 
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @MapsId
     private UserEntity user;
 

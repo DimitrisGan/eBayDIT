@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         seller.setRating(5); //set starting rating value to 5
         seller.setUser(user);
         user.setSeller(seller);
-        sellerRepo.save(seller);
+//        sellerRepo.save(seller);
     }
 
     private void saveNewBidderRecord(UserEntity user) {
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         bidder.setRating(3); //set starting rating value to 3
         bidder.setUser(user);
         user.setBidder(bidder);
-        bidderRepo.save(bidder);
+//        bidderRepo.save(bidder);
     }
 
     //initialize db with 2 admins
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(roleRepo.findByUserRole(RoleName.ADMIN.name()));
 
         saveNewSellerRecord(user);
-//        saveNewBidderRecord(user);
+        saveNewBidderRecord(user);
 
         userRepo.save(user);
     }
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
         userEntity2save.setVerified(false);
 
         saveNewSellerRecord(userEntity2save);
-//        saveNewSellerRecord(userEntity2save);
+        saveNewBidderRecord(userEntity2save);
 
         storedUserDetails =  userRepo.save(userEntity2save);
 

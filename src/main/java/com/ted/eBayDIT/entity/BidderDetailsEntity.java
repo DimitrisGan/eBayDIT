@@ -16,7 +16,7 @@ public class BidderDetailsEntity {
     private int id;
 
 //    @JoinColumn(name = "ID")
-    @OneToOne(/*fetch = FetchType.LAZY,*/cascade = CascadeType.MERGE)
+    @OneToOne(/*fetch = FetchType.LAZY,*/cascade = CascadeType.ALL)
     @MapsId
     private UserEntity user;
 

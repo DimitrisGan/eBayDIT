@@ -57,22 +57,16 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-
-    //no need for cascade = CascadeType.ALL because by default
-    //no operations are cascaded
-    @OneToOne(mappedBy = "user",cascade = CascadeType.MERGE)
+/*
+    Thanks to CascadeType.ALL, associated entities BidderDetailsEntity,SellerDetailsEntity will be saved at the same time with UserEntity
+    without the need of calling its save function explicitly
+    Source: https://hellokoding.com/jpa-one-to-one-shared-primary-key-relationship-mapping-example-with-spring-boot-maven-and-mysql/
+    */
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private BidderDetailsEntity bidder;
 
-
-    @OneToOne(mappedBy = "user" ,cascade =CascadeType.MERGE)
+    @OneToOne(mappedBy = "user" ,cascade =CascadeType.ALL)
     private SellerDetailsEntity seller;
-
-    //
-//    //todo add it later
-//    @Column(name="verified" ,nullable=false ,columnDefinition="booelan default false")
-//    private Boolean verifiedByAdmin;
-
-
 
 
     public int getId() {
