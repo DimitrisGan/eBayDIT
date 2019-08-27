@@ -3,7 +3,7 @@ package com.ted.eBayDIT.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class BIdderDto implements Serializable {
+public class BidderDto implements Serializable {
 
     private static final long serialVersionUID = 8343846144175432530L;
 

@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
             admin1.setCountry("Greece");
             admin1.setPhoneNumber("6967510111");
-            admin1.setAddress("DI");
+            admin1.setLocation("DI");
 
 //            SellerDetailsEntity seller = new SellerDetailsEntity();
 //            seller.setUser(admin1);
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
             admin2.setCountry("Greece");
             admin2.setPhoneNumber("6967510112");
-            admin2.setAddress("DI");
+            admin2.setLocation("DI");
 
 
             saveAdmin(admin2);
@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
         if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
         if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
 
-        if (user2update.getAddress()        != null)    {userEntity.setAddress(user2update.getAddress()); }
+        if (user2update.getLocation()        != null)    {userEntity.setLocation(user2update.getLocation()); }
         if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
         if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
         if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }

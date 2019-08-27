@@ -12,18 +12,16 @@ import java.util.List;
 public class BidderDetailsEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_username",nullable = false)
-//    @MapsId
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @MapsId
     private UserEntity user;
 
 
-    //Do not apply
-    //cascading deletes!
+    //Do not apply cascading deletes!
     @OneToMany(mappedBy="bidder",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

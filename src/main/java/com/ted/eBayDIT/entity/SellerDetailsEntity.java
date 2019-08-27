@@ -21,16 +21,8 @@ public class SellerDetailsEntity implements Serializable {
     private int id;
 
 
-//    @OneToOne/*(cascade = CascadeType.ALL)*/
-////    @JoinColumn(name="user_username",nullable = false)
-//    @MapsId
-//    public String username ;
-
-
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @MapsId
-//    @JoinColumn(name = "RequestID")
-
     private UserEntity user;
 
     //Do not apply cascading deletes!

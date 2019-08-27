@@ -1,7 +1,7 @@
 package com.ted.eBayDIT.service.impl;
 
 
-import com.ted.eBayDIT.dto.BIdderDto;
+import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.entity.*;
@@ -206,12 +206,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void editAuction(Long id) {
         //todo edit fields of auction!!!
+
+
     }
 
 
     @Override
-    public void addBid(Long id, BIdderDto bidder, BidDto bid){
-
+    public void addBid(Long id, BidderDto bidder, BidDto bid){
+        //todo numOfBids++;
 
         //todo add bid to auctionID
     }

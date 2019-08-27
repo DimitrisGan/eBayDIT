@@ -12,7 +12,7 @@ public class UserRest {
 
     private String phoneNumber;
     private String country;
-    private String address;
+    private String location;
     private String afm;
 
     private boolean verified;
@@ -79,12 +79,12 @@ public class UserRest {
         this.country = country;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLocation() {
+        return location;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getAfm() {

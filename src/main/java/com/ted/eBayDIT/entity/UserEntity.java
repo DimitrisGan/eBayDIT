@@ -42,8 +42,8 @@ public class UserEntity implements Serializable {
     @Column(name="country")
     private String country;
 
-    @Column(name="address")
-    private String address;
+    @Column(name="location")
+    private String location;
 
     @Column(name="afm")
     private String afm;
@@ -60,7 +60,7 @@ public class UserEntity implements Serializable {
 
     //no need for cascade = CascadeType.ALL because by default
     //no operations are cascaded
-    @OneToOne(mappedBy = "user"/*,cascade = CascadeType.MERGE*/)
+    @OneToOne(mappedBy = "user",cascade = CascadeType.MERGE)
     private BidderDetailsEntity bidder;
 
 
@@ -147,12 +147,12 @@ public class UserEntity implements Serializable {
         this.country = country;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLocation() {
+        return location;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getAfm() {

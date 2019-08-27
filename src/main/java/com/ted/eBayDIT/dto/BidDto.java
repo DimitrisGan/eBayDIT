@@ -9,7 +9,7 @@ public class BidDto implements Serializable {
     private String time;
     private String amount;
 
-    private BIdderDto bidder;
+    private BidderDto bidder;
     private ItemDto itemDetails; //TODO maybe not needed
 
 
@@ -37,11 +37,11 @@ public class BidDto implements Serializable {
         this.amount = amount;
     }
 
-    public BIdderDto getBidder() {
+    public BidderDto getBidder() {
         return bidder;
     }
 
-    public void setBidder(BIdderDto bidder) {
+    public void setBidder(BidderDto bidder) {
         this.bidder = bidder;
     }
 

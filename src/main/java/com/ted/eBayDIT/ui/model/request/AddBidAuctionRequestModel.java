@@ -10,7 +10,24 @@ public class AddBidAuctionRequestModel {
     //    private Integer numberOfBids;
 
 //    private String ends;
-    BidDto bid ;
+//    BidDto bid ;
+
+//    private String time; de to thelw mias kai tha vazw to current time egw
+
+    private String amount;
+    private Integer id; //bidder id
+
+//    private Long itemID; //OXI THA UPARXEI STO PATH TOU URI
+
+//    private BidderDto bidder;
+
+//    private Integer rating;
+//    private String  country; //logika auta tha ta pairnw apo to user-bidderEntities
+//    private String  location;
+
+
+
+
 
 
 
