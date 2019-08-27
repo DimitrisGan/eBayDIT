@@ -127,7 +127,7 @@ public class ItemEntity {
 
 
 
-    @OneToMany(mappedBy="itemDetails"/*, cascade=CascadeType.ALL*/)
+    @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
     @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,

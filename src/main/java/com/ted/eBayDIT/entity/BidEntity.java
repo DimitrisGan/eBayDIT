@@ -17,11 +17,11 @@ public class BidEntity {
     @Column(name="id")
     private  Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="item_id")
     private ItemEntity itemDetails;
 
-    @ManyToOne/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade=CascadeType.ALL)/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})*/
     @JoinColumn(name = "bidder_id")
     private BidderDetailsEntity bidder;

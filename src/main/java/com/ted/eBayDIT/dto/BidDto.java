@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class BidDto implements Serializable {
     private static final long serialVersionUID = 5676746430987885339L;
 
-    private Integer id;
+    private int id;
     private String time;
     private String amount;
 
@@ -13,11 +13,11 @@ public class BidDto implements Serializable {
     private ItemDto itemDetails; //TODO maybe not needed
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

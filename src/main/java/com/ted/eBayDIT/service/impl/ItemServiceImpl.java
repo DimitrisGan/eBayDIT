@@ -1,7 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
 
-import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.entity.*;
@@ -37,6 +36,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     SellerDetailsRepository sellerRepo;
+
+    @Autowired
+    BidderDetailsRepository bidderRepo;
 
 
     @Autowired
@@ -182,7 +184,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int deleteAuction(Long id) {
 
-        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
+        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists!");
 
         if ( auctionIsStarted(id)) throw new RuntimeException("Auction-Item has already started! Can't delete it now!");
 
@@ -212,10 +214,31 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public void addBid(Long id, BidderDto bidder, BidDto bid){
-        //todo numOfBids++;
+    public void addBid(Long auctionId,String bidAmount,int bidderId){ //add bid to started auction
 
-        //todo add bid to auctionID
+//    public void addBid(Long id, BidDto bidDto){
+        ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
+        BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
+
+        if (bidder.getId() == this.securityService.getCurrentUser().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
+
+//        ModelMapper modelMapper = new ModelMapper();
+//        BidEntity bidEntity2save = modelMapper.map(bidDto, BidEntity.class);
+        BidEntity bidEntity2save = new BidEntity();
+        bidEntity2save.setAmount(bidAmount);
+        bidEntity2save.setBidder(bidder);
+
+        item2save.getBids().add(bidEntity2save);
+        item2save.setNumberOfBids(item2save.getNumberOfBids()+1); // numOfBids++;
+
+
+        this.itemRepo.save(item2save);
+
+    }
+
+    @Override
+    public boolean auctionStarted(Long id) {
+        return this.itemRepo.findByItemID(id).isEventStarted();
     }
 
 

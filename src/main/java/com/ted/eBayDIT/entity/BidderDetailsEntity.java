@@ -23,8 +23,7 @@ public class BidderDetailsEntity {
 
     //Do not apply cascading deletes!
     @OneToMany(mappedBy="bidder",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
+            cascade=CascadeType.ALL)
     private List<BidEntity> bids;
 
     @Column

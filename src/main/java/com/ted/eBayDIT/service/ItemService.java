@@ -1,7 +1,6 @@
 package com.ted.eBayDIT.service;
 
 
-import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 
@@ -27,5 +26,7 @@ public interface ItemService {
 
     void editAuction(Long id);
 
-    void addBid(Long id, BidderDto bidder, BidDto bid);
+    void addBid(Long auctionId,String bidAmount,int bidderId); //auctionId,bidAmount,bidderId)
+
+    boolean auctionStarted(Long id);
 }

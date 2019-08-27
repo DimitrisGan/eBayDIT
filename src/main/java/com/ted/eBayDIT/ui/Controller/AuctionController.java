@@ -1,6 +1,8 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
+import com.ted.eBayDIT.dto.BidDto;
+import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.UserService;
@@ -47,12 +49,35 @@ public class AuctionController {
 
 
     @PutMapping(path ="/auctions/add_bid/{id}") //add new bid for example
-    public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBid){
+    public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBidRequest){
+
+        //check first if item/auction exists!
+        if (! itemService.itemExists(id)){
+            String msg = "Auction doesn't exist to start!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+        //check if auction is started!
+        if (! itemService.auctionStarted(id)){
+            String msg = "Auction hasn't started to make bids!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+
+//        ModelMapper modelMapper = new ModelMapper();
+//        BidDto bidDto = modelMapper.map(newBidRequest, BidDto.class);
+//        BidDto bidDto = new BidDto();
+//        BidderDto bidderDto = new BidderDto();
+
+
+
+        itemService.addBid(id,newBidRequest.getAmount(),newBidRequest.getBidderId());
+
+
 
         //todo findAuctionById(auctionID)
 
-        //todo send back exception if startedEvent == true
-        //todo this.itemService.updateAuction(id);
+
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
