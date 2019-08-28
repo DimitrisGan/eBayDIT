@@ -32,6 +32,8 @@ public class UserDetailsRequestModel {
     private String location;
     private String afm;
 
+    private String address;
+
     private RoleDto role;
 
     public RoleDto getRole() {
@@ -116,5 +118,14 @@ public class UserDetailsRequestModel {
 
     public void setAfm(String afm) {
         this.afm = afm;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+        this.location = this.address;
     }
 }

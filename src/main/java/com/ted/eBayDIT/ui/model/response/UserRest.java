@@ -13,6 +13,7 @@ public class UserRest {
     private String phoneNumber;
     private String country;
     private String location;
+    private String address; //todo wait from front to change it
     private String afm;
 
     private boolean verified;
@@ -112,4 +113,13 @@ public class UserRest {
     }
 
 
+    public String getAddress() {
+//        return address;
+        return this.location;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+        this.location = address;
+    }
 }
