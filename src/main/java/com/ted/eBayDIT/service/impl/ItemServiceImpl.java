@@ -1,7 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
 
-import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.repository.*;
@@ -213,6 +212,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
+
+    private BidEntity createBid (String amount , ItemEntity itemDetails,BidderDetailsEntity bidder){
+        BidEntity returnValue = new BidEntity();
+
+        returnValue.setAmount(amount);
+        returnValue.setTime(Utils.getCurrentDateToStringDataType());
+        returnValue.setItemDetails(itemDetails);
+        returnValue.setBidder(bidder);
+
+        return  returnValue;
+    }
     @Override
     public void addBid(Long auctionId,String bidAmount,int bidderId){ //add bid to started auction
 
@@ -224,10 +234,15 @@ public class ItemServiceImpl implements ItemService {
 
 //        ModelMapper modelMapper = new ModelMapper();
 //        BidEntity bidEntity2save = modelMapper.map(bidDto, BidEntity.class);
-        BidEntity bidEntity2save = new BidEntity();
-        bidEntity2save.setAmount(bidAmount);
-        bidEntity2save.setBidder(bidder);
-        bidEntity2save.setItemDetails(item2save);
+
+
+
+//        todo Date currDate
+        BidEntity bidEntity2save = createBid(bidAmount,item2save,bidder);
+//        bidEntity2save.setAmount(bidAmount);
+//        bidEntity2save.setAmount(bidAmount);
+//        bidEntity2save.setTime(Date);
+//        bidEntity2save.setItemDetails(item2save);
 
 
         item2save.getBids().add(bidEntity2save);
