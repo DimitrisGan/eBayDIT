@@ -16,7 +16,7 @@ public class CreateAuctionRequestModel {
     private String buyPrice;
     private String firstBid;
     private String country;
-    private String started;
+
     private String ends;
     private String description;
 
@@ -57,13 +57,7 @@ public class CreateAuctionRequestModel {
         this.country = country;
     }
 
-    public String getStarted() {
-        return started;
-    }
 
-    public void setStarted(String started) {
-        this.started = started;
-    }
 
     public String getEnds() {
         return ends;

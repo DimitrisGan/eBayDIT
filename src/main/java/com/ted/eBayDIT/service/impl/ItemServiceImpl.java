@@ -86,7 +86,10 @@ public class ItemServiceImpl implements ItemService {
         long itemID = generateNewItemID();  item.setItemID(itemID);
 
         item.setNumberOfBids(0);
-        item.setCurrently("---");
+        item.setStarted(Utils.getCurrentDateToStringDataType());
+        //todo item.setEnds(item.getEnds())
+
+        item.setCurrently("None");
         item.setEventStarted(false);
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
