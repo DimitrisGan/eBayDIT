@@ -28,17 +28,17 @@ public class CategoryEntity {
     private List<ItemEntity> itemDetails;
 
     @Column(name="parent_id")
-    private int parent_id;
+    private int parentId;
 
     @Column(name="level"/*todo ,nullable=false*/)
     private int level;
 
-    public int getParent_id() {
-        return parent_id;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public int getLevel() {
