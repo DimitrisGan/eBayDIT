@@ -7,7 +7,6 @@ POST localhost:8080/api/auctions
     "buyPrice": "$7.50",
     "firstBid": "$2.50",
     "country": "USA",
-    "started": "Dec-11-01 11:21:48",
     "ends": "Dec-16-01 11:21:48",
     "description": "This is a Hallmark Santa Head Cookie Cutter",
     "categories": [
@@ -25,6 +24,7 @@ POST localhost:8080/api/auctions
 
 }
 
+
 //=================================================
 ~~START AUCTION~~
 
@@ -41,6 +41,17 @@ GET localhost:8080/api/auctions
 DELETE localhost:8080/api/auctions/{id}
 
 //=================================================
+
+~~add bit in auction~~
+PUT localhost:8080/api/auctions/add_bid/{id}
+
+{
+	"bidderId":3,
+	"amount": "100$"
+}
+
+//=================================================
+
 
 under construction :
 1# edit auction fields --> PUT localhost:8080/api/auctions/{id}"
