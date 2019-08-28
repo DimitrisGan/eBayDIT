@@ -1,10 +1,8 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
-import com.ted.eBayDIT.dto.CategoryDto;
 import com.ted.eBayDIT.entity.CategoryEntity;
 import com.ted.eBayDIT.repository.CategoryRepository;
-import com.ted.eBayDIT.ui.model.request.CategoriesRequestModel;
 import com.ted.eBayDIT.ui.model.response.CategoriesResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +21,14 @@ public class CategoriesController { //todo needs testing
     @Autowired
     CategoryRepository categRepo;
 
-    //todo GET ta paidia enos parent category
 
     @GetMapping("/categories/children/{parentId}")
-    public ResponseEntity<Object> getSubCategories(@PathVariable Integer parentId/*@RequestBody CategoriesRequestModel categRequest*/){
+    public ResponseEntity<Object> getSubCategories(@PathVariable Integer parentId){ //get the sub-categories
 
         List<CategoriesResponse> returnCategList =new ArrayList<>();
 
 
-        List<CategoryEntity> categories = categRepo.findChildrenCategories(/*categRequest.getParentId()*/parentId);
+        List<CategoryEntity> categories = categRepo.findChildrenCategories(parentId);
         ModelMapper modelMapper = new ModelMapper();
 
         for (CategoryEntity category : categories) {

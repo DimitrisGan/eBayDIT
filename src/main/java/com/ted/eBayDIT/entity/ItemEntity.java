@@ -3,6 +3,7 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 //@Entity
@@ -92,7 +93,7 @@ public class ItemEntity {
     private String name;
 
     @Column(name="currently" /*,nullable=false */)
-    private String currently;
+    private BigDecimal currently;
 
     @Column(name="buy_price" /*,nullable=false */)
     private String buyPrice;
@@ -157,11 +158,11 @@ public class ItemEntity {
         this.name = name;
     }
 
-    public String getCurrently() {
+    public BigDecimal getCurrently() {
         return currently;
     }
 
-    public void setCurrently(String currently) {
+    public void setCurrently(BigDecimal currently) {
         this.currently = currently;
     }
 

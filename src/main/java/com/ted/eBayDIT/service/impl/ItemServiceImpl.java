@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,11 @@ public class ItemServiceImpl implements ItemService {
         item.setStarted(Utils.getCurrentDateToStringDataType());
         //todo item.setEnds(item.getEnds())
 
-        item.setCurrently("None");
+//        item.setCurrently("None");
+        BigDecimal bdec = new BigDecimal("700.588");
+        item.setCurrently(bdec);
+
+//        item.setCurrently("None");
         item.setEventStarted(false);
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
