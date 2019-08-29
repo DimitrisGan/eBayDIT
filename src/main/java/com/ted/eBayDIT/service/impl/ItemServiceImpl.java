@@ -169,25 +169,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllUserAuctions() {
-        List<ItemDto> returnList = new ArrayList<>();
-        String userId = this.securityService.getCurrentUser().getUserId();
-        UserEntity currUser = this.userRepo.findByUserId(userId);
-
-        SellerDetailsEntity seller = sellerRepo.findById(currUser.getId());
-        List<ItemEntity> returnEntitiesList = seller.getItems();
-        ModelMapper modelMapper = new ModelMapper();
-
-        /*cinvert items/auctions List from Entity to Dto datatype*/
-        for (ItemEntity itemEntity : returnEntitiesList) {
-            ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
-            returnList.add(itemDto);
-        }
-
-        return returnList;
-    }
-
-    @Override
     public int deleteAuction(Long id) {
 
         if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists!");
@@ -259,6 +240,32 @@ public class ItemServiceImpl implements ItemService {
     public boolean auctionStarted(Long id) {
         return this.itemRepo.findByItemID(id).isEventStarted();
     }
+
+
+
+    @Override
+    public List<ItemDto> getAllUserAuctions() {
+        List<ItemDto> returnList = new ArrayList<>();
+        String userId = this.securityService.getCurrentUser().getUserId();
+        UserEntity currUser = this.userRepo.findByUserId(userId);
+
+        SellerDetailsEntity seller = sellerRepo.findById(currUser.getId());
+        List<ItemEntity> returnEntitiesList = seller.getItems();
+        ModelMapper modelMapper = new ModelMapper();
+
+        /*cinvert items/auctions List from Entity to Dto datatype*/
+        for (ItemEntity itemEntity : returnEntitiesList) {
+            ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
+            returnList.add(itemDto);
+        }
+
+        return returnList;
+    }
+
+
+
+
+
 
 
 }

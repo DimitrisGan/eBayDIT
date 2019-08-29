@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers(SecurityConstants.SIGN_UP_URL).permitAll()
+                .antMatchers("/search/**").permitAll()
 
                 .antMatchers("/login").permitAll()
 
