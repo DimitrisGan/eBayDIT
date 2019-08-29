@@ -333,8 +333,7 @@ public class ItemServiceImpl implements ItemService {
         /*cinvert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
 
-//            if ( isAuctionFinishedByTime(itemEntity.getItemID()) )
-//                continue;
+            boolean uselessVar = isAuctionFinishedByTime(itemEntity.getItemID());
 
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
             returnList.add(itemDto);
