@@ -18,7 +18,7 @@ public interface ItemService {
 
     boolean userOwnsTheAuction(Long id);
 
-    List<ItemDto> getAllUserAuctions();
+    List<ItemDto> getAllUserAuctions() throws ParseException;
 
     int deleteAuction(Long id) throws ParseException;
 
@@ -31,5 +31,4 @@ public interface ItemService {
     boolean isAuctionFinished(Long id) throws ParseException;
 
 
-
-    }
+}

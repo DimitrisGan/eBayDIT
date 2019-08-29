@@ -154,9 +154,11 @@ public class AuctionController {
 
 //    -------------------- UNDER CONSTRUCTON -----------------------------
 
+    //todo search GET check!!!!!!!!!!!!!!!!!!
 
+    //todo param
     @GetMapping(path ="/auctions")
-    public ResponseEntity<Object> getAllAuctions(){
+    public ResponseEntity<Object> getAllAuctions() throws ParseException {
 
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 

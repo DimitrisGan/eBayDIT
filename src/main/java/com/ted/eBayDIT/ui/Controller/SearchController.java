@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +28,14 @@ public class SearchController {
     SearchService searchService;
 
 
+    //todo search GET check!!!!!!!!!!!!!!!!!!
     @GetMapping(path ="/auctions/active")
-    public ResponseEntity<Object> getActiveAuctions(){
+    public ResponseEntity<Object> getActiveAuctions() throws ParseException {
+        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
 
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
         List<ItemDto> auctionsList = searchService.getActiveAuctions();
-
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
 
         ModelMapper modelMapper = new ModelMapper();
         for (ItemDto itemDto : auctionsList) {
@@ -45,6 +46,9 @@ public class SearchController {
         return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
 
     }
+
+
+
 
 
 }

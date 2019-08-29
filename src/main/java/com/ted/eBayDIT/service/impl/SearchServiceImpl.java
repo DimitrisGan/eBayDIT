@@ -6,11 +6,13 @@ import com.ted.eBayDIT.entity.ItemEntity;
 import com.ted.eBayDIT.entity.SellerDetailsEntity;
 import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.ItemRepository;
+import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,45 +23,29 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private ItemRepository itemRepo;
 
-//    @Autowired
-//    private UserRepository userRepo;
-//
-//    @Autowired
-//    private Utils utils;
-//
-//    @Autowired
-//    private CategoryRepository categRepo;
-//
-//    @Autowired
-//    SecurityService securityService;
-//
-//    @Autowired
-//    SellerDetailsRepository sellerRepo;
-//
-//    @Autowired
-//    BidderDetailsRepository bidderRepo;
-//
-//
-//    @Autowired
-//    ItemLocationRepo itemLocationRepo;
-//
+    @Autowired
+    private ItemService itemService;
 
 
-    //todo edw allakse thn gia na kaneis discard kai ta finished event
+
+
     @Override
-    public List<ItemDto> getActiveAuctions() {
-        List<ItemDto> returnList = new ArrayList<>();
+    public List<ItemDto> getActiveAuctions() throws ParseException {
 
         List<ItemEntity> auctions_list = itemRepo.findByEventStartedTrueAndEventFinishedFalse();
-
+        List<ItemDto> returnList = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        /*convert items/auctions List from Entity to Dto datatype*/
-        for (ItemEntity auctionEntity : auctions_list) {
 
-            //todo # check if currentTime < Ends Time
-            ItemDto itemDto =  modelMapper.map(auctionEntity, ItemDto.class);
+        for (ItemEntity itemEntity : auctions_list) {
+
+
+            if (itemService.isAuctionFinished(itemEntity.getItemID()) )
+                continue;
+
+            ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
             returnList.add(itemDto);
+
         }
 
         return returnList;

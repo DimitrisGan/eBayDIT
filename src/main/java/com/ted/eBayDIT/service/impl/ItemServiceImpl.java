@@ -95,6 +95,7 @@ public class ItemServiceImpl implements ItemService {
         return returnValue;
     }
 
+
     private void finishAuction(Long id) {
         if( ! this.itemRepo.findByItemID(id).isEventFinished() )
             this.itemRepo.findByItemID(id).setEventFinished(true);
@@ -276,7 +277,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public List<ItemDto> getAllUserAuctions() {
+    public List<ItemDto> getAllUserAuctions() throws ParseException {
         List<ItemDto> returnList = new ArrayList<>();
         String userId = this.securityService.getCurrentUser().getUserId();
         UserEntity currUser = this.userRepo.findByUserId(userId);
@@ -288,13 +289,16 @@ public class ItemServiceImpl implements ItemService {
         /*cinvert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
 
-            //todo # here chech the current time with ends and set isEventFinished with true
+            if ( isAuctionFinished(itemEntity.getItemID()) )
+                continue;
+
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
             returnList.add(itemDto);
         }
 
         return returnList;
     }
+
 
 
 
