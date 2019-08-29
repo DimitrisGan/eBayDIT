@@ -50,12 +50,14 @@ public class SearchServiceImpl implements SearchService {
     public List<ItemDto> getActiveAuctions() {
         List<ItemDto> returnList = new ArrayList<>();
 
-        List<ItemEntity> auctions_list = itemRepo.findByEventStartedTrue();
+        List<ItemEntity> auctions_list = itemRepo.findByEventStartedTrueAndEventFinishedFalse();
 
         ModelMapper modelMapper = new ModelMapper();
 
         /*convert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity auctionEntity : auctions_list) {
+
+            //todo # check if currentTime < Ends Time
             ItemDto itemDto =  modelMapper.map(auctionEntity, ItemDto.class);
             returnList.add(itemDto);
         }

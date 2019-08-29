@@ -13,6 +13,6 @@ public interface ItemRepository  extends JpaRepository<ItemEntity, Long> {
 
     ItemEntity findByItemID(Long id);
 
-    List<ItemEntity> findByEventStartedTrue();
+    List<ItemEntity> findByEventStartedTrueAndEventFinishedFalse();
 }
 

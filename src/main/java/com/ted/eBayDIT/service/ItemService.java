@@ -29,4 +29,10 @@ public interface ItemService {
     void addBid(Long auctionId, BigDecimal bidAmount, int bidderId); //auctionId,bidAmount,bidderId)
 
     boolean auctionStarted(Long id);
-}
+
+    boolean auctionFinished(Long id);
+
+
+
+
+    }

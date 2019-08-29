@@ -53,9 +53,32 @@ public class ItemServiceImpl implements ItemService {
         return itemCheck != null;
     }
 
-    private boolean itemIdExists(Long itemID){
-        ItemEntity itemCheck = this.itemRepo.findByItemID(itemID);
-        return itemCheck != null;
+
+
+    @Override //todo remove duplicate
+    public boolean itemExists(Long id) {
+        ItemEntity itemEntity = this.itemRepo.findByItemID(id);
+        return itemEntity != null; //if userEntity is null return false
+    }
+
+
+
+//    public boolean isFinished(ItemEntity item){
+//        return item.isEventFinished();
+//    }
+//
+//    public boolean isStarted(ItemEntity item){
+//        return item.isEventStarted();
+//    }
+
+    @Override
+    public boolean auctionStarted(Long id) {
+        return this.itemRepo.findByItemID(id).isEventStarted();
+    }
+
+    @Override
+    public boolean auctionFinished(Long id) {
+        return this.itemRepo.findByItemID(id).isEventFinished();
     }
 
 
@@ -96,6 +119,7 @@ public class ItemServiceImpl implements ItemService {
             item.setCurrently(item.getFirstBid());
 
         item.setEventStarted(false);
+        item.setEventFinished(false);
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
         //----------------------
@@ -111,7 +135,7 @@ public class ItemServiceImpl implements ItemService {
     private long generateNewItemID(){
         do { //generate a unique primary key for item
             newItemID++; //utils.generateItemID();
-        }while(itemIdExists(newItemID));
+        }while(itemExists(newItemID));
 
         return newItemID;
     }
@@ -133,12 +157,6 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
-    @Override
-    public boolean itemExists(Long id) {
-        ItemEntity itemEntity = this.itemRepo.findByItemID(id);
-
-        return itemEntity != null; //if userEntity is null return false
-    }
 
 
     @Override
@@ -150,9 +168,11 @@ public class ItemServiceImpl implements ItemService {
     public void startAuction(Long id) {
         ItemEntity item = this.itemRepo.findByItemID(id);
 
-        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
+        if (! itemExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
+
 
         item.setEventStarted(true);
+        item.setStarted(Utils.getCurrentDateToStringDataType()); //set timeStarted with currentTime
         this.itemRepo.save(item);
     }
 
@@ -171,7 +191,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int deleteAuction(Long id) {
 
-        if (! itemIdExists(id)) throw new RuntimeException("Auction-Item id doesn't exists!");
+        if (! itemExists(id)) throw new RuntimeException("Auction-Item id doesn't exists!");
 
         if ( auctionIsStarted(id)) throw new RuntimeException("Auction-Item has already started! Can't delete it now!");
 
@@ -187,15 +207,11 @@ public class ItemServiceImpl implements ItemService {
         return num != 0;
     }
 
-//    private boolean auctionIsStarted(Long id) {
-//        return this.itemRepo.findByItemID(id).isEventStarted();
-//    }
-
 
     @Override
     public void editAuction(Long id) {
         //todo edit fields of auction!!!
-
+        //todo #2 prepei na to kanw
 
     }
 
@@ -214,9 +230,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void addBid(Long auctionId, BigDecimal bidAmount, int bidderId){ //add bid to started auction
 
-//    public void addBid(Long id, BidDto bidDto){
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
         BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
+
+        //todo #3 edw prepei logika an exei teleiwsei na kanw to isFinished == true + na tsekarw me vash ta dates ends kai bid
+        if (auctionFinished(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
+
 
         if (bidder.getId() == this.securityService.getCurrentUser().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
@@ -236,11 +255,6 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
-    @Override
-    public boolean auctionStarted(Long id) {
-        return this.itemRepo.findByItemID(id).isEventStarted();
-    }
-
 
 
     @Override
@@ -255,6 +269,8 @@ public class ItemServiceImpl implements ItemService {
 
         /*cinvert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
+
+            //todo # here chech the current time with ends and set isEventFinished with true
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
             returnList.add(itemDto);
         }

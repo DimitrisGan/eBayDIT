@@ -63,6 +63,13 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
+        //todo # check if currentTime < Ends Time
+        //check if auction is finished!
+        if (itemService.auctionFinished(id)){
+            String msg = "Auction has finished!Thus, cannot bid!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
 
 //        ModelMapper modelMapper = new ModelMapper();
 //        BidDto bidDto = modelMapper.map(newBidRequest, BidDto.class);
@@ -85,6 +92,26 @@ public class AuctionController {
 
     @PutMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> editAuction(@PathVariable Long id,@RequestBody AuctionDetailsRequestModel editAuctionDetails){
+
+        //check first if item/auction exists!
+        if (! itemService.itemExists(id)){
+            String msg = "Auction doesn't exist to edit!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+        //check if auction is started!
+//        if (itemService.auctionStarted(id)){
+//            String msg = "Auction has started!Thus, you cannot edit it!";
+//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+//        }
+
+        //todo # check if currentTime < Ends Time
+        //check if auction is finished!
+        if (itemService.auctionFinished(id)){
+            String msg = "Auction has finished!Thus, cannot edit!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
 
         //todo findAuctionById(auctionID)
 
@@ -109,6 +136,11 @@ public class AuctionController {
         if (! itemService.userOwnsTheAuction(id)){
             String msg = "Not authorized to change auction that you don't own!";
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
+        }
+        //check first if item/auction has already started!
+        if ( itemService.auctionStarted(id)){
+            String msg = "Auction has already started!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
 
