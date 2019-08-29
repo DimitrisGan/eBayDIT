@@ -23,6 +23,8 @@ public class AuctionsResponseModel {
     private SellerResponseModel seller;
     private ItemLocationResponseModel location;
 
+    private boolean eventStarted;
+
     public AuctionsResponseModel() {
     }
 
@@ -112,6 +114,14 @@ public class AuctionsResponseModel {
 
     public void setLocation(ItemLocationResponseModel location) {
         this.location = location;
+    }
+
+    public boolean isEventStarted() {
+        return eventStarted;
+    }
+
+    public void setEventStarted(boolean eventStarted) {
+        this.eventStarted = eventStarted;
     }
 
 
