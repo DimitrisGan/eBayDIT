@@ -90,18 +90,17 @@ public class ItemServiceImpl implements ItemService {
         item.setStarted(Utils.getCurrentDateToStringDataType());
         //todo item.setEnds(item.getEnds())
 
-//        item.setCurrently("None");
-        BigDecimal bdec = new BigDecimal("700.588");
-        item.setCurrently(bdec);
+        if (item.getFirstBid().equals(new BigDecimal("0")))
+            item.setCurrently(new BigDecimal("0")); //set Currenlty to 0
+        else
+            item.setCurrently(item.getFirstBid());
 
-//        item.setCurrently("None");
         item.setEventStarted(false);
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
         //----------------------
         UserEntity currUser =  userRepo.findByUserId(this.securityService.getCurrentUser().getUserId());//modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
         SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
-        //currSellerUser.getItems().add(item);
         //----------------------
         item.setSeller(currSellerUser);
         ItemEntity storedItemDetails =itemRepo.save(item);
@@ -240,18 +239,13 @@ public class ItemServiceImpl implements ItemService {
 
         if (bidder.getId() == this.securityService.getCurrentUser().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
-//        ModelMapper modelMapper = new ModelMapper();
-//        BidEntity bidEntity2save = modelMapper.map(bidDto, BidEntity.class);
+
+        int res = item2save.getCurrently().compareTo(bidAmount);
+        if (res >=0 ) throw new RuntimeException("Bid cannot be less than current best offer or first bid!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
 
 
-
-//        todo Date currDate
+        item2save.setCurrently(bidAmount);
         BidEntity bidEntity2save = createBid(bidAmount,item2save,bidder);
-//        bidEntity2save.setAmount(bidAmount);
-//        bidEntity2save.setAmount(bidAmount);
-//        bidEntity2save.setTime(Date);
-//        bidEntity2save.setItemDetails(item2save);
-
 
         item2save.getBids().add(bidEntity2save);
         item2save.setNumberOfBids(item2save.getNumberOfBids()+1); // numOfBids++;
