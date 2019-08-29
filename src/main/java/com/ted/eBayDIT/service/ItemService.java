@@ -4,6 +4,7 @@ package com.ted.eBayDIT.service;
 import com.ted.eBayDIT.dto.ItemDto;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 
 public interface ItemService {
@@ -30,9 +31,9 @@ public interface ItemService {
 
     boolean auctionStarted(Long id);
 
-    boolean auctionFinished(Long id);
+    boolean isAuctionFinished(Long id) throws ParseException;
 
-
+    void finishAuction(Long id);
 
 
     }

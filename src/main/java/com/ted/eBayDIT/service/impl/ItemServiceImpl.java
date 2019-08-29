@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -76,9 +78,29 @@ public class ItemServiceImpl implements ItemService {
         return this.itemRepo.findByItemID(id).isEventStarted();
     }
 
+    private boolean bidsInAuctionExist(Long id) {
+        int num = this.itemRepo.findByItemID(id).getNumberOfBids();
+        return num != 0;
+    }
+
+
     @Override
-    public boolean auctionFinished(Long id) {
-        return this.itemRepo.findByItemID(id).isEventFinished();
+    public boolean isAuctionFinished(Long id) throws ParseException {
+
+        //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
+        String endsDateString = this.itemRepo.findByItemID(id).getEnds();
+        String currentDateString = Utils.getCurrentDateToStringDataType();
+        Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
+
+        Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
+
+        return currDate.after(endsDate);
+    }
+
+    @Override
+    public void finishAuction(Long id) {
+        if( ! this.itemRepo.findByItemID(id).isEventFinished() )
+            this.itemRepo.findByItemID(id).setEventFinished(true);
     }
 
 
@@ -191,9 +213,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int deleteAuction(Long id) {
 
-        if (! itemExists(id)) throw new RuntimeException("Auction-Item id doesn't exists!");
+        if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
-        if ( auctionIsStarted(id)) throw new RuntimeException("Auction-Item has already started! Can't delete it now!");
+        if ( auctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't delete it now!");
+
+        if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot delete auction-Item now!");
 
         ItemEntity item = this.itemRepo.findByItemID(id);
 
@@ -202,16 +226,19 @@ public class ItemServiceImpl implements ItemService {
         return 0;
     }
 
-    private boolean auctionIsStarted(Long id) {
-        int num = this.itemRepo.findByItemID(id).getNumberOfBids();
-        return num != 0;
-    }
 
 
     @Override
     public void editAuction(Long id) {
         //todo edit fields of auction!!!
         //todo #2 prepei na to kanw
+
+        if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
+
+        if ( auctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
+
+        if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot edit auction-Item now!");
+
 
     }
 
