@@ -16,6 +16,7 @@ public class Utils {
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+
     public String generateUserId(int length) {
         return generateRandomString(length);
     }
@@ -61,6 +62,22 @@ public class Utils {
     public static Date getCurrentDate() throws ParseException { //In Ebay date format
 
         return convertStringDateToDateDataType(getCurrentDateToStringDataType());
+    }
+
+
+
+    //Source: https://stackoverflow.com/questions/49752149/how-do-i-convert-2018-04-10t040000-000z-string-to-datetime
+    public static String convertFrontDateTypeToBack(String srcEnds) throws ParseException {
+        String pattern = "MMM-dd-yy HH:mm:ss";
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat outputFormat = new SimpleDateFormat(pattern);
+
+        Date date = inputFormat.parse(srcEnds);
+        //        System.out.println(formattedDate); // prints 10-04-2018
+
+
+        return outputFormat.format(date);
     }
 
 

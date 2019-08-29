@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    void addNewItem(ItemDto item);
+    void addNewItem(ItemDto item) throws ParseException;
 
     boolean itemExists(Long id);
 

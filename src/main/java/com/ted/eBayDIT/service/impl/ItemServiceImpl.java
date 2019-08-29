@@ -134,7 +134,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private void saveAuction(ItemEntity item) {
+    private void saveAuction(ItemEntity item) throws ParseException {
         /*set default values for item*/
         long itemID = generateNewItemID();  item.setItemID(itemID);
 
@@ -149,6 +149,10 @@ public class ItemServiceImpl implements ItemService {
 
         item.setEventStarted(false);
         item.setEventFinished(false);
+
+        item.setEnds(Utils.convertFrontDateTypeToBack(item.getEnds()));
+
+
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
         //----------------------
@@ -170,7 +174,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void addNewItem(ItemDto item) {
+    public void addNewItem(ItemDto item) throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
