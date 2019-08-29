@@ -1,0 +1,15 @@
+
+ALL ARE GET REQUESTS
+
+
+get all the sub-categories of abstract-category with id =: parent_id
+localhost:8080/api/categories/children/{parent_id}
+//=================================================
+get all categories in  tier-level {level}
+localhost:8080/api/categories/level/{level}
+//=================================================
+get all the root categories ----> you can take them also with .../level/{level} URL where level = 0
+localhost:8080/api/categories/root
+//=================================================
+get all categories & sub-categories [too heavy for front to load it.Thus, don't use it
+localhost:8080/api/categories/all
