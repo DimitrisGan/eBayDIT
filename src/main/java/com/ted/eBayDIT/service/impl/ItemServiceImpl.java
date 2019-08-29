@@ -94,7 +94,11 @@ public class ItemServiceImpl implements ItemService {
             ItemEntity item2save = itemRepo.findByItemID(id);
             List<BidEntity> bids= item2save.getBids();
 
-            item2save.setWinnerID(bids.get(bids.size()-1).getId()); //set winnerId
+            if (bids.isEmpty())
+                item2save.setWinnerID(-1); //None won the item in the auction
+            else
+                item2save.setWinnerID(bids.get(bids.size()-1).getId()); //set winnerId
+
             item2save.setEventFinished(true);
 
             itemRepo.save(item2save);
