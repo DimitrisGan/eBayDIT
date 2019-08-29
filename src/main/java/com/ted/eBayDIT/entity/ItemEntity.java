@@ -140,7 +140,10 @@ public class ItemEntity {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private ItemLocationEntity location;
 
+    @Column
     private boolean eventStarted;
+    @Column
+    private boolean eventFinished;
 
     public Long getItemID() {
         return itemID;
@@ -260,5 +263,13 @@ public class ItemEntity {
 
     public void setEventStarted(boolean eventStarted) {
         this.eventStarted = eventStarted;
+    }
+
+    public boolean isEventFinished() {
+        return eventFinished;
+    }
+
+    public void setEventFinished(boolean eventFinished) {
+        this.eventFinished = eventFinished;
     }
 }

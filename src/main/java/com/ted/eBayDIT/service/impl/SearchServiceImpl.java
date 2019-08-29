@@ -45,6 +45,7 @@ public class SearchServiceImpl implements SearchService {
 //
 
 
+    //todo edw allakse thn gia na kaneis discard kai ta finished event
     @Override
     public List<ItemDto> getActiveAuctions() {
         List<ItemDto> returnList = new ArrayList<>();
