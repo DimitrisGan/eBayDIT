@@ -40,7 +40,7 @@ public class SearchServiceImpl implements SearchService {
         for (ItemEntity itemEntity : auctions_list) {
 
 
-            if (itemService.isAuctionFinished(itemEntity.getItemID()) )
+            if (itemService.isAuctionFinishedByTime(itemEntity.getItemID()) )
                 continue;
 
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);

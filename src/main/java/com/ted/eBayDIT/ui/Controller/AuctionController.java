@@ -44,10 +44,10 @@ public class AuctionController {
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
 
         //check if ends Date is after Current date
-        if (Utils.convertStringDateToDateDataType(itemDto.getEnds()).before(Utils.getCurrentDate())){
-            String msg = "Auction doesn't exist to start!";
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-        }
+//        if (Utils.convertStringDateToDateDataType(itemDto.getEnds()).before(Utils.getCurrentDate())){
+//            String msg = "Auction doesn't exist to start!";
+//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+//        }
 
 
         this.itemService.addNewItem(itemDto); //create item-auction
