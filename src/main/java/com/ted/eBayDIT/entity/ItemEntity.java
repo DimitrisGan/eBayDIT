@@ -145,6 +145,10 @@ public class ItemEntity {
     @Column
     private boolean eventFinished;
 
+    @Column
+    private int winnerID;
+
+
     public Long getItemID() {
         return itemID;
     }
@@ -271,5 +275,13 @@ public class ItemEntity {
 
     public void setEventFinished(boolean eventFinished) {
         this.eventFinished = eventFinished;
+    }
+
+    public int getWinnerID() {
+        return winnerID;
+    }
+
+    public void setWinnerID(int winnerID) {
+        this.winnerID = winnerID;
     }
 }

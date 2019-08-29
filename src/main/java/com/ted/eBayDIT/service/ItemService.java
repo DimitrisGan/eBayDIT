@@ -13,7 +13,6 @@ public interface ItemService {
 
     boolean itemExists(Long id);
 
-
     void startAuction(Long id);
 
     boolean userOwnsTheAuction(Long id);
@@ -30,5 +29,5 @@ public interface ItemService {
 
     boolean isAuctionFinished(Long id) throws ParseException;
 
-
+    void buyout(Long auctionId) throws ParseException;
 }

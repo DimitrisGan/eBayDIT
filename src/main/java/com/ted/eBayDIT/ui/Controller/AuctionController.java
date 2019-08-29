@@ -57,6 +57,37 @@ public class AuctionController {
     }
 
 
+    @PutMapping(path ="/auctions/buyout/{auctionId}") //add new bid for example
+
+    public ResponseEntity<Object> buyItemInAuction(@PathVariable Long auctionId,@RequestBody AddBidAuctionRequestModel newBidRequest) throws ParseException {
+
+        //check first if item/auction exists!
+        if (! itemService.itemExists(auctionId)){
+            String msg = "Auction doesn't exist to buyout!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+        //check if auction is started!
+        if (! itemService.auctionStarted(auctionId)){
+            String msg = "Auction hasn't started to auctionId!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+        //check if auction is finished!
+        if (! itemService.auctionStarted(auctionId)){
+            String msg = "Auction hasn't started to auctionId!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+
+        //the check for if auction has finished is done inside the itemService.addBid()
+        itemService.buyout(auctionId);
+                //addBid(auctionId,newBidRequest.getAmount(),newBidRequest.getBidderId());
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
     @PutMapping(path ="/auctions/add_bid/{id}") //add new bid for example
     public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBidRequest) throws ParseException {
 

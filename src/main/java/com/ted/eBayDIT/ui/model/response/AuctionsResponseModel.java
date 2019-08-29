@@ -26,6 +26,9 @@ public class AuctionsResponseModel {
     private boolean eventStarted;
     private boolean eventFinished;
 
+    private int winnerID;
+
+
 
     public AuctionsResponseModel() {
     }
@@ -132,6 +135,14 @@ public class AuctionsResponseModel {
 
     public void setEventFinished(boolean eventFinished) {
         this.eventFinished = eventFinished;
+    }
+
+    public int getWinnerID() {
+        return winnerID;
+    }
+
+    public void setWinnerID(int winnerID) {
+        this.winnerID = winnerID;
     }
 
 

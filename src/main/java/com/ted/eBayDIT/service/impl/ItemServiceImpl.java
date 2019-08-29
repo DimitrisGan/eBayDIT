@@ -102,6 +102,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
+
+
     private boolean categoriesExist(List<CategoryEntity> categories){
 
         for (CategoryEntity category : categories) {
@@ -277,6 +279,33 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
+    public void buyout(Long auctionId) throws ParseException {
+        ItemEntity item = this.itemRepo.findByItemID(auctionId); //get auction details
+
+        if (isAuctionFinished(item.getItemID())) throw new RuntimeException("Cannot buyout in a finished auction!"); //check if is ended
+
+        if (bidsInAuctionExist(auctionId)) throw new RuntimeException("Buyout is not anymore in the table!You have to offer more ;) ");
+
+
+
+
+        int bidderId = securityService.getCurrentUser().getId();
+
+
+
+        item.setEnds(Utils.getCurrentDateToStringDataType());
+        //todo setWinnerId
+        
+        finishAuction(auctionId);
+
+        this.itemRepo.save(item);
+
+    }
+
+
+
+
+    @Override
     public List<ItemDto> getAllUserAuctions() throws ParseException {
         List<ItemDto> returnList = new ArrayList<>();
         String userId = this.securityService.getCurrentUser().getUserId();
@@ -302,13 +331,13 @@ public class ItemServiceImpl implements ItemService {
 
 
 
-
 //    @Override
 //    public List<ItemDto> getAllUsersActiveAuctions()
 //    @Override
 //    public List<ItemDto> getAllUsersFinishedAuctions()
 //    @Override
 //    public List<ItemDto> getAllUsersNotStartedAuctions()
+
 
 
 

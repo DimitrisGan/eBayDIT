@@ -28,7 +28,6 @@ public class SearchController {
     SearchService searchService;
 
 
-    //todo search GET check!!!!!!!!!!!!!!!!!!
     @GetMapping(path ="/auctions/active")
     public ResponseEntity<Object> getActiveAuctions() throws ParseException {
         AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
