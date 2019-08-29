@@ -4,6 +4,7 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 //@Data
 
@@ -29,7 +30,7 @@ public class BidEntity {
     @Column
     private String time; //todo change type to Date //todo2 check not be the same from same bidder
     @Column
-    private String amount;
+    private BigDecimal amount;
 
 
     public Integer getId() {
@@ -64,11 +65,12 @@ public class BidEntity {
         this.time = time;
     }
 
-    public String getAmount() {
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

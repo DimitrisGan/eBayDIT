@@ -1,9 +1,9 @@
 package com.ted.eBayDIT.service;
 
 
-import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ItemService {
@@ -26,7 +26,7 @@ public interface ItemService {
 
     void editAuction(Long id);
 
-    void addBid(Long auctionId,String bidAmount,int bidderId); //auctionId,bidAmount,bidderId)
+    void addBid(Long auctionId, BigDecimal bidAmount, int bidderId); //auctionId,bidAmount,bidderId)
 
     boolean auctionStarted(Long id);
 }

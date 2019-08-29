@@ -1,6 +1,7 @@
 package com.ted.eBayDIT.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ItemDto implements Serializable {
@@ -9,8 +10,8 @@ public class ItemDto implements Serializable {
 
     private Long itemID;
     private String name;
-    private String buyPrice;
-    private String firstBid;
+    private BigDecimal buyPrice;
+    private BigDecimal firstBid;
     private String country;
     private String started;
     private String ends;
@@ -52,19 +53,19 @@ public class ItemDto implements Serializable {
         this.currently = currently;
     }
 
-    public String getBuyPrice() {
+    public BigDecimal getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(String buyPrice) {
+    public void setBuyPrice(BigDecimal buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public String getFirstBid() {
+    public BigDecimal getFirstBid() {
         return firstBid;
     }
 
-    public void setFirstBid(String firstBid) {
+    public void setFirstBid(BigDecimal firstBid) {
         this.firstBid = firstBid;
     }
 

@@ -3,6 +3,8 @@ package com.ted.eBayDIT.ui.model.request;
 
 import com.ted.eBayDIT.dto.BidDto;
 
+import java.math.BigDecimal;
+
 public class AddBidAuctionRequestModel {
 
 
@@ -14,14 +16,14 @@ public class AddBidAuctionRequestModel {
 
 //    private String time; de to thelw mias kai tha vazw to current time egw
 
-    private String amount;
+    private BigDecimal amount;
     private Integer bidderId; //bidder-user id
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

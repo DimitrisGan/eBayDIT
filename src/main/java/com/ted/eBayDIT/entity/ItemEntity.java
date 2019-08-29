@@ -96,10 +96,10 @@ public class ItemEntity {
     private BigDecimal currently;
 
     @Column(name="buy_price" /*,nullable=false */)
-    private String buyPrice;
+    private BigDecimal buyPrice;
 
     @Column(name="first_bid" /*,nullable=false */)
-    private String firstBid;
+    private BigDecimal firstBid;
 
     @Column(name="number_of_bids" /*,nullable=false */)
     private Integer numberOfBids;
@@ -166,19 +166,19 @@ public class ItemEntity {
         this.currently = currently;
     }
 
-    public String getBuyPrice() {
+    public BigDecimal getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(String buyPrice) {
+    public void setBuyPrice(BigDecimal buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public String getFirstBid() {
+    public BigDecimal getFirstBid() {
         return firstBid;
     }
 
-    public void setFirstBid(String firstBid) {
+    public void setFirstBid(BigDecimal firstBid) {
         this.firstBid = firstBid;
     }
 

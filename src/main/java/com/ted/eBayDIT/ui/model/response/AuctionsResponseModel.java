@@ -4,6 +4,7 @@ package com.ted.eBayDIT.ui.model.response;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.ItemLocationDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class AuctionsResponseModel {
@@ -11,8 +12,8 @@ public class AuctionsResponseModel {
     //todo needs to add bidder !!!!
     private Long itemID;
     private String name;
-    private String buyPrice;
-    private String firstBid;
+    private BigDecimal buyPrice;
+    private BigDecimal firstBid;
     private String country;
     private String started;
     private String ends;
@@ -41,19 +42,19 @@ public class AuctionsResponseModel {
         this.name = name;
     }
 
-    public String getBuyPrice() {
+    public BigDecimal getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(String buyPrice) {
+    public void setBuyPrice(BigDecimal buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public String getFirstBid() {
+    public BigDecimal getFirstBid() {
         return firstBid;
     }
 
-    public void setFirstBid(String firstBid) {
+    public void setFirstBid(BigDecimal firstBid) {
         this.firstBid = firstBid;
     }
 

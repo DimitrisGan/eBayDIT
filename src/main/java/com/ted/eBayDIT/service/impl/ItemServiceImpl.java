@@ -221,7 +221,7 @@ public class ItemServiceImpl implements ItemService {
 
 
 
-    private BidEntity createBid (String amount , ItemEntity itemDetails,BidderDetailsEntity bidder){
+    private BidEntity createBid (BigDecimal amount , ItemEntity itemDetails, BidderDetailsEntity bidder){
         BidEntity returnValue = new BidEntity();
 
         returnValue.setAmount(amount);
@@ -232,7 +232,7 @@ public class ItemServiceImpl implements ItemService {
         return  returnValue;
     }
     @Override
-    public void addBid(Long auctionId,String bidAmount,int bidderId){ //add bid to started auction
+    public void addBid(Long auctionId, BigDecimal bidAmount, int bidderId){ //add bid to started auction
 
 //    public void addBid(Long id, BidDto bidDto){
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details

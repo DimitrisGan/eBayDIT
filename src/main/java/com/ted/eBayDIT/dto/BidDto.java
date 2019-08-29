@@ -1,13 +1,14 @@
 package com.ted.eBayDIT.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class BidDto implements Serializable {
     private static final long serialVersionUID = 5676746430987885339L;
 
     private int id;
     private String time;
-    private String amount;
+    private BigDecimal amount;
 
     private BidderDto bidder;
     private ItemDto itemDetails; //TODO maybe not needed
@@ -29,11 +30,11 @@ public class BidDto implements Serializable {
         this.time = time;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
