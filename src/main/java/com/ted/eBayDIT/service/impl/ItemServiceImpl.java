@@ -64,15 +64,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-
-//    public boolean isFinished(ItemEntity item){
-//        return item.isEventFinished();
-//    }
-//
-//    public boolean isStarted(ItemEntity item){
-//        return item.isEventStarted();
-//    }
-
     @Override
     public boolean auctionStarted(Long id) {
         return this.itemRepo.findByItemID(id).isEventStarted();
@@ -84,21 +75,27 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-    @Override
-    public boolean isAuctionFinished(Long id) throws ParseException {
 
-        //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
+    @Override        //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
+    public boolean isAuctionFinished(Long id) throws ParseException {
+        //check if is marked finished
+        if (this.itemRepo.findByItemID(id).isEventFinished())
+            return true; //if so then no need to do dates comparison
+
         String endsDateString = this.itemRepo.findByItemID(id).getEnds();
         String currentDateString = Utils.getCurrentDateToStringDataType();
         Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
 
         Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
 
-        return currDate.after(endsDate);
+        boolean returnValue = currDate.after(endsDate);
+        if (returnValue)
+            finishAuction(id); //here we make eventFinish value true
+
+        return returnValue;
     }
 
-    @Override
-    public void finishAuction(Long id) {
+    private void finishAuction(Long id) {
         if( ! this.itemRepo.findByItemID(id).isEventFinished() )
             this.itemRepo.findByItemID(id).setEventFinished(true);
     }
@@ -132,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
         long itemID = generateNewItemID();  item.setItemID(itemID);
 
         item.setNumberOfBids(0);
-        item.setStarted(Utils.getCurrentDateToStringDataType());
+        item.setStarted("Not started yet!");
         //todo item.setEnds(item.getEnds())
 
         if (item.getFirstBid().equals(new BigDecimal("0")))
@@ -175,23 +172,17 @@ public class ItemServiceImpl implements ItemService {
 
         saveAuction(itemEntity2save);
 
-        //todo maybe convert to Dto objeect and send it back to response
 
     }
 
 
 
-    @Override
-    public int updateItemInfo() {
-        return 0;
-    }
 
     @Override
     public void startAuction(Long id) {
         ItemEntity item = this.itemRepo.findByItemID(id);
 
         if (! itemExists(id)) throw new RuntimeException("Auction-Item id doesn't exists");
-
 
         item.setEventStarted(true);
         item.setStarted(Utils.getCurrentDateToStringDataType()); //set timeStarted with currentTime
@@ -211,11 +202,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public int deleteAuction(Long id) {
+    public int deleteAuction(Long id) throws ParseException {
 
         if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
-        if ( auctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't delete it now!");
+        if ( isAuctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't delete it now!");
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot delete auction-Item now!");
 
@@ -229,13 +220,13 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public void editAuction(Long id) {
+    public void editAuction(Long id) throws ParseException {
         //todo edit fields of auction!!!
         //todo #2 prepei na to kanw
 
         if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
-        if ( auctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
+        if ( isAuctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot edit auction-Item now!");
 
@@ -255,15 +246,15 @@ public class ItemServiceImpl implements ItemService {
         return  returnValue;
     }
     @Override
-    public void addBid(Long auctionId, BigDecimal bidAmount, int bidderId){ //add bid to started auction
+    public void addBid(Long auctionId, BigDecimal bidAmount, int bidderId) throws ParseException { //add bid to started auction
 
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
-        BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
 
         //todo #3 edw prepei logika an exei teleiwsei na kanw to isFinished == true + na tsekarw me vash ta dates ends kai bid
-        if (auctionFinished(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
+        if (isAuctionFinished(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
 
 
+        BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
         if (bidder.getId() == this.securityService.getCurrentUser().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
 
@@ -307,6 +298,13 @@ public class ItemServiceImpl implements ItemService {
 
 
 
+
+//    @Override
+//    public List<ItemDto> getAllUsersActiveAuctions()
+//    @Override
+//    public List<ItemDto> getAllUsersFinishedAuctions()
+//    @Override
+//    public List<ItemDto> getAllUsersNotStartedAuctions()
 
 
 

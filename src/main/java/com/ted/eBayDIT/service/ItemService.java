@@ -14,26 +14,22 @@ public interface ItemService {
     boolean itemExists(Long id);
 
 
-    int updateItemInfo(/*todo ItemInfoDto*/);
-
-
     void startAuction(Long id);
 
     boolean userOwnsTheAuction(Long id);
 
     List<ItemDto> getAllUserAuctions();
 
-    int deleteAuction(Long id);
+    int deleteAuction(Long id) throws ParseException;
 
-    void editAuction(Long id);
+    void editAuction(Long id) throws ParseException;
 
-    void addBid(Long auctionId, BigDecimal bidAmount, int bidderId); //auctionId,bidAmount,bidderId)
+    void addBid(Long auctionId, BigDecimal bidAmount, int bidderId) throws ParseException; //auctionId,bidAmount,bidderId)
 
     boolean auctionStarted(Long id);
 
     boolean isAuctionFinished(Long id) throws ParseException;
 
-    void finishAuction(Long id);
 
 
     }

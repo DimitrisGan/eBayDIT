@@ -58,6 +58,11 @@ public class Utils {
     }
 
 
+    public static Date getCurrentDate() throws ParseException { //In Ebay date format
+
+        return convertStringDateToDateDataType(getCurrentDateToStringDataType());
+    }
+
 
 
 }

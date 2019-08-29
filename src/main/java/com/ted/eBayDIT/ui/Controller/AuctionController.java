@@ -11,12 +11,14 @@ import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
+import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +38,17 @@ public class AuctionController {
 
 
     @PostMapping(path ="/auctions")
-    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel){
+    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
-        ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class); //todo first step here
+        ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
+
+        //check if ends Date is after Current date
+        if (Utils.convertStringDateToDateDataType(itemDto.getEnds()).before(Utils.getCurrentDate())){
+            String msg = "Auction doesn't exist to start!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
 
         this.itemService.addNewItem(itemDto); //create item-auction
 
@@ -49,7 +58,7 @@ public class AuctionController {
 
 
     @PutMapping(path ="/auctions/add_bid/{id}") //add new bid for example
-    public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBidRequest){
+    public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBidRequest) throws ParseException {
 
         //check first if item/auction exists!
         if (! itemService.itemExists(id)){
@@ -63,28 +72,15 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
-        //todo # check if currentTime < Ends Time
         //check if auction is finished!
-        if (itemService.auctionFinished(id)){
-            String msg = "Auction has finished!Thus, cannot bid!";
+        if (! itemService.auctionStarted(id)){
+            String msg = "Auction hasn't started to make bids!";
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
 
-//        ModelMapper modelMapper = new ModelMapper();
-//        BidDto bidDto = modelMapper.map(newBidRequest, BidDto.class);
-//        BidDto bidDto = new BidDto();
-//        BidderDto bidderDto = new BidderDto();
-
-
-
+        //the check for if auction has finished is done inside the itemService.addBid()
         itemService.addBid(id,newBidRequest.getAmount(),newBidRequest.getBidderId());
-
-
-
-        //todo findAuctionById(auctionID)
-
-
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -99,18 +95,6 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
-        //check if auction is started!
-//        if (itemService.auctionStarted(id)){
-//            String msg = "Auction has started!Thus, you cannot edit it!";
-//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-//        }
-
-        //todo # check if currentTime < Ends Time
-        //check if auction is finished!
-        if (itemService.auctionFinished(id)){
-            String msg = "Auction has finished!Thus, cannot edit!";
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-        }
 
 
         //todo findAuctionById(auctionID)
@@ -124,7 +108,7 @@ public class AuctionController {
 
 
     @PutMapping(path ="/auctions/start/{id}") //add new bid for example
-    public ResponseEntity<Object> startAuction(@PathVariable Long id){//id : auctionId
+    public ResponseEntity<Object> startAuction(@PathVariable Long id) throws ParseException {//id : auctionId
 
 
         //check first if item/auction exists to start it!
@@ -151,6 +135,26 @@ public class AuctionController {
     }
 
 
+
+
+
+    @DeleteMapping(path ="/auctions/{id}")
+    public ResponseEntity<Object> deleteAuction(@PathVariable Long id) throws ParseException {
+        //check if currUser owns the auction!
+        if (! itemService.userOwnsTheAuction(id)){
+            String msg = "Not authorized to delete auction that you don't own!";
+            return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
+        }
+        int  i = this.itemService.deleteAuction(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+//    -------------------- UNDER CONSTRUCTON -----------------------------
+
+
     @GetMapping(path ="/auctions")
     public ResponseEntity<Object> getAllAuctions(){
 
@@ -171,21 +175,8 @@ public class AuctionController {
     }
 
 
-    @DeleteMapping(path ="/auctions/{id}")
-    public ResponseEntity<Object> deleteAuction(@PathVariable Long id){
-        //check if currUser owns the auction!
-        if (! itemService.userOwnsTheAuction(id)){
-            String msg = "Not authorized to delete auction that you don't own!";
-            return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
-        }
-        int  i = this.itemService.deleteAuction(id);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
 
-
-//    -------------------- UNDER CONSTRUCTON -----------------------------
 
     @GetMapping(path ="/auctions/{id}") //add new bid for example
     public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
