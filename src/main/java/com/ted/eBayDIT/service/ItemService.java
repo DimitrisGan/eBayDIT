@@ -27,7 +27,7 @@ public interface ItemService {
 
     boolean auctionStarted(Long id);
 
-    boolean isAuctionFinished(Long id) throws ParseException;
+    boolean isAuctionFinishedByTime(Long id) throws ParseException;
 
     void buyout(Long auctionId) throws ParseException;
 }

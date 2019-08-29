@@ -10,6 +10,7 @@ import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.jvm.hotspot.gc.cms.LinearAllocBlock;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -76,30 +77,37 @@ public class ItemServiceImpl implements ItemService {
 
 
 
-    @Override        //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
-    public boolean isAuctionFinished(Long id) throws ParseException {
+    @Override
+    public boolean isAuctionFinishedByTime(Long id) throws ParseException {
         //check if is marked finished
         if (this.itemRepo.findByItemID(id).isEventFinished())
             return true; //if so then no need to do dates comparison
 
-        String endsDateString = this.itemRepo.findByItemID(id).getEnds();
+        String endsDateString = this.itemRepo.findByItemID(id).getEnds(); //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
         String currentDateString = Utils.getCurrentDateToStringDataType();
         Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
 
         Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
 
-        boolean returnValue = currDate.after(endsDate);
-        if (returnValue)
-            finishAuction(id); //here we make eventFinish value true
+        boolean isFinishedByTime = currDate.after(endsDate);
+        if (isFinishedByTime) {
+//            finishAuction(id); //here we make eventFinish value true
+            ItemEntity item2save = itemRepo.findByItemID(id);
+            List<BidEntity> bids= item2save.getBids();
 
-        return returnValue;
+            item2save.setWinnerID(bids.get(bids.size()-1).getId()); //set winnerId
+            item2save.setEventFinished(true);
+
+            itemRepo.save(item2save);
+        }
+        return isFinishedByTime;
     }
 
 
-    private void finishAuction(Long id) {
-        if( ! this.itemRepo.findByItemID(id).isEventFinished() )
-            this.itemRepo.findByItemID(id).setEventFinished(true);
-    }
+//    private void finishAuction(Long id) {
+//        if( ! this.itemRepo.findByItemID(id).isEventFinished() )
+//            this.itemRepo.findByItemID(id).setEventFinished(true);
+//    }
 
 
 
@@ -135,9 +143,9 @@ public class ItemServiceImpl implements ItemService {
         item.setStarted("Not started yet!");
         //todo item.setEnds(item.getEnds())
 
-        if (item.getFirstBid().equals(new BigDecimal("0")))
-            item.setCurrently(new BigDecimal("0")); //set Currenlty to 0
-        else
+//        if (item.getFirstBid().equals(new BigDecimal("0")))
+//            item.setCurrently(new BigDecimal("0")); //set Currenlty to 0
+//        else
             item.setCurrently(item.getFirstBid());
 
         item.setEventStarted(false);
@@ -209,7 +217,7 @@ public class ItemServiceImpl implements ItemService {
 
         if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
-        if ( isAuctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't delete it now!");
+        if ( isAuctionFinishedByTime(id) ) throw new RuntimeException("Auction has finished! Can't delete it now!");
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot delete auction-Item now!");
 
@@ -229,7 +237,7 @@ public class ItemServiceImpl implements ItemService {
 
         if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
-        if ( isAuctionFinished(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
+        if ( isAuctionFinishedByTime(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot edit auction-Item now!");
 
@@ -254,7 +262,7 @@ public class ItemServiceImpl implements ItemService {
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
 
         //todo #3 edw prepei logika an exei teleiwsei na kanw to isFinished == true + na tsekarw me vash ta dates ends kai bid
-        if (isAuctionFinished(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
+        if (isAuctionFinishedByTime(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
 
 
         BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
@@ -280,25 +288,24 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void buyout(Long auctionId) throws ParseException {
-        ItemEntity item = this.itemRepo.findByItemID(auctionId); //get auction details
 
-        if (isAuctionFinished(item.getItemID())) throw new RuntimeException("Cannot buyout in a finished auction!"); //check if is ended
+        if (isAuctionFinishedByTime(auctionId)) throw new RuntimeException("Cannot buyout in a finished auction!"); //check if is ended
 
         if (bidsInAuctionExist(auctionId)) throw new RuntimeException("Buyout is not anymore in the table!You have to offer more ;) ");
 
 
 
-
         int bidderId = securityService.getCurrentUser().getId();
 
+        ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
 
+        if (item2save.getBuyPrice().equals(new BigDecimal(0))) throw new RuntimeException("There is no Buyout price set");
 
-        item.setEnds(Utils.getCurrentDateToStringDataType());
-        //todo setWinnerId
-        
-        finishAuction(auctionId);
+        item2save.setWinnerID(bidderId);//set winnerId
+        item2save.setEnds(Utils.getCurrentDateToStringDataType());
+        item2save.setEventFinished(true);
 
-        this.itemRepo.save(item);
+        itemRepo.save(item2save);
 
     }
 
@@ -318,7 +325,7 @@ public class ItemServiceImpl implements ItemService {
         /*cinvert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
 
-            if ( isAuctionFinished(itemEntity.getItemID()) )
+            if ( isAuctionFinishedByTime(itemEntity.getItemID()) )
                 continue;
 
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
