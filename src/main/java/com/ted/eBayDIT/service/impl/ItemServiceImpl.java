@@ -86,8 +86,8 @@ public class ItemServiceImpl implements ItemService {
         String currentDateString = Utils.getCurrentDateToStringDataType();
         Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
 
+//        Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);  //this was before the Date format from front
         Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
-
         boolean isFinishedByTime = currDate.after(endsDate);
         if (isFinishedByTime) {
 //            finishAuction(id); //here we make eventFinish value true
@@ -150,7 +150,8 @@ public class ItemServiceImpl implements ItemService {
         item.setEventStarted(false);
         item.setEventFinished(false);
 
-        item.setEnds(Utils.convertFrontDateTypeToBack(item.getEnds()));
+//        item.setEnds(Utils.convertFrontDateTypeToBack(item.getEnds())); //this was before the Date format from front
+        item.setEnds(item.getEnds());
 
 
         connectCategoriesToNewItem(item); //join item_categories table
