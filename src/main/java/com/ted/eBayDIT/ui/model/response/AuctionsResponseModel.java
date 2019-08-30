@@ -3,6 +3,7 @@ package com.ted.eBayDIT.ui.model.response;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.ItemLocationDto;
+import com.ted.eBayDIT.dto.PhotoDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,7 +30,9 @@ public class AuctionsResponseModel {
     private int winnerID;
 
 
+    private List<PhotoDto> photos;
 
+    
     public AuctionsResponseModel() {
     }
 
@@ -143,6 +146,14 @@ public class AuctionsResponseModel {
 
     public void setWinnerID(int winnerID) {
         this.winnerID = winnerID;
+    }
+
+    public List<PhotoDto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoDto> photos) {
+        this.photos = photos;
     }
 
 
