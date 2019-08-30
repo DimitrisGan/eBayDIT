@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PhotoRepository extends JpaRepository<PhotoEntity,Integer> {
 
-
+    PhotoEntity findByFileName(String filename);
 
 }
