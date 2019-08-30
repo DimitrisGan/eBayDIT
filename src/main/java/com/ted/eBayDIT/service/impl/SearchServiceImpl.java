@@ -51,10 +51,10 @@ public class SearchServiceImpl implements SearchService {
         return returnList;
     }
 
-
-
-
-
+    @Override
+    public List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String orderType) {
+        return null;
+    }
 
 
 }

@@ -10,4 +10,7 @@ public interface SearchService {
 
 
     List<ItemDto> getActiveAuctions() throws ParseException;
+
+    //TODO AYRIO!!
+    List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String orderType);
 }

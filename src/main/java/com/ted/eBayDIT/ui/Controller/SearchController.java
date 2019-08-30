@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -47,6 +48,63 @@ public class SearchController {
     }
 
 
+
+
+    //todo AYRIO!!
+    @GetMapping(path ="/auctions/filters")
+    public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
+                                                         @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
+                                                         @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
+                                                         @RequestParam(value = "order",defaultValue = "asc") String orderType) throws ParseException {
+
+
+        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+
+        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+
+        List<ItemDto> auctionsList = searchService.getFilteredAuctions(pageNo, pageSize, sortBy, orderType);
+
+
+//        List<ItemDto> auctionsList = searchService.getAllUsers(pageNo, pageSize, sortBy, orderType);
+
+
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (ItemDto itemDto : auctionsList) {
+            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            auctionsRespList.add(auctionsResp);
+        }
+
+        return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
+
+    }
+
+
+//    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
+//                                           @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
+//                                           @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
+//                                           @RequestParam(value = "order",defaultValue = "asc") String orderType) { //asc or desc
+//
+//
+//        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy, orderType);
+//
+//        List<UserRest> returnUsersList =new ArrayList<>();
+//
+//        ModelMapper modelMapper = new ModelMapper();
+//        for (UserDto userDto : list) {
+//
+//            UserRest returnUser = modelMapper.map(userDto, UserRest.class);
+//            returnUsersList.add(returnUser);
+//        }
+//
+//        AdminRest adminRest= new AdminRest();
+//        adminRest.setUsers(returnUsersList);
+//        adminRest.setTotalPages(list.get(0).getTotalPages());
+//        adminRest.setTotalUsers(this.userService.usersNumber());
+//
+//        return new ResponseEntity<>(adminRest, HttpStatus.OK);
+//
+//    }
 
 
 
