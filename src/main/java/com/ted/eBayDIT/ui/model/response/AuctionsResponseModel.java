@@ -30,9 +30,9 @@ public class AuctionsResponseModel {
     private int winnerID;
 
 
-    private List<PhotoDto> photos;
+    private List<PhotoResponseModel> photos;
 
-    
+
     public AuctionsResponseModel() {
     }
 
@@ -148,16 +148,16 @@ public class AuctionsResponseModel {
         this.winnerID = winnerID;
     }
 
-    public List<PhotoDto> getPhotos() {
+    public List<PhotoResponseModel> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<PhotoDto> photos) {
+    public void setPhotos(List<PhotoResponseModel> photos) {
         this.photos = photos;
     }
 
 
-//    private List<ItemDto> auctions;
+    //    private List<ItemDto> auctions;
 //
 //    public List<ItemDto> getAuctions() {
 //        return auctions;

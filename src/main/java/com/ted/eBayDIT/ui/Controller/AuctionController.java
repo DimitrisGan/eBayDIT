@@ -43,7 +43,16 @@ public class AuctionController {
 
 
     @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
-    public ResponseEntity<Object> createAuction(@RequestParam("imageFile") MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
+    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false) MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
+
+
+//        log.info(" name : {}", name);
+//        if(file!=null)
+//        {
+//            log.info("image : {}", file.getOriginalFilename());
+//            log.info("image content type : {}", file.getContentType());
+//        }
+
 
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
@@ -57,18 +66,23 @@ public class AuctionController {
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
+        if (imageFile != null) {
+            System.out.println("-------->image : " + imageFile.getOriginalFilename());
+            System.out.println("-------->image content type :" + imageFile.getContentType());
 
 
-        PhotoDto photoDto = new PhotoDto();
-        photoDto.setFileName(imageFile.getOriginalFilename());
+            PhotoDto photoDto = new PhotoDto();
+            photoDto.setFileName(imageFile.getOriginalFilename());
 //        photoDto.setPath("/photo/");
-        photoDto.setItem(newlyCreatedItemDto);
-        try {
-            itemService.saveImage(imageFile, photoDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            String msg = "Something in storing photo in db went wrong!";
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            photoDto.setItem(newlyCreatedItemDto);
+            try {
+                itemService.saveImage(imageFile, photoDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+                String msg = "Something in storing photo in db went wrong!";
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            }
 
         }
 
