@@ -146,7 +146,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private void saveAuction(ItemEntity item) throws ParseException {
+    private ItemEntity saveAuction(ItemEntity item) throws ParseException {
         /*set default values for item*/
         long itemID = generateNewItemID();  item.setItemID(itemID);
 
@@ -173,8 +173,8 @@ public class ItemServiceImpl implements ItemService {
         SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
         //----------------------
         item.setSeller(currSellerUser);
-        ItemEntity storedItemDetails =itemRepo.save(item);
 
+        return itemRepo.save(item);
     }
 
 
@@ -187,7 +187,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void addNewItem(ItemDto item) throws ParseException {
+    public ItemDto addNewItem(ItemDto item) throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
@@ -197,9 +197,9 @@ public class ItemServiceImpl implements ItemService {
 
         if (! categoriesExist(itemEntity2save.getCategories())) throw new RuntimeException("Categories Record dont exist");
 
-        saveAuction(itemEntity2save);
+        ItemEntity storedItemEntity = saveAuction(itemEntity2save);
 
-
+        return modelMapper.map(storedItemEntity, ItemDto.class);
     }
 
 

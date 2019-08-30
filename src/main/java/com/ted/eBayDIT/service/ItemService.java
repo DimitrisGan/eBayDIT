@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    void addNewItem(ItemDto item) throws ParseException;
+    ItemDto addNewItem(ItemDto item) throws ParseException;
 
     boolean itemExists(Long id);
 
@@ -34,5 +34,6 @@ public interface ItemService {
     void buyout(Long auctionId) throws ParseException;
 
     void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception;
+
 
 }

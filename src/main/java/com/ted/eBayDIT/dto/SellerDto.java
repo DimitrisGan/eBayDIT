@@ -6,11 +6,14 @@ import java.util.List;
 public class SellerDto implements Serializable {
     private static final long serialVersionUID = 3752263619169370266L;
 
-    private Integer id;
-    private Integer rating;
+    private int id;
+    private int rating;
 
     private UserDto user;
     private List<ItemDto> items;
+
+
+
 
     public Integer getId() {
         return id;

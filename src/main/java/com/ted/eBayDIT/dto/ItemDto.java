@@ -12,6 +12,8 @@ public class ItemDto implements Serializable {
     private String name;
     private BigDecimal buyPrice;
     private BigDecimal firstBid;
+    private BigDecimal currently;
+    private Integer numberOfBids;
     private String country;
     private String started;
     private String ends;
@@ -19,10 +21,6 @@ public class ItemDto implements Serializable {
     private List<CategoryDto> categories;
     private SellerDto seller;
     private ItemLocationDto location;
-
-
-    private Integer numberOfBids;
-    private String currently;
 
     private List<BidDto> bids ;
 
@@ -51,13 +49,6 @@ public class ItemDto implements Serializable {
         this.name = name;
     }
 
-    public String getCurrently() {
-        return currently;
-    }
-
-    public void setCurrently(String currently) {
-        this.currently = currently;
-    }
 
     public BigDecimal getBuyPrice() {
         return buyPrice;
@@ -177,5 +168,13 @@ public class ItemDto implements Serializable {
 
     public void setPhotos(List<PhotoDto> photos) {
         this.photos = photos;
+    }
+
+    public BigDecimal getCurrently() {
+        return currently;
+    }
+
+    public void setCurrently(BigDecimal currently) {
+        this.currently = currently;
     }
 }

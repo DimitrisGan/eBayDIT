@@ -6,6 +6,7 @@ import com.ted.eBayDIT.entity.PhotoEntity;
 import com.ted.eBayDIT.repository.PhotoRepository;
 import com.ted.eBayDIT.service.PhotoService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,8 @@ public class PhotoServiceImpl implements PhotoService {
     public void save(PhotoDto photoDtO) {
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         PhotoEntity photoEntity = modelMapper.map(photoDtO, PhotoEntity.class);
 
         photoRepository.save(photoEntity);

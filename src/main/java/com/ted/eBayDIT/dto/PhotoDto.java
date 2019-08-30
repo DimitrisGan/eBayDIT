@@ -1,6 +1,10 @@
 package com.ted.eBayDIT.dto;
 
-public class PhotoDto {
+import java.io.Serializable;
+
+public class PhotoDto implements Serializable {
+
+    private static final long serialVersionUID = 3103903543008675615L;
 
 
     private int photoId;

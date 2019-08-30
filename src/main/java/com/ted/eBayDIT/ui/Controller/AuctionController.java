@@ -42,9 +42,8 @@ public class AuctionController {
 
 
 
-
-    @PostMapping(path ="/auctions")
-    public ResponseEntity<Object> createAuction(@RequestParam("imageFile") MultipartFile imageFile,@RequestBody CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
+    @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
+    public ResponseEntity<Object> createAuction(@RequestParam("imageFile") MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
@@ -56,19 +55,21 @@ public class AuctionController {
 //        }
 
 
-        this.itemService.addNewItem(itemDto); //create item-auction
-
+        ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
 
 
         PhotoDto photoDto = new PhotoDto();
         photoDto.setFileName(imageFile.getOriginalFilename());
 //        photoDto.setPath("/photo/");
-        photoDto.setItem(itemDto);
+        photoDto.setItem(newlyCreatedItemDto);
         try {
             itemService.saveImage(imageFile, photoDto);
         } catch (Exception e) {
             e.printStackTrace();
+            String msg = "Something in storing photo in db went wrong!";
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
