@@ -63,7 +63,7 @@ public class AuctionController {
 
         PhotoDto photoDto = new PhotoDto();
         photoDto.setFileName(imageFile.getOriginalFilename());
-        photoDto.setPath("/photo/");
+//        photoDto.setPath("/photo/");
         photoDto.setItem(itemDto);
         try {
             itemService.saveImage(imageFile, photoDto);

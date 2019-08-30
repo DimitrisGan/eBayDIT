@@ -3,6 +3,7 @@ package com.ted.eBayDIT.ui.model.request;
 
 import com.ted.eBayDIT.dto.CategoryDto;
 import com.ted.eBayDIT.dto.ItemLocationDto;
+import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.dto.SellerDto;
 
 import java.math.BigDecimal;
@@ -24,6 +25,9 @@ public class CreateAuctionRequestModel {
     private List<CategoryDto> categories;
 //    private SellerDto seller;
     private ItemLocationDto location;
+
+    private List<PhotoDto> photos;
+
 
 
     public String getName() {
@@ -98,5 +102,13 @@ public class CreateAuctionRequestModel {
 
     public void setLocation(ItemLocationDto location) {
         this.location = location;
+    }
+
+    public List<PhotoDto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoDto> photos) {
+        this.photos = photos;
     }
 }

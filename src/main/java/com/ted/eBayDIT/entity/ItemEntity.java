@@ -289,4 +289,12 @@ public class ItemEntity {
     public void setWinnerID(int winnerID) {
         this.winnerID = winnerID;
     }
+
+    public List<PhotoEntity> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoEntity> photos) {
+        this.photos = photos;
+    }
 }
