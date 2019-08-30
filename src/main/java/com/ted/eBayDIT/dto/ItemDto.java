@@ -31,6 +31,9 @@ public class ItemDto implements Serializable {
 
     private int winnerID;
 
+    private List<PhotoDto> photos;
+
+
 
     public Long getItemID() {
         return itemID;
@@ -166,5 +169,13 @@ public class ItemDto implements Serializable {
 
     public void setWinnerID(int winnerID) {
         this.winnerID = winnerID;
+    }
+
+    public List<PhotoDto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoDto> photos) {
+        this.photos = photos;
     }
 }

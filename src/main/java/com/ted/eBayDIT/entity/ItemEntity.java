@@ -149,6 +149,11 @@ public class ItemEntity {
     private int winnerID;
 
 
+    @OneToMany(mappedBy="item")
+    private List<PhotoEntity> photos;
+
+
+
     public Long getItemID() {
         return itemID;
     }

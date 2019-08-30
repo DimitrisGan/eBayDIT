@@ -2,6 +2,8 @@ package com.ted.eBayDIT.service;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.dto.PhotoDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -30,4 +32,7 @@ public interface ItemService {
     boolean isAuctionFinishedByTime(Long id) throws ParseException;
 
     void buyout(Long auctionId) throws ParseException;
+
+    void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception;
+
 }

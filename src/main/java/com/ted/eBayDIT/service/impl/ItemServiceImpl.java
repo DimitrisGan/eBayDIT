@@ -2,14 +2,17 @@ package com.ted.eBayDIT.service.impl;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.repository.*;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.ItemService;
+import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -45,6 +48,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemLocationRepo itemLocationRepo;
+
+
+    @Autowired
+    PhotoService photoService;
+
 
     private static long newItemID=0;
 
@@ -317,7 +325,12 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
+    @Override
+    public void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception {
 
+        photoService.savePhotoImage(photoDto, imageFile);
+        photoService.save(photoDto);
+    }
 
 
     @Override

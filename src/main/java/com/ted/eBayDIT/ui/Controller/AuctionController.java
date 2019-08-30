@@ -4,7 +4,9 @@ package com.ted.eBayDIT.ui.Controller;
 import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.security.SecurityService;
+import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -37,8 +40,11 @@ public class AuctionController {
     ItemService itemService;
 
 
+
+
+
     @PostMapping(path ="/auctions")
-    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
+    public ResponseEntity<Object> createAuction(@RequestParam("imageFile") MultipartFile imageFile,@RequestBody CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
@@ -51,6 +57,19 @@ public class AuctionController {
 
 
         this.itemService.addNewItem(itemDto); //create item-auction
+
+
+
+
+        PhotoDto photoDto = new PhotoDto();
+        photoDto.setFileName(imageFile.getOriginalFilename());
+        photoDto.setPath("/photo/");
+        photoDto.setItem(itemDto);
+        try {
+            itemService.saveImage(imageFile, photoDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -220,6 +239,27 @@ public class AuctionController {
 
     }
 
+
+
+    @PostMapping("/auctions/uploadImage")
+    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
+            String returnValue = "start";
+
+            PhotoDto photoDtO = new PhotoDto();
+            photoDtO.setFileName(imageFile.getOriginalFilename());
+            photoDtO.setPath("/photo/");
+
+            try {
+                itemService.saveImage(imageFile, photoDtO);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+//                log.error("Error saving photo", e);
+                returnValue = "error";
+            }
+
+            return returnValue;
+        }
 
 
 }
