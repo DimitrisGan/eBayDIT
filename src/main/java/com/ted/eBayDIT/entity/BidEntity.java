@@ -18,7 +18,8 @@ public class BidEntity {
     @Column(name="id")
     private  Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH, CascadeType.MERGE,
+            CascadeType.DETACH})
     @JoinColumn(name="item_id")
     private ItemEntity itemDetails;
 

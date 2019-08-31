@@ -18,7 +18,7 @@ public class CategoryEntity {
     private String name;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)/*(fetch = FetchType.LAZY,
+    @ManyToMany(/*cascade = CascadeType.ALL*/)/*(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})*/
     @JoinTable(
             name = "item_category",

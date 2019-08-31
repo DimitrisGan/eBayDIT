@@ -27,7 +27,7 @@ public class SellerDetailsEntity implements Serializable {
 
     //Do not apply cascading deletes!
     @OneToMany(mappedBy="seller",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            cascade={/*CascadeType.PERSIST,*/ CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<ItemEntity> items;
 

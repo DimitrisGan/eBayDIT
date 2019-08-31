@@ -117,8 +117,8 @@ public class ItemEntity {
 
 
     //Do not apply cascading deletes!
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.REFRESH}/*, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH}*/)
+    @ManyToMany(/*cascade={*//*CascadeType.PERSIST,*//*CascadeType.REFRESH, CascadeType.MERGE,
+            CascadeType.DETACH ,CascadeType.REMOVE}*/)
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
@@ -128,15 +128,17 @@ public class ItemEntity {
 
 
 
-    @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="itemDetails", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
+            CascadeType.DETACH})
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
-    @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.REFRESH/*, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH*/})
+    @ManyToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,/*CascadeType.REMOVE,*/ CascadeType.MERGE,
+            CascadeType.DETACH})
     @JoinColumn(name="seller_id")
     private SellerDetailsEntity seller;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
+            CascadeType.DETACH})
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private ItemLocationEntity location;
 
@@ -149,7 +151,8 @@ public class ItemEntity {
     private int winnerID;
 
 
-    @OneToMany(mappedBy="item", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="item", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     private List<PhotoEntity> photos;
 
 
