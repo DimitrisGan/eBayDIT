@@ -12,4 +12,6 @@ public interface PhotoService {
     void save(PhotoDto photoDtO);
 
     Resource loadFileAsResource(String fileName);
+
+    PhotoDto loadDefaultItemImage();
 }
