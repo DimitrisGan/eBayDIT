@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,8 @@ public class AuctionController {
     @Autowired
     PhotoService photoService;
 
+
+
     private static final Logger logger = LoggerFactory.getLogger(AuctionController.class);
 
 
@@ -60,45 +63,40 @@ public class AuctionController {
             throws ParseException {
 
 
-//        log.info(" name : {}", name);
-//        if(file!=null)
-//        {
-//            log.info("image : {}", file.getOriginalFilename());
-//            log.info("image content type : {}", file.getContentType());
-//        }
+        if(imageFile!=null)
+        {
+            logger.info("image : {}", imageFile.getOriginalFilename());
+            logger.info("image content type : {}", imageFile.getContentType());
+        }
 
 
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
 
-        //check if ends Date is after Current date
-//        if (Utils.convertStringDateToDateDataType(itemDto.getEnds()).before(Utils.getCurrentDate())){
-//            String msg = "Auction doesn't exist to start!";
-//            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-//        }
 
-        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+//        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
 
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(imageFile.getOriginalFilename())
-                .toUriString();
+        //from here we create the photo and return the appropriate uri
 
 
         PhotoDto photoDto = new PhotoDto();
+        PhotoResponseModel photoResp= new PhotoResponseModel();
+
         if (imageFile != null) {
-
-
-
-
 
 
             System.out.println("-------->image : " + imageFile.getOriginalFilename());
             System.out.println("-------->image content type :" + imageFile.getContentType());
+
+
+
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/downloadFile/")
+                    .path(imageFile.getOriginalFilename())
+                    .toUriString();
 
 
             photoDto = new PhotoDto();
@@ -109,6 +107,7 @@ public class AuctionController {
             photoDto.setSize(imageFile.getSize());
             photoDto.setType(imageFile.getContentType());
 
+            photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
 
             try {
                 itemService.saveImage(imageFile, photoDto);
@@ -120,8 +119,17 @@ public class AuctionController {
             }
 
         }
+        else{
 
-        PhotoResponseModel photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
+
+
+            photoDto = photoService.loadDefaultItemImage();
+
+            photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
+            photoResp.setFileDownloadUri(photoDto.getFileDownloadUri());
+
+        }
+
 
         return new ResponseEntity<>(photoResp,HttpStatus.CREATED);
 

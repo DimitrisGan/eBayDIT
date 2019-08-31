@@ -6,19 +6,33 @@ import com.ted.eBayDIT.entity.DefaultPhotosConstants;
 import com.ted.eBayDIT.entity.PhotoEntity;
 import com.ted.eBayDIT.repository.PhotoRepository;
 import com.ted.eBayDIT.service.PhotoService;
+import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -27,15 +41,66 @@ public class PhotoServiceImpl implements PhotoService {
     private PhotoRepository photoRepository;
 
 
+    @Value("${server.address}")
+    private String serverAddress;
+
+    @Value("${server.port}")
+    private String serverPort;
+
+
+//    @LocalServerPort
+//    private int port;
+
     //initialize db with 2 admins
     @PostConstruct
-    private void initPhotosInDB() {
+    private void initPhotosInDB()  {
+
+
 
         Path currentPath = Paths.get(".");
         Path absolutePath = currentPath.toAbsolutePath();
 
+
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/downloadFile/")
+//                .path(DefaultPhotosConstants.ITEM_PHOTO)
+//                .toUriString();
+
+
+
         if (photoRepository.findByFileName(DefaultPhotosConstants.ITEM_PHOTO) == null) {
             PhotoEntity itemPhoto = new PhotoEntity(); //set filename
+
+            UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                    .scheme("http").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.ITEM_PHOTO).build();
+
+
+
+//            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                    .path("/downloadFile/")
+//                    .path(DefaultPhotosConstants.ITEM_PHOTO)
+//                    .toUriString();
+
+
+//            FileInputStream input = null;
+//            try {
+//                input = new FileInputStream(DefaultPhotosConstants.ITEM_PHOTO);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//
+//            }
+//            try {
+//                MultipartFile multipartFile = new MockMultipartFile("fileItem",
+//                        DefaultPhotosConstants.ITEM_PHOTO, "image/png", IOUtils.toByteArray(input));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
+
+
+            // TODO AUTO NA XWNW MESA STH VASH http://localhost:8080/api/downloadFile/item_default.jpg
+
+            itemPhoto.setFileDownloadUri(uriComponents.toUriString());
 
             itemPhoto.setFileName(DefaultPhotosConstants.ITEM_PHOTO);
             itemPhoto.setPath(absolutePath + "/src/main/resources/static/photos/");
@@ -44,11 +109,17 @@ public class PhotoServiceImpl implements PhotoService {
         }
 
         if (photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO) == null) {
+
+            UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                    .scheme("http").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.AUCTION_PHOTO).build();
+
+
             PhotoEntity auctionPhoto = new PhotoEntity();
             auctionPhoto.setFileName(DefaultPhotosConstants.AUCTION_PHOTO); //set filename
 
             auctionPhoto.setPath(absolutePath + "/src/main/resources/static/photos/");
 
+            auctionPhoto.setFileDownloadUri(uriComponents.toUriString());
             photoRepository.save(auctionPhoto);
         }
 
@@ -96,6 +167,16 @@ public class PhotoServiceImpl implements PhotoService {
 //            throw new MyFileNotFoundException("File not found " + fileName, ex);
             throw new RuntimeException("File not found " + fileName, ex);
         }
+    }
+
+    @Override
+    public PhotoDto loadDefaultItemImage() {
+
+        PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.ITEM_PHOTO);
+        ModelMapper modelMapper = new ModelMapper();
+
+
+        return modelMapper.map(photoEntity,PhotoDto.class);
     }
 
 
