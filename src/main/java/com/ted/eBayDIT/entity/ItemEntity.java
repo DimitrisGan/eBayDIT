@@ -117,8 +117,8 @@ public class ItemEntity {
 
 
     //Do not apply cascading deletes!
-    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.REFRESH}/*, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH}*/)
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
@@ -131,8 +131,8 @@ public class ItemEntity {
     @OneToMany(mappedBy="itemDetails", cascade=CascadeType.ALL)
     private List<BidEntity> bids ; //todo check if needs new table Bids
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.REFRESH/*, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH*/})
     @JoinColumn(name="seller_id")
     private SellerDetailsEntity seller;
 
@@ -149,7 +149,7 @@ public class ItemEntity {
     private int winnerID;
 
 
-    @OneToMany(mappedBy="item")
+    @OneToMany(mappedBy="item", cascade=CascadeType.ALL)
     private List<PhotoEntity> photos;
 
 
