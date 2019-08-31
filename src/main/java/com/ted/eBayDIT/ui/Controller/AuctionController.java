@@ -13,14 +13,24 @@ import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
+import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +49,15 @@ public class AuctionController {
     @Autowired
     ItemService itemService;
 
+    @Autowired
+    PhotoService photoService;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuctionController.class);
 
 
     @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
-    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false) MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel) throws ParseException {
+    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false) MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
+            throws ParseException {
 
 
 //        log.info(" name : {}", name);
@@ -63,18 +77,39 @@ public class AuctionController {
 //            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
 //        }
 
+        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
+
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(imageFile.getOriginalFilename())
+                .toUriString();
+
+
+        PhotoDto photoDto = new PhotoDto();
         if (imageFile != null) {
+
+
+
+
+
+
             System.out.println("-------->image : " + imageFile.getOriginalFilename());
             System.out.println("-------->image content type :" + imageFile.getContentType());
 
 
-            PhotoDto photoDto = new PhotoDto();
+            photoDto = new PhotoDto();
             photoDto.setFileName(imageFile.getOriginalFilename());
-//        photoDto.setPath("/photo/");
+            photoDto.setFileDownloadUri(fileDownloadUri);
             photoDto.setItem(newlyCreatedItemDto);
+//            photoDto.setPath();
+            photoDto.setSize(imageFile.getSize());
+            photoDto.setType(imageFile.getContentType());
+
+
             try {
                 itemService.saveImage(imageFile, photoDto);
             } catch (Exception e) {
@@ -86,9 +121,41 @@ public class AuctionController {
 
         }
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        PhotoResponseModel photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
+
+        return new ResponseEntity<>(photoResp,HttpStatus.CREATED);
+
+//        return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+
+
+    @GetMapping("/downloadFile/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = photoService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+
 
 
     @PutMapping(path ="/auctions/buyout/{auctionId}") //add new bid for example

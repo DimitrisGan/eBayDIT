@@ -2,6 +2,7 @@ package com.ted.eBayDIT.service;
 
 
 import com.ted.eBayDIT.dto.PhotoDto;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PhotoService {
@@ -10,4 +11,5 @@ public interface PhotoService {
 
     void save(PhotoDto photoDtO);
 
+    Resource loadFileAsResource(String fileName);
 }
