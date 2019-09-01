@@ -180,6 +180,15 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
 
+    public PhotoDto getDefaultAUctionImage(){
+
+        PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO);
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(photoEntity,PhotoDto.class);
+
+    }
+
     //=================================================================================================
     //=================================================================================================
 

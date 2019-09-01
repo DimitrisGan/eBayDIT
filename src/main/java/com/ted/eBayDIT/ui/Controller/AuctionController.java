@@ -74,13 +74,10 @@ public class AuctionController {
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
 
 
-//        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
-
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
 
         //from here we create the photo and return the appropriate uri
-
 
         PhotoDto photoDto = new PhotoDto();
         PhotoResponseModel photoResp= new PhotoResponseModel();
@@ -92,12 +89,10 @@ public class AuctionController {
             System.out.println("-------->image content type :" + imageFile.getContentType());
 
 
-
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/downloadFile/")
                     .path(imageFile.getOriginalFilename())
                     .toUriString();
-
 
             photoDto = new PhotoDto();
             photoDto.setFileName(imageFile.getOriginalFilename());
@@ -143,6 +138,8 @@ public class AuctionController {
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = photoService.loadFileAsResource(fileName);
+
+
 
         // Try to determine file's content type
         String contentType = null;
@@ -309,6 +306,13 @@ public class AuctionController {
         ModelMapper modelMapper = new ModelMapper();
         for (ItemDto itemDto : auctionsList) {
             auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            if (auctionsResp.getPhotos().isEmpty()){
+
+                //add default photo
+                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
+                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
+                auctionsResp.getPhotos().add(defaultPhotoResp);
+            }
             auctionsRespList.add(auctionsResp);
         }
 
