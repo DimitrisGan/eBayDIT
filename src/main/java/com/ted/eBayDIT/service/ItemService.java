@@ -23,7 +23,7 @@ public interface ItemService {
 
     int deleteAuction(Long id) throws ParseException;
 
-    void editAuction(Long id) throws ParseException;
+    void editAuction(Long id, ItemDto itemDto2store) throws ParseException;
 
     void addBid(Long auctionId, BigDecimal bidAmount, int bidderId) throws ParseException; //auctionId,bidAmount,bidderId)
 

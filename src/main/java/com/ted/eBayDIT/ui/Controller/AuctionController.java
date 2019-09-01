@@ -53,7 +53,7 @@ public class AuctionController {
 
 
     @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
-    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false) MultipartFile imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
+    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false)  MultipartFile[] imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
             throws ParseException {
 
 
@@ -69,11 +69,11 @@ public class AuctionController {
 
         if (imageFile != null) {
 
-            photoDto = photoService.preparePhoto(imageFile, newlyCreatedItemDto);
+//            photoDto = photoService.preparePhoto(imageFile, newlyCreatedItemDto);
 
             try {
 
-                itemService.saveImage(imageFile, photoDto);
+//                itemService.saveImage(imageFile, photoDto);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -85,6 +85,38 @@ public class AuctionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+
+    @PutMapping(path ="/auctions/{id}") //add new bid for example
+    public ResponseEntity<Object> editAuction(@PathVariable Long id,@RequestBody AuctionDetailsRequestModel editAuctionDetails){
+
+        //check first if item/auction exists!
+        if (! itemService.itemExists(id)){
+            String msg = "Auction doesn't exist to edit!";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
+
+//        try {
+////todo            this.itemService.editAuction(id, );
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//
+//        }
+
+
+        //todo findAuctionById(auctionID)
+
+        //todo send back exception if startedEvent == true
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+
+
 
 
 
@@ -177,25 +209,6 @@ public class AuctionController {
 
     }
 
-    @PutMapping(path ="/auctions/{id}") //add new bid for example
-    public ResponseEntity<Object> editAuction(@PathVariable Long id,@RequestBody AuctionDetailsRequestModel editAuctionDetails){
-
-        //check first if item/auction exists!
-        if (! itemService.itemExists(id)){
-            String msg = "Auction doesn't exist to edit!";
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
-        }
-
-
-
-        //todo findAuctionById(auctionID)
-
-        //todo send back exception if startedEvent == true
-        //todo this.itemService.updateAuction(id);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
 
 
     @PutMapping(path ="/auctions/start/{id}") //add new bid for example
@@ -277,8 +290,7 @@ public class AuctionController {
 
 
 
-
-    @GetMapping(path ="/auctions/{id}") //add new bid for example
+    @GetMapping(path ="/auctions/{id}")
     public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
 
         //todo findAuctionById(auctionID)
@@ -288,26 +300,6 @@ public class AuctionController {
     }
 
 
-
-    @PostMapping("/auctions/uploadImage")
-    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-            String returnValue = "start";
-
-            PhotoDto photoDtO = new PhotoDto();
-            photoDtO.setFileName(imageFile.getOriginalFilename());
-            photoDtO.setPath("/photo/");
-
-            try {
-                itemService.saveImage(imageFile, photoDtO);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-//                log.error("Error saving photo", e);
-                returnValue = "error";
-            }
-
-            return returnValue;
-        }
 
 
 }

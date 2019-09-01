@@ -246,16 +246,33 @@ public class ItemServiceImpl implements ItemService {
 
 
 
+    //todo
     @Override
-    public void editAuction(Long id) throws ParseException {
-        //todo edit fields of auction!!!
-        //todo #2 prepei na to kanw
+    public void editAuction(Long id, ItemDto itemDto2update) throws ParseException {
 
         if (! itemExists(id)) throw new RuntimeException("Auction id doesn't exists!");
 
         if ( isAuctionFinishedByTime(id) ) throw new RuntimeException("Auction has finished! Can't edit it now!");
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot edit auction-Item now!");
+
+
+        //        UserRest returnValue =new UserRest();
+
+
+        ItemEntity itemEntity = itemRepo.findByItemID(id);
+
+//        if (itemDto2update.getEnds()    != null)    {itemEntity.setEnds(itemDto2update.getEnds()); }
+//        if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
+//        if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
+//
+//        if (user2update.getLocation()        != null)    {userEntity.setLocation(user2update.getLocation()); }
+//        if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
+//        if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
+//        if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }
+
+
+        itemRepo.save(itemEntity);
 
 
     }
