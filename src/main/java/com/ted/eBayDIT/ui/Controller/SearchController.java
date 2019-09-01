@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -56,11 +57,16 @@ public class SearchController {
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                                          @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
                                                          @RequestParam(value = "order",defaultValue = "asc") String orderType,
-                                                         @RequestParam(value = "categories[]") String [] categories
+
+//                                                         @RequestParam(value = "name", required = false) String name,
+//                                                         HttpServletRequest request, HttpServletResponse response)
+                                                         @RequestParam(value = "categories", required = false) String categories
                                                          //todo lowest ,highest price
                                                          //todo category , description
                                                                         ) throws ParseException {
 
+
+        List<String> categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
 
         AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
 
