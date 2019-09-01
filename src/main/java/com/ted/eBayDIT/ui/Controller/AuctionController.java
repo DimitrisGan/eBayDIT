@@ -55,6 +55,7 @@ public class AuctionController {
 
 
 
+//    @RequestMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("auctions/{id}/upload_multiple_photos")
     public List<ResponseEntity<Object>> uploadMultipleFiles(@PathVariable Long id, @RequestParam(name="imageFile", required=false) MultipartFile[] imageFile) {
         return Arrays.stream(imageFile)
@@ -89,7 +90,7 @@ public class AuctionController {
     }
 
 
-    @PostMapping(path ="/auctions" )
+    @PostMapping(path ="/auctions", consumes={"application/json"} )
     public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel)
             throws ParseException {
 
