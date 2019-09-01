@@ -21,4 +21,6 @@ public interface PhotoService {
     PhotoDto loadDefaultNkuaImage();
 
     PhotoDto preparePhoto(MultipartFile imageFile, ItemDto newlyCreatedItemDto);
+
+    void deletePhoto(int photoId);
 }

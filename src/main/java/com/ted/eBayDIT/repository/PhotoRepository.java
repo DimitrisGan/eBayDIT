@@ -10,4 +10,6 @@ public interface PhotoRepository extends JpaRepository<PhotoEntity,Integer> {
 
     PhotoEntity findByFileName(String filename);
 
+    PhotoEntity findByPhotoId(int id);
+
 }

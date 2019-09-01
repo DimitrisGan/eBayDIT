@@ -55,18 +55,17 @@ public class AuctionController {
 
 
 
-    @PostMapping("auctions/{id}/upload_multiple_images")
+    @PostMapping("auctions/{id}/upload_multiple_photos")
     public List<ResponseEntity<Object>> uploadMultipleFiles(@PathVariable Long id, @RequestParam(name="imageFile", required=false) MultipartFile[] imageFile) {
-        return Arrays.asList(imageFile)
-                .stream()
+        return Arrays.stream(imageFile)
                 .map(file -> uploadFile(id,file))
                 .collect(Collectors.toList());
 
     }
 
 
-    @PostMapping("auctions/{id}/upload_image")
-    public ResponseEntity<Object> uploadFile(@PathVariable Long id,@RequestParam(name="imageFile", required=false) MultipartFile imageFile) {
+    @PostMapping("auctions/{id}/upload_photo")
+    public ResponseEntity<Object> uploadFile(@PathVariable Long id,@RequestParam(name="file", required=false) MultipartFile imageFile) {
 
         ItemDto itemDto = itemService.getItem(id); //create item-auction
 
@@ -81,13 +80,17 @@ public class AuctionController {
             }
 
         }
+
+//        ModelMapper modelMapper = new ModelMapper();
+//        AuctionsResponseModel returnVaule = modelMapper.map(createAuctionRequestModel, ItemDto.class);
+
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
 
-    @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
-    public ResponseEntity<Object> createAuction(@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
+    @PostMapping(path ="/auctions" )
+    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel)
             throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
@@ -99,6 +102,15 @@ public class AuctionController {
 
     }
 
+
+    @DeleteMapping(path ="/auctions/delete_photo/{photoId}" )
+    public ResponseEntity<Object> deletePhoto(@PathVariable int photoId){
+
+        this.photoService.deletePhoto(photoId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
 
     @PutMapping(path ="/auctions/{id}") //add new bid for example

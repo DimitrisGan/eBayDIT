@@ -199,6 +199,12 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
+    public void deletePhoto(int photoId) {
+        PhotoEntity photo2delete = this.photoRepository.findByPhotoId(photoId);
+        this.photoRepository.delete(photo2delete);
+    }
+
+    @Override
     public PhotoDto getDefaultAUctionImage(){
 
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO);

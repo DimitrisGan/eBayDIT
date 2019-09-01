@@ -4,6 +4,7 @@ package com.ted.eBayDIT.ui.model.response;
 public class PhotoResponseModel {
 
 
+    private int photoId;
 
     private String fileName;
     private String fileDownloadUri;
@@ -24,6 +25,14 @@ public class PhotoResponseModel {
 
     public void setFileDownloadUri(String fileDownloadUri) {
         this.fileDownloadUri = fileDownloadUri;
+    }
+
+    public int getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(int photoId) {
+        this.photoId = photoId;
     }
 
 //    public long getSize() {
