@@ -98,7 +98,9 @@ public class AuctionController {
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        AuctionsResponseModel auctionsResp = modelMapper.map(newlyCreatedItemDto, AuctionsResponseModel.class);
+
+        return new ResponseEntity<>(auctionsResp,HttpStatus.CREATED);
 
     }
 
