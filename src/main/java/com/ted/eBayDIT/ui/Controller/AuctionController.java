@@ -57,19 +57,10 @@ public class AuctionController {
             throws ParseException {
 
 
-        if(imageFile!=null)
-        {
-            logger.info("image : {}", imageFile.getOriginalFilename());
-            logger.info("image content type : {}", imageFile.getContentType());
-        }
-
-
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
 
-
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
-
 
         //from here we create the photo and return the appropriate uri
 
@@ -81,29 +72,17 @@ public class AuctionController {
             photoDto = photoService.preparePhoto(imageFile, newlyCreatedItemDto);
 
             try {
+
                 itemService.saveImage(imageFile, photoDto);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 String msg = "Something in storing photo in db went wrong!";
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
             }
-
-        }
-        else{
-
-
-            photoDto = photoService.loadDefaultItemImage();
-
-            photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
-            photoResp.setFileDownloadUri(photoDto.getFileDownloadUri());
-
         }
 
-
-        return new ResponseEntity<>(photoResp,HttpStatus.CREATED);
-
-//        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 
