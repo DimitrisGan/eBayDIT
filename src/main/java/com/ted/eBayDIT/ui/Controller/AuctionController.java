@@ -28,7 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(/*"/auctions"*/)
@@ -52,39 +54,51 @@ public class AuctionController {
     private static final Logger logger = LoggerFactory.getLogger(AuctionController.class);
 
 
-    @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
-    public ResponseEntity<Object> createAuction(@RequestParam(name="imageFile", required=false)  MultipartFile[] imageFile,@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
-            throws ParseException {
 
+    @PostMapping("auctions/{id}/upload_multiple_images")
+    public List<ResponseEntity<Object>> uploadMultipleFiles(@PathVariable Long id, @RequestParam(name="imageFile", required=false) MultipartFile[] imageFile) {
+        return Arrays.asList(imageFile)
+                .stream()
+                .map(file -> uploadFile(id,file))
+                .collect(Collectors.toList());
+
+    }
+
+
+    @PostMapping("auctions/{id}/upload_image")
+    public ResponseEntity<Object> uploadFile(@PathVariable Long id,@RequestParam(name="imageFile", required=false) MultipartFile imageFile) {
+
+        ItemDto itemDto = itemService.getItem(id); //create item-auction
+
+        if (imageFile != null) {
+
+            PhotoDto photoDto = photoService.preparePhoto(imageFile, itemDto);
+
+            try {
+                itemService.saveImage(imageFile, photoDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @PostMapping(path ="/auctions" , consumes = {"multipart/form-data"} )
+    public ResponseEntity<Object> createAuction(@RequestPart("item") CreateAuctionRequestModel createAuctionRequestModel)
+            throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
         ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
-        //from here we create the photo and return the appropriate uri
-
-        PhotoDto photoDto = new PhotoDto();
-        PhotoResponseModel photoResp= new PhotoResponseModel();
-
-        if (imageFile != null) {
-
-//            photoDto = photoService.preparePhoto(imageFile, newlyCreatedItemDto);
-
-            try {
-
-//                itemService.saveImage(imageFile, photoDto);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                String msg = "Something in storing photo in db went wrong!";
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(newlyCreatedItemDto,HttpStatus.CREATED);
 
     }
+
 
 
     @PutMapping(path ="/auctions/{id}") //add new bid for example

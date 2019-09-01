@@ -277,9 +277,8 @@ public class UserServiceImpl implements UserService {
 
 
         ModelMapper modelMapper = new ModelMapper();
-        UserDto returnValue = modelMapper.map(userEntity, UserDto.class);
 
-        return returnValue;
+        return modelMapper.map(userEntity, UserDto.class);
     }
 
     //    public List<Us> getUser

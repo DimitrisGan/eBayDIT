@@ -349,6 +349,20 @@ public class ItemServiceImpl implements ItemService {
         photoService.save(photoDto);
     }
 
+    @Override
+    public ItemDto getItem(Long id) {
+
+
+        ItemEntity itemEntity = itemRepo.findByItemID(id);
+
+        if (itemEntity == null) throw new RuntimeException("Item-Auction doesn't exist");
+
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(itemEntity, ItemDto.class);
+    }
+
 
     @Override
     public List<ItemDto> getAllUserAuctions() throws ParseException {
