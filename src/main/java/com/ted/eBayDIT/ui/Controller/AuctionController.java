@@ -98,7 +98,7 @@ public class AuctionController {
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
-        return new ResponseEntity<>(newlyCreatedItemDto,HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 
