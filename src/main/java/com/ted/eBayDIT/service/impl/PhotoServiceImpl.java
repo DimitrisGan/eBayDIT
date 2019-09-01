@@ -179,7 +179,15 @@ public class PhotoServiceImpl implements PhotoService {
         return modelMapper.map(photoEntity,PhotoDto.class);
     }
 
+    @Override
+    public PhotoDto loadDefaultNkuaImage() {
+        PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.NKUA_PHOTO);
+        ModelMapper modelMapper = new ModelMapper();
 
+        return modelMapper.map(photoEntity,PhotoDto.class);
+    }
+
+    @Override
     public PhotoDto getDefaultAUctionImage(){
 
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO);

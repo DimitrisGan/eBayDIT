@@ -14,4 +14,8 @@ public interface PhotoService {
     Resource loadFileAsResource(String fileName);
 
     PhotoDto loadDefaultItemImage();
-}
+
+    PhotoDto getDefaultAUctionImage();
+
+    PhotoDto loadDefaultNkuaImage();
+    }
