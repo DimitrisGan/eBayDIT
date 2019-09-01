@@ -291,7 +291,7 @@ public class AuctionController {
 
     //todo param
     @GetMapping(path ="/auctions")
-    public ResponseEntity<Object> getAllAuctions() throws ParseException {
+    public ResponseEntity<Object> getAllUsersAuctions() throws ParseException {
 
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 

@@ -10,6 +10,10 @@ import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -51,10 +55,55 @@ public class SearchServiceImpl implements SearchService {
         return returnList;
     }
 
+//    @Override
+//    public List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String orderType) {
+//
+//
+//
+//        //todo sortbyCategoy
+//        //todo sortbyDescription  ---> str1.toLowerCase().contains(str2.toLowerCase())
+//        //todo sortByPrice
+//        //todo sortByLocation
+//        //todo tha emfanizontai se paging ta auctions paging
+//
+//
+//
+//
+//        return null;
+//    }
+
+
     @Override
-    public List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String orderType) {
-        return null;
+    public List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String sortType) {
+
+//        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
+
+        List<ItemDto> returnValue = new ArrayList<>();
+        Pageable paging;
+
+        if (sortType.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+        Page<ItemEntity> pagedResult = itemRepo.findAll(paging);
+        int totalPages = pagedResult.getTotalPages();
+
+
+        List<ItemEntity> items = pagedResult.getContent();
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (ItemEntity itemEntity: items){
+            ItemDto itemDto = modelMapper.map(itemEntity, ItemDto.class);
+//            itemDto.setTotalPages(totalPages);
+            returnValue.add(itemDto);
+        }
+
+        return returnValue;
+
     }
+
+
 
 
 }

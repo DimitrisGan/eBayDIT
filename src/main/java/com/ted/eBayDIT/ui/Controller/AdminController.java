@@ -57,7 +57,7 @@ public class AdminController {
                                            @RequestParam(value = "order",defaultValue = "asc") String orderType) { //asc or desc
 
 
-        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy, orderType);
+        List<UserDto> list = userService.getAllUsersFiltered(pageNo, pageSize, sortBy, orderType);
 
         List<UserRest> returnUsersList =new ArrayList<>();
 

@@ -127,7 +127,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public void createUser(UserDto user) {
 
@@ -281,13 +280,6 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userEntity, UserDto.class);
     }
 
-    //    public List<Us> getUser
-
-
-
-
-
-
 
     @Override
     public boolean userExists(String username) {
@@ -332,7 +324,6 @@ public class UserServiceImpl implements UserService {
         return returnUsersList;
     }
 
-
     @Override
     public UserDto getUserByUserId(String userId) {
         UserDto returnValue =new UserDto();
@@ -363,12 +354,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
-
-
     @Override
-    public List<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortType) {
+    public List<UserDto> getAllUsersFiltered(int pageNo, int pageSize, String sortBy, String sortType) {
 
 //        if(pageNo>0) pageNo = pageNo-1; //to not get confused wit zero page
 

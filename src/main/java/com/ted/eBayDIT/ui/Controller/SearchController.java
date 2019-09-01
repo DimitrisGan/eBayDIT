@@ -48,14 +48,18 @@ public class SearchController {
     }
 
 
-
+//    public String controllerMethod(@RequestParam(value="myParam[]") String[] myParams)
 
     //todo AYRIO!!
     @GetMapping(path ="/auctions/filters")
     public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                                          @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
-                                                         @RequestParam(value = "order",defaultValue = "asc") String orderType) throws ParseException {
+                                                         @RequestParam(value = "order",defaultValue = "asc") String orderType,
+                                                         @RequestParam(value = "categories[]") String [] categories
+                                                         //todo lowest ,highest price
+                                                         //todo category , description
+                                                                        ) throws ParseException {
 
 
         AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
