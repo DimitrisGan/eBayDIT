@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +104,40 @@ public class SearchServiceImpl implements SearchService {
 
     }
 
+    @Override
+    public List<ItemDto> filterAuctions(List<String> categoryNameList, String description, String locationText, BigDecimal lowestPrice, BigDecimal highestPrice) {
+        List<ItemDto> returnValue=new ArrayList<>();
 
+        List<ItemEntity> items = itemRepo.findAll();
+
+        for (ItemEntity item : items) {
+
+            if (! categoryNameList.isEmpty()){
+
+
+            }
+
+            if (description.isEmpty()){
+
+            }
+
+            if ( locationText.isEmpty()){
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
+        return returnValue;
+    }
 
 
 }

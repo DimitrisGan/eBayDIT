@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,19 +59,25 @@ public class SearchController {
                                                          @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
                                                          @RequestParam(value = "order",defaultValue = "asc") String orderType,
 
-//                                                         @RequestParam(value = "name", required = false) String name,
-//                                                         HttpServletRequest request, HttpServletResponse response)
-                                                         @RequestParam(value = "categories", required = false) String categories
+                                                         @RequestParam(value = "categories", required = false) String categories,
+                                                         @RequestParam(value = "description", required = false) String description,
+                                                         @RequestParam(value = "location", required = false) String locationText,
+
+                                                         @RequestParam(value = "lowestPrice", required = false) BigDecimal lowestPrice,
+                                                         @RequestParam(value = "highestPrice", required = false) BigDecimal highestPrice
                                                          //todo lowest ,highest price
                                                          //todo category , description
                                                                         ) throws ParseException {
 
 
+        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+
+
         List<String> categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
 
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
 
-        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+        List<ItemDto> FilteredList = searchService.filterAuctions(categoryNameList ,description,locationText, lowestPrice ,highestPrice);       //filter and discard not needed auction
 
         List<ItemDto> auctionsList = searchService.getFilteredAuctions(pageNo, pageSize, sortBy, orderType);
 
@@ -85,6 +92,8 @@ public class SearchController {
             auctionsRespList.add(auctionsResp);
         }
 
+
+        //todo return totalpages
         return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
 
     }
