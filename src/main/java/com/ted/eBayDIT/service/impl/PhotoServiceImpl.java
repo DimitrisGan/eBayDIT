@@ -1,20 +1,18 @@
 package com.ted.eBayDIT.service.impl;
 
 
+import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.entity.DefaultPhotosConstants;
 import com.ted.eBayDIT.entity.PhotoEntity;
 import com.ted.eBayDIT.repository.PhotoRepository;
 import com.ted.eBayDIT.service.PhotoService;
-import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,17 +20,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -185,6 +176,26 @@ public class PhotoServiceImpl implements PhotoService {
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(photoEntity,PhotoDto.class);
+    }
+
+    @Override
+    public PhotoDto preparePhoto(MultipartFile imageFile, ItemDto newlyCreatedItemDto) {
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(imageFile.getOriginalFilename())
+                .toUriString();
+
+
+
+        PhotoDto photoDto = new PhotoDto();
+        photoDto.setFileName(imageFile.getOriginalFilename());
+        photoDto.setFileDownloadUri(fileDownloadUri);
+        photoDto.setItem(newlyCreatedItemDto);
+        photoDto.setSize(imageFile.getSize());
+        photoDto.setType(imageFile.getContentType());
+
+        return photoDto;
     }
 
     @Override

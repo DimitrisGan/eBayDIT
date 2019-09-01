@@ -1,6 +1,7 @@
 package com.ted.eBayDIT.service;
 
 
+import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,4 +19,6 @@ public interface PhotoService {
     PhotoDto getDefaultAUctionImage();
 
     PhotoDto loadDefaultNkuaImage();
-    }
+
+    PhotoDto preparePhoto(MultipartFile imageFile, ItemDto newlyCreatedItemDto);
+}

@@ -1,8 +1,6 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
-import com.ted.eBayDIT.dto.BidDto;
-import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.security.SecurityService;
@@ -14,21 +12,17 @@ import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
-import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -84,25 +78,7 @@ public class AuctionController {
 
         if (imageFile != null) {
 
-
-            System.out.println("-------->image : " + imageFile.getOriginalFilename());
-            System.out.println("-------->image content type :" + imageFile.getContentType());
-
-
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/")
-                    .path(imageFile.getOriginalFilename())
-                    .toUriString();
-
-            photoDto = new PhotoDto();
-            photoDto.setFileName(imageFile.getOriginalFilename());
-            photoDto.setFileDownloadUri(fileDownloadUri);
-            photoDto.setItem(newlyCreatedItemDto);
-//            photoDto.setPath();
-            photoDto.setSize(imageFile.getSize());
-            photoDto.setType(imageFile.getContentType());
-
-            photoResp = modelMapper.map(photoDto, PhotoResponseModel.class);
+            photoDto = photoService.preparePhoto(imageFile, newlyCreatedItemDto);
 
             try {
                 itemService.saveImage(imageFile, photoDto);
@@ -115,7 +91,6 @@ public class AuctionController {
 
         }
         else{
-
 
 
             photoDto = photoService.loadDefaultItemImage();
