@@ -31,6 +31,8 @@ public class AuctionsResponseModel {
     private int winnerID;
 
     private List <BidResponseModel> bids;
+    private BigDecimal currently;
+
 
 
     private List<PhotoResponseModel> photos;
@@ -165,6 +167,14 @@ public class AuctionsResponseModel {
 
     public void setBids(List<BidResponseModel> bids) {
         this.bids = bids;
+    }
+
+    public BigDecimal getCurrently() {
+        return currently;
+    }
+
+    public void setCurrently(BigDecimal currently) {
+        this.currently = currently;
     }
 
 
