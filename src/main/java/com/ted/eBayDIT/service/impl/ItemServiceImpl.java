@@ -321,7 +321,7 @@ public class ItemServiceImpl implements ItemService {
 
 
         BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
-        if (bidder.getId() == this.securityService.getCurrentUser().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
+        if (bidder.getId() == item2save.getSeller().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
 
         int res = item2save.getCurrently().compareTo(bidAmount);
