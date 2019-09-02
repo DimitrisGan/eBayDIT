@@ -12,6 +12,7 @@ import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -304,25 +305,29 @@ public class AuctionController {
 
         List<ItemDto> auctionsList = itemService.getAllUserAuctions();
 
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+        AuctionsResponseModel auctionResp = new AuctionsResponseModel();
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         for (ItemDto itemDto : auctionsList) {
-            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-            if (auctionsResp.getPhotos().isEmpty()){
+            auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            if (auctionResp.getPhotos().isEmpty()){
 
                 //add default photo
-                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
-                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
-//                auctionsResp.getPhotos().add(defaultPhotoResp);
-                auctionsResp.setDefaultPhoto(defaultPhotoResp);
+//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
+//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
+                PhotoResponseModel defaultPhotoResp =   photoService.addDefaultPhotoIfNoPhotosExist();
+
+                auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
-            auctionsRespList.add(auctionsResp);
+            auctionsRespList.add(auctionResp);
         }
 
         return new ResponseEntity<>(auctionsRespList,HttpStatus.OK);
 
     }
+
 
 
 

@@ -2,9 +2,12 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
+import com.ted.eBayDIT.dto.PhotoDto;
+import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.service.SearchService;
 import com.ted.eBayDIT.ui.model.response.AuctionsFilteredSearchResponseModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
+import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,9 @@ public class SearchController {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    PhotoService photoService;
 
 
     @GetMapping(path ="/auctions/active")
@@ -94,7 +100,30 @@ public class SearchController {
         for (ItemDto itemDto : auctionsList) {
             auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
             auctionsRespList.add(auctionResp);
+            //todo create  function
+            if (auctionResp.getPhotos().isEmpty()){
+                //add default photo
+//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
+//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
+                PhotoResponseModel defaultPhotoResp =   photoService.addDefaultPhotoIfNoPhotosExist();
+
+                auctionResp.setDefaultPhoto(defaultPhotoResp);
+            }
+            auctionsRespList.add(auctionResp);
+
         }
+//        for (ItemDto itemDto : auctionsList) {
+//            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+//            if (auctionsResp.getPhotos().isEmpty()){
+//
+//                //add default photo
+//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
+//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
+////                auctionsResp.getPhotos().add(defaultPhotoResp);
+//                auctionsResp.setDefaultPhoto(defaultPhotoResp);
+//            }
+//            auctionsRespList.add(auctionsResp);
+//        }
 
 
         auctionsFilterResp.setTotalFilteredAuctions(filteredList.size());
@@ -103,6 +132,8 @@ public class SearchController {
         return new ResponseEntity<>(auctionsFilterResp, HttpStatus.OK);
 
     }
+
+
 
 
 //    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,

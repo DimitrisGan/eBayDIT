@@ -7,6 +7,7 @@ import com.ted.eBayDIT.entity.DefaultPhotosConstants;
 import com.ted.eBayDIT.entity.PhotoEntity;
 import com.ted.eBayDIT.repository.PhotoRepository;
 import com.ted.eBayDIT.service.PhotoService;
+import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,6 +213,13 @@ public class PhotoServiceImpl implements PhotoService {
 
         return modelMapper.map(photoEntity,PhotoDto.class);
 
+    }
+
+    @Override
+    public PhotoResponseModel addDefaultPhotoIfNoPhotosExist(){
+        ModelMapper modelMapper = new ModelMapper();
+        PhotoDto defaultPhotoDto = loadDefaultItemImage();
+        return modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
     }
 
     //=================================================================================================
