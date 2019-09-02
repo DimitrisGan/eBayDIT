@@ -1,6 +1,7 @@
 package com.ted.eBayDIT.ui.model.response;
 
 
+import com.ted.eBayDIT.dto.BidDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.ItemLocationDto;
 import com.ted.eBayDIT.dto.PhotoDto;
@@ -28,6 +29,8 @@ public class AuctionsResponseModel {
     private boolean eventFinished;
 
     private int winnerID;
+
+    private List <BidResponseModel> bids;
 
 
     private List<PhotoResponseModel> photos;
@@ -154,6 +157,14 @@ public class AuctionsResponseModel {
 
     public void setPhotos(List<PhotoResponseModel> photos) {
         this.photos = photos;
+    }
+
+    public List<BidResponseModel> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<BidResponseModel> bids) {
+        this.bids = bids;
     }
 
 
