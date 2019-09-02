@@ -1,8 +1,11 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
+import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
+import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.service.UserService;
@@ -188,7 +191,9 @@ public class AuctionController {
 
     @PutMapping(path ="/auctions/buyout/{auctionId}") //add new bid for example
 
-    public ResponseEntity<Object> buyItemInAuction(@PathVariable Long auctionId,@RequestBody AddBidAuctionRequestModel newBidRequest) throws ParseException {
+    public ResponseEntity<Object> buyItemInAuction(@PathVariable Long auctionId/*,@RequestBody AddBidAuctionRequestModel newBidRequest*/) throws ParseException {
+
+        UserDto buyerDto = this.securityService.getCurrentUser();
 
         //check first if item/auction exists!
         if (! itemService.itemExists(auctionId)){
@@ -213,12 +218,18 @@ public class AuctionController {
         itemService.buyout(auctionId);
                 //addBid(auctionId,newBidRequest.getAmount(),newBidRequest.getBidderId());
 
+        //todo addThebidder that won the item maybe
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 
     @PutMapping(path ="/auctions/add_bid/{id}") //add new bid for example
     public ResponseEntity<Object> addBidInAuction(@PathVariable Long id,@RequestBody AddBidAuctionRequestModel newBidRequest) throws ParseException {
+
+        String currUserId = this.securityService.getCurrentUser().getUserId();
+
+        int bidderId = this.userService.getBidderIdByUserId(currUserId);
+
 
         //check first if item/auction exists!
         if (! itemService.itemExists(id)){
@@ -240,7 +251,7 @@ public class AuctionController {
 
 
         //the check for if auction has finished is done inside the itemService.addBid()
-        itemService.addBid(id,newBidRequest.getAmount(),newBidRequest.getBidderId());
+        itemService.addBid(id,newBidRequest.getAmount(),bidderId);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -313,12 +324,8 @@ public class AuctionController {
         for (ItemDto itemDto : auctionsList) {
             auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
             if (auctionResp.getPhotos().isEmpty()){
-
                 //add default photo
-//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
-//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
                 PhotoResponseModel defaultPhotoResp =   photoService.addDefaultPhotoIfNoPhotosExist();
-
                 auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
             auctionsRespList.add(auctionResp);

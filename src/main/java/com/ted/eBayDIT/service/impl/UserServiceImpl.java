@@ -1,5 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
+import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.repository.BidderDetailsRepository;
@@ -264,6 +265,14 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepo.findByUserId(userId);
 
         return bCryptPasswordEncoder.matches(pass, userEntity.getEncryptedPassword());
+    }
+
+    @Override
+    public Integer getBidderIdByUserId(String userId) {
+
+        UserEntity userEntity = userRepo.findByUserId(userId);
+        if (userEntity == null) throw new RuntimeException("user not found!");
+        return userEntity.getBidder().getId();
     }
 
 

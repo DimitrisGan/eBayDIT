@@ -316,7 +316,7 @@ public class ItemServiceImpl implements ItemService {
 
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
 
-        //todo #3 edw prepei logika an exei teleiwsei na kanw to isFinished == true + na tsekarw me vash ta dates ends kai bid
+
         if (isAuctionFinishedByTime(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
 
 

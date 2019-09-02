@@ -17,7 +17,7 @@ public class AddBidAuctionRequestModel {
 //    private String time; de to thelw mias kai tha vazw to current time egw
 
     private BigDecimal amount;
-    private Integer bidderId; //bidder-user id
+//    private Integer bidderId; //bidder-user id
 
     public BigDecimal getAmount() {
         return amount;
@@ -27,13 +27,13 @@ public class AddBidAuctionRequestModel {
         this.amount = amount;
     }
 
-    public Integer getBidderId() {
-        return bidderId;
-    }
-
-    public void setBidderId(Integer bidderId) {
-        this.bidderId = bidderId;
-    }
+//    public Integer getBidderId() {
+//        return bidderId;
+//    }
+//
+//    public void setBidderId(Integer bidderId) {
+//        this.bidderId = bidderId;
+//    }
 
 
 //    private Long itemID; //OXI THA UPARXEI STO PATH TOU URI

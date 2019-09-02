@@ -99,14 +99,9 @@ public class SearchController {
         AuctionsResponseModel auctionResp  = new AuctionsResponseModel();
         for (ItemDto itemDto : auctionsList) {
             auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-            //todo create  function
             if (auctionResp.getPhotos().isEmpty()){
-                //add default photo
-//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
-//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
-                PhotoResponseModel defaultPhotoResp =   photoService.addDefaultPhotoIfNoPhotosExist();
-
-                auctionResp.setDefaultPhoto(defaultPhotoResp);
+               PhotoResponseModel defaultPhotoResp = photoService.addDefaultPhotoIfNoPhotosExist();
+               auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
 
             auctionsRespList.add(auctionResp);

@@ -1,5 +1,6 @@
 package com.ted.eBayDIT.service;
 
+import com.ted.eBayDIT.dto.BidderDto;
 import com.ted.eBayDIT.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,4 +31,6 @@ public interface UserService extends UserDetailsService {
     int usersNumber();
     UserDto updatePassword(String userId, String newPassword);
     boolean isPasswordEqual(String userId, String pass);
+
+    Integer getBidderIdByUserId(String userId);
 }
