@@ -9,10 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -54,13 +51,13 @@ public class SearchController {
 //    public String controllerMethod(@RequestParam(value="myParam[]") String[] myParams)
 
 
-    @GetMapping(path ="/auctions/filters")
+    @PostMapping(path ="/auctions/filters")
     public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                                          @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
                                                          @RequestParam(value = "order",defaultValue = "asc") String orderType,
 
-                                                         @RequestParam(value = "categories", required = false) String categories,
+                                                         @RequestParam(value = "categories", required = false) List<String> categories,
                                                          @RequestParam(value = "description", required = false) String description,
                                                          @RequestParam(value = "location", required = false) String locationText,
 
@@ -76,7 +73,7 @@ public class SearchController {
 
         List<String> categoryNameList=new ArrayList<>();
         if (categories != null) {
-            categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
+            categoryNameList = categories;
         }
         if (description == null){
             description = "";
