@@ -292,7 +292,10 @@ public class ItemServiceImpl implements ItemService {
                 itemEntity.getCategories().add(categEntity);
             }
         }
-        
+
+        connectCategoriesToNewItem(itemEntity); //join item_categories table
+
+
         itemRepo.save(itemEntity);
 
     }
