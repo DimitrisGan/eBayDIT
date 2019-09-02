@@ -97,7 +97,7 @@ public class SearchController {
         }
 
 
-        auctionsFilterResp.setTotalFilteredAuctions(auctionsList.size());
+        auctionsFilterResp.setTotalFilteredAuctions(filteredList.size());
         auctionsFilterResp.setAuctions(auctionsRespList);
 
         return new ResponseEntity<>(auctionsFilterResp, HttpStatus.OK);
