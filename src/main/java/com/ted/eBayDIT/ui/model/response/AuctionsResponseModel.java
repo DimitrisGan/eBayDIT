@@ -37,6 +37,8 @@ public class AuctionsResponseModel {
 
     private List<PhotoResponseModel> photos;
 
+    private PhotoResponseModel defaultPhoto;
+
 
     public AuctionsResponseModel() {
     }
@@ -175,6 +177,14 @@ public class AuctionsResponseModel {
 
     public void setCurrently(BigDecimal currently) {
         this.currently = currently;
+    }
+
+    public PhotoResponseModel getDefaultPhoto() {
+        return defaultPhoto;
+    }
+
+    public void setDefaultPhoto(PhotoResponseModel defaultPhoto) {
+        this.defaultPhoto = defaultPhoto;
     }
 
 

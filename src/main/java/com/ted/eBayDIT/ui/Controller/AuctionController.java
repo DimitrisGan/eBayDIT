@@ -314,7 +314,8 @@ public class AuctionController {
                 //add default photo
                 PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
                 PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
-                auctionsResp.getPhotos().add(defaultPhotoResp);
+//                auctionsResp.getPhotos().add(defaultPhotoResp);
+                auctionsResp.setDefaultPhoto(defaultPhotoResp);
             }
             auctionsRespList.add(auctionsResp);
         }

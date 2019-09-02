@@ -153,7 +153,6 @@ public class ItemServiceImpl implements ItemService {
 
         item.setNumberOfBids(0);
         item.setStarted("Not started yet!");
-        //todo item.setEnds(item.getEnds())
 
 //        if (item.getFirstBid().equals(new BigDecimal("0")))
 //            item.setCurrently(new BigDecimal("0")); //set Currenlty to 0
