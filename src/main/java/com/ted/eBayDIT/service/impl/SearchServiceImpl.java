@@ -124,7 +124,7 @@ public class SearchServiceImpl implements SearchService {
             return items;
 
         for (ItemEntity itemEntity : items) {
-            if (itemEntity.getLocation().getText().equals(locationText))
+            if (itemEntity.getLocation().getText().toLowerCase().contains(locationText.toLowerCase()))
                 returnValue.add(itemEntity);
         }
 

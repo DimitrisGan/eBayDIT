@@ -51,7 +51,7 @@ public class SearchController {
 //    public String controllerMethod(@RequestParam(value="myParam[]") String[] myParams)
 
 
-    @PostMapping(path ="/auctions/filters")
+    @GetMapping(path ="/auctions/filters")
     public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                                          @RequestParam(value = "orderBy",defaultValue = "name") String sortBy,
