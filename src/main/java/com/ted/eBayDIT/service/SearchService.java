@@ -12,8 +12,8 @@ public interface SearchService {
 
     List<ItemDto> getActiveAuctions() throws ParseException;
 
-    List<ItemDto> getFilteredAuctions(int pageNo, int pageSize, String sortBy, String sortType);
+    List<ItemDto> getPaginatedFilteredAuctions(int pageNo, int pageSize, String sortBy, String sortType, List<Long> itemIdsList);
 
 
-    List<ItemDto> filterAuctions(List<String> categoryNameList, String description, String locationText, BigDecimal lowestPrice, BigDecimal highestPrice);
+    List<Long> filterAuctions(List<String> categoryNameList, String description, String locationText, BigDecimal lowestPrice, BigDecimal highestPrice);
 }

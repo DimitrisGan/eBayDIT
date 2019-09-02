@@ -3,6 +3,7 @@ package com.ted.eBayDIT.ui.Controller;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.service.SearchService;
+import com.ted.eBayDIT.ui.model.response.AuctionsFilteredSearchResponseModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class SearchController {
 
 //    public String controllerMethod(@RequestParam(value="myParam[]") String[] myParams)
 
-    //todo AYRIO!!
+
     @GetMapping(path ="/auctions/filters")
     public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
@@ -64,37 +65,40 @@ public class SearchController {
                                                          @RequestParam(value = "location", required = false) String locationText,
 
                                                          @RequestParam(value = "lowestPrice", required = false) BigDecimal lowestPrice,
-                                                         @RequestParam(value = "highestPrice", required = false) BigDecimal highestPrice
-                                                         //todo lowest ,highest price
-                                                         //todo category , description
-                                                                        ) throws ParseException {
+                                                         @RequestParam(value = "highestPrice", required = false ) BigDecimal highestPrice
+
+                                                                        ) {
 
 
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+
+        AuctionsFilteredSearchResponseModel auctionsFilterResp = new AuctionsFilteredSearchResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
 
-        List<String> categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
+        List<String> categoryNameList=new ArrayList<>();
+        if (categories != null) {
+            categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
+        }
 
+        /*get the itemIds*/
+        List<Long> filteredList = searchService.filterAuctions(categoryNameList ,description,locationText, lowestPrice ,highestPrice); //filter and discard not needed auction
 
-        List<ItemDto> FilteredList = searchService.filterAuctions(categoryNameList ,description,locationText, lowestPrice ,highestPrice);       //filter and discard not needed auction
-
-        List<ItemDto> auctionsList = searchService.getFilteredAuctions(pageNo, pageSize, sortBy, orderType);
-
-
-//        List<ItemDto> auctionsList = searchService.getAllUsers(pageNo, pageSize, sortBy, orderType);
-
+        /*do the pagination and sorting for the given auction-item ids*/
+        List<ItemDto> auctionsList = searchService.getPaginatedFilteredAuctions(pageNo, pageSize, sortBy, orderType, filteredList);
 
 
         ModelMapper modelMapper = new ModelMapper();
+        AuctionsResponseModel auctionResp  = new AuctionsResponseModel();
         for (ItemDto itemDto : auctionsList) {
-            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-            auctionsRespList.add(auctionsResp);
+            auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            auctionsRespList.add(auctionResp);
         }
 
 
-        //todo return totalpages
-        return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
+        auctionsFilterResp.setTotalFilteredAuctions(auctionsList.size());
+        auctionsFilterResp.setAuctions(auctionsRespList);
+
+        return new ResponseEntity<>(auctionsFilterResp, HttpStatus.OK);
 
     }
 
