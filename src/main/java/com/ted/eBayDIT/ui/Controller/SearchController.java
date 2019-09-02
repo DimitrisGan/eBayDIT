@@ -74,10 +74,15 @@ public class SearchController {
         AuctionsFilteredSearchResponseModel auctionsFilterResp = new AuctionsFilteredSearchResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
-
         List<String> categoryNameList=new ArrayList<>();
         if (categories != null) {
             categoryNameList = Arrays.asList(categories.split("\\s*,\\s*"));
+        }
+        if (description == null){
+            description = "";
+        }
+        if (locationText == null){
+            locationText = "";
         }
 
         /*get the itemIds*/
