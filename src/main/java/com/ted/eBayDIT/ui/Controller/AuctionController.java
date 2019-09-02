@@ -9,7 +9,6 @@ import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.ui.model.request.AddBidAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.request.AuctionDetailsRequestModel;
-import com.ted.eBayDIT.ui.model.request.CreateAuctionRequestModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
 import org.modelmapper.ModelMapper;
@@ -91,11 +90,11 @@ public class AuctionController {
 
 
     @PostMapping(path ="/auctions", consumes={"application/json"} )
-    public ResponseEntity<Object> createAuction(@RequestBody CreateAuctionRequestModel createAuctionRequestModel)
+    public ResponseEntity<Object> createAuction(@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel)
             throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();
-        ItemDto itemDto = modelMapper.map(createAuctionRequestModel, ItemDto.class);
+        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class);
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
 
@@ -123,6 +122,14 @@ public class AuctionController {
         if (! itemService.itemExists(id)){
             String msg = "Auction doesn't exist to edit!";
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        ModelMapper modelMapper = new ModelMapper();
+        ItemDto itemDto = modelMapper.map(editAuctionDetails, ItemDto.class);
+
+        try {
+            itemService.editAuction(id,itemDto);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
 

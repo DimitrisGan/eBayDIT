@@ -1,6 +1,7 @@
 package com.ted.eBayDIT.service.impl;
 
 
+import com.ted.eBayDIT.dto.CategoryDto;
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.entity.*;
@@ -259,21 +260,40 @@ public class ItemServiceImpl implements ItemService {
 
         //        UserRest returnValue =new UserRest();
 
-
         ItemEntity itemEntity = itemRepo.findByItemID(id);
 
-//        if (itemDto2update.getEnds()    != null)    {itemEntity.setEnds(itemDto2update.getEnds()); }
-//        if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
-//        if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
-//
-//        if (user2update.getLocation()        != null)    {userEntity.setLocation(user2update.getLocation()); }
-//        if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
-//        if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
-//        if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }
 
 
+
+        if (itemDto2update.getName()        != null)    {itemEntity.setName(itemDto2update.getName()); }
+
+        if (itemDto2update.getBuyPrice()    != null)    {itemEntity.setBuyPrice(itemDto2update.getBuyPrice()); }
+
+        if (itemDto2update.getFirstBid()    != null)    {itemEntity.setFirstBid(itemDto2update.getFirstBid()); }
+
+        if (itemDto2update.getCountry()     != null)    {itemEntity.setCountry(itemDto2update.getCountry()); }
+
+        if (itemDto2update.getEnds()        != null)    {itemEntity.setEnds(itemDto2update.getEnds()); }
+
+        if (itemDto2update.getDescription() != null)    {itemEntity.setDescription(itemDto2update.getDescription()); }
+
+        if (itemDto2update.getLocation()    != null){
+            ModelMapper modelMapper = new ModelMapper();
+            ItemLocationEntity locEnt = modelMapper.map(itemDto2update.getLocation(), ItemLocationEntity.class);
+            itemEntity.setLocation(locEnt);
+        }
+
+        if (itemDto2update.getCategories()  != null) {
+            itemEntity.getCategories().clear();
+            ModelMapper modelMapper = new ModelMapper();
+            CategoryEntity categEntity = new CategoryEntity();
+            for (CategoryDto categoryDto : itemDto2update.getCategories()) {
+                categEntity = modelMapper.map(categoryDto, CategoryEntity.class);
+                itemEntity.getCategories().add(categEntity);
+            }
+        }
+        
         itemRepo.save(itemEntity);
-
 
     }
 
