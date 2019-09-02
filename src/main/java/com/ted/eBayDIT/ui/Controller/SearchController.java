@@ -99,7 +99,6 @@ public class SearchController {
         AuctionsResponseModel auctionResp  = new AuctionsResponseModel();
         for (ItemDto itemDto : auctionsList) {
             auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-            auctionsRespList.add(auctionResp);
             //todo create  function
             if (auctionResp.getPhotos().isEmpty()){
                 //add default photo
@@ -109,22 +108,10 @@ public class SearchController {
 
                 auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
+
             auctionsRespList.add(auctionResp);
 
         }
-//        for (ItemDto itemDto : auctionsList) {
-//            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-//            if (auctionsResp.getPhotos().isEmpty()){
-//
-//                //add default photo
-//                PhotoDto defaultPhotoDto = photoService.loadDefaultItemImage();
-//                PhotoResponseModel defaultPhotoResp = modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
-////                auctionsResp.getPhotos().add(defaultPhotoResp);
-//                auctionsResp.setDefaultPhoto(defaultPhotoResp);
-//            }
-//            auctionsRespList.add(auctionsResp);
-//        }
-
 
         auctionsFilterResp.setTotalFilteredAuctions(filteredList.size());
         auctionsFilterResp.setAuctions(auctionsRespList);
