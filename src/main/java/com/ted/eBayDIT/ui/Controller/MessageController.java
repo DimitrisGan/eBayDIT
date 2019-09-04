@@ -24,16 +24,6 @@ public class MessageController {
     @Autowired
     SecurityService securityService;
 
-
-//    @Autowired
-//    private UserRepository userRepo;
-
-//    @Autowired
-//    private ConnectionRepository connRepo;
-//
-//    @Autowired
-//    private ChatRepository chatRepo;
-//
     @Autowired
     private MessageService messageService;
 
@@ -73,7 +63,7 @@ public class MessageController {
 
 
 
-    //gets the messages between current user and user specified by id
+    //gets the inbox messages between current user and user specified by id
     @GetMapping(path ="/messages/inbox/{id}")
     public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@RequestParam String id) {
         ModelMapper modelMapper = new ModelMapper();
@@ -93,7 +83,7 @@ public class MessageController {
 
     }
 
-
+    //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
     public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@RequestParam String id) {
         ModelMapper modelMapper = new ModelMapper();
@@ -103,8 +93,6 @@ public class MessageController {
 
         List<MessageDto> sentList = messageService.getSentMessagesFromCurrentUserToOtherUser(currUserId , id);
 
-
-//        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class);
         for (MessageDto messageDto : sentList) {
             MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
             returnSentList.add(msgResp);
