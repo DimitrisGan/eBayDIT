@@ -4,7 +4,7 @@ package com.ted.eBayDIT.ui.Controller;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.response.AdminRest;
-import com.ted.eBayDIT.ui.model.response.UserRest;
+import com.ted.eBayDIT.ui.model.response.UserDetailsResponseModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class AdminController {
                                                           @RequestParam(value = "limit",defaultValue = "2") int limit,
                                                           @RequestParam(value = "orderBy",defaultValue = "username") int sortBy*/) {
 
-        List<UserRest> returnUsersList = new ArrayList<>();
+        List<UserDetailsResponseModel> returnUsersList = new ArrayList<>();
 
         List<UserDto> allNotVerifiedUsersList = userService.getAllNotVerifiedUsers();
 
@@ -41,7 +41,7 @@ public class AdminController {
         ModelMapper modelMapper = new ModelMapper();
         for (UserDto userDto : allNotVerifiedUsersList) {
 
-            UserRest returnUser = modelMapper.map(userDto, UserRest.class);
+            UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
 
             returnUsersList.add(returnUser);
         }
@@ -59,12 +59,12 @@ public class AdminController {
 
         List<UserDto> list = userService.getAllUsersFiltered(pageNo, pageSize, sortBy, orderType);
 
-        List<UserRest> returnUsersList =new ArrayList<>();
+        List<UserDetailsResponseModel> returnUsersList =new ArrayList<>();
 
         ModelMapper modelMapper = new ModelMapper();
         for (UserDto userDto : list) {
 
-            UserRest returnUser = modelMapper.map(userDto, UserRest.class);
+            UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
             returnUsersList.add(returnUser);
         }
 
@@ -108,7 +108,7 @@ public class AdminController {
         userDto = this.userService.verifyUser(id);
 
         ModelMapper modelMapper = new ModelMapper();
-        UserRest returnValue = modelMapper.map(userDto, UserRest.class);
+        UserDetailsResponseModel returnValue = modelMapper.map(userDto, UserDetailsResponseModel.class);
 
 
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);

@@ -4,15 +4,15 @@ import java.util.List;
 
 public class AdminRest {
 
-    private List<UserRest> users;
+    private List<UserDetailsResponseModel> users;
     private int totalPages;
     private int totalUsers;
 
-    public List<UserRest> getUsers() {
+    public List<UserDetailsResponseModel> getUsers() {
         return users;
     }
 
-    public void setUsers(List<UserRest> users) {
+    public void setUsers(List<UserDetailsResponseModel> users) {
         this.users = users;
     }
 

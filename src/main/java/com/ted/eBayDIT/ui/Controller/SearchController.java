@@ -3,6 +3,7 @@ package com.ted.eBayDIT.ui.Controller;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
+import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.service.SearchService;
 import com.ted.eBayDIT.ui.model.response.AuctionsFilteredSearchResponseModel;
@@ -33,6 +34,9 @@ public class SearchController {
 
     @Autowired
     PhotoService photoService;
+
+    @Autowired
+    ItemService itemService;
 
 
     @GetMapping(path ="/auctions/active")
@@ -117,32 +121,20 @@ public class SearchController {
 
 
 
+    @GetMapping(path ="/auctions/{id}")
+    public ResponseEntity<Object> getAuctionInfo(@PathVariable Long id){  //id = auctionId
+        AuctionsResponseModel auctionResp = new AuctionsResponseModel();
 
-//    public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
-//                                           @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
-//                                           @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
-//                                           @RequestParam(value = "order",defaultValue = "asc") String orderType) { //asc or desc
-//
-//
-//        List<UserDto> list = userService.getAllUsers(pageNo, pageSize, sortBy, orderType);
-//
-//        List<UserRest> returnUsersList =new ArrayList<>();
-//
-//        ModelMapper modelMapper = new ModelMapper();
-//        for (UserDto userDto : list) {
-//
-//            UserRest returnUser = modelMapper.map(userDto, UserRest.class);
-//            returnUsersList.add(returnUser);
-//        }
-//
-//        AdminRest adminRest= new AdminRest();
-//        adminRest.setUsers(returnUsersList);
-//        adminRest.setTotalPages(list.get(0).getTotalPages());
-//        adminRest.setTotalUsers(this.userService.usersNumber());
-//
-//        return new ResponseEntity<>(adminRest, HttpStatus.OK);
-//
-//    }
+        ItemDto itemDto = this.itemService.getItem(id);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+
+        return new ResponseEntity<>(auctionResp,HttpStatus.OK);
+
+    }
+
 
 
 

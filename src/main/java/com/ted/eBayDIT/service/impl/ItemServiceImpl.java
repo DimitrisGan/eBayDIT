@@ -49,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Autowired
-    ItemLocationRepo itemLocationRepo;
+    ItemLocationRepository itemLocationRepo;
 
 
     @Autowired
@@ -370,7 +370,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getItem(Long id) {
-
 
         ItemEntity itemEntity = itemRepo.findByItemID(id);
 

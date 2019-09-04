@@ -339,15 +339,6 @@ public class AuctionController {
 
 
 
-    @GetMapping(path ="/auctions/{id}")
-    public ResponseEntity<Object> getAuctionInfo(@PathVariable String auctionId,@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel){
-
-        //todo findAuctionById(auctionID)
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
 
 
 

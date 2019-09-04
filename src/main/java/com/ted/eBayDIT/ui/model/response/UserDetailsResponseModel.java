@@ -2,7 +2,7 @@ package com.ted.eBayDIT.ui.model.response;
 
 
 
-public class UserRest {
+public class UserDetailsResponseModel {
 
     private String userId;
     private String username;

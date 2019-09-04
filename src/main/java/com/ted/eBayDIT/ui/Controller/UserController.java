@@ -47,7 +47,7 @@ public class UserController {
         UserDto userDto = userService.getUserByUserId(id) ;
 
         ModelMapper modelMapper = new ModelMapper();
-        UserRest returnUser = modelMapper.map(userDto, UserRest.class);
+        UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
 
         return   new ResponseEntity<>(returnUser, HttpStatus.OK);
 
@@ -57,7 +57,7 @@ public class UserController {
     @PostMapping("register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
-        UserRest returnValue =new UserRest();
+        UserDetailsResponseModel returnValue =new UserDetailsResponseModel();
 
 //        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
@@ -107,7 +107,7 @@ public class UserController {
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
         }
 
-//        UserRest returnValue =new UserRest();
+//        UserDetailsResponseModel returnValue =new UserDetailsResponseModel();
 
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
