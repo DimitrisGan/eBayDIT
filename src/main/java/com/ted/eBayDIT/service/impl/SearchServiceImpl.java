@@ -194,7 +194,9 @@ public class SearchServiceImpl implements SearchService {
     public List<Long> filterAuctions(List<String> categoryNameList, String description, String locationText, BigDecimal lowestPrice, BigDecimal highestPrice) {
         List<Long> returnValue = new ArrayList<>();
 
-        List<ItemEntity> items = itemRepo.findAll();
+//        List<ItemEntity> items = itemRepo.findAll();
+//        List<ItemEntity> items = itemRepo.findByEventStartedTrueAndEventFinishedFalse();
+        List<ItemEntity> items = itemRepo.findByEventStartedTrue();
 
         List<ItemEntity> itemsAfterCategoriesFilter = doCategoriesFilter(categoryNameList, items); //filter No1
 

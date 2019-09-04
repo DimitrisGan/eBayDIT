@@ -27,7 +27,7 @@ public class ItemDto implements Serializable {
     private boolean eventStarted;
     private boolean eventFinished;
 
-    private int winnerID;
+    private String winnerUserId;
 
     private List<PhotoDto> photos;
 
@@ -154,13 +154,6 @@ public class ItemDto implements Serializable {
         this.eventFinished = eventFinished;
     }
 
-    public int getWinnerID() {
-        return winnerID;
-    }
-
-    public void setWinnerID(int winnerID) {
-        this.winnerID = winnerID;
-    }
 
     public List<PhotoDto> getPhotos() {
         return photos;
@@ -176,5 +169,13 @@ public class ItemDto implements Serializable {
 
     public void setCurrently(BigDecimal currently) {
         this.currently = currently;
+    }
+
+    public String getWinnerUserId() {
+        return winnerUserId;
+    }
+
+    public void setWinnerUserId(String winnerUserId) {
+        this.winnerUserId = winnerUserId;
     }
 }

@@ -3,6 +3,8 @@ package com.ted.eBayDIT.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Data
 
@@ -57,7 +59,9 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-/*
+
+
+    /*
     Thanks to CascadeType.ALL, associated entities BidderDetailsEntity,SellerDetailsEntity will be saved at the same time with UserEntity
     without the need of calling its save function explicitly
     Source: https://hellokoding.com/jpa-one-to-one-shared-primary-key-relationship-mapping-example-with-spring-boot-maven-and-mysql/
@@ -67,6 +71,23 @@ public class UserEntity implements Serializable {
 
     @OneToOne(mappedBy = "user" ,cascade =CascadeType.ALL)
     private SellerDetailsEntity seller;
+
+
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+//            mappedBy="connectedUser1")
+//    private List<ConnectivityEntity> connections;
+//
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+//            mappedBy = "connectedUser2")
+//    private List<ConnectivityEntity> connectedTo;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "sender" /*, orphanRemoval = true*/)
+    private List<MessageEntity> sentMessages;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "receiver" /*, orphanRemoval = true*/)
+    private List<MessageEntity> receivedMessages;
 
 
     public int getId() {
@@ -189,5 +210,21 @@ public class UserEntity implements Serializable {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public List<MessageEntity> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<MessageEntity> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public List<MessageEntity> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<MessageEntity> receivedMessages) {
+        this.receivedMessages = receivedMessages;
     }
 }

@@ -7,6 +7,7 @@ import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.entity.*;
 import com.ted.eBayDIT.repository.*;
 import com.ted.eBayDIT.security.SecurityService;
+import com.ted.eBayDIT.service.ConnectivityService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.utility.Utils;
@@ -54,6 +55,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     PhotoService photoService;
 
+    @Autowired
+    ConnectivityService connectivityService;
+
 
     private static long newItemID=0;
 
@@ -64,14 +68,11 @@ public class ItemServiceImpl implements ItemService {
         return itemCheck != null;
     }
 
-
-
-    @Override //todo remove duplicate
+    @Override
     public boolean itemExists(Long id) {
         ItemEntity itemEntity = this.itemRepo.findByItemID(id);
         return itemEntity != null; //if userEntity is null return false
     }
-
 
     @Override
     public boolean auctionStarted(Long id) {
@@ -83,15 +84,13 @@ public class ItemServiceImpl implements ItemService {
         return num != 0;
     }
 
-
-
     @Override
     public boolean isAuctionFinishedByTime(Long id) throws ParseException {
         //check if is marked finished
         if (this.itemRepo.findByItemID(id).isEventFinished())
             return true; //if so then no need to do dates comparison
 
-        String endsDateString = this.itemRepo.findByItemID(id).getEnds(); //TODO SOOOOOOOOOOOS NEEDS DEBUG HERE
+        String endsDateString = this.itemRepo.findByItemID(id).getEnds();
         String currentDateString = Utils.getCurrentDateToStringDataType();
         Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
 
@@ -99,15 +98,21 @@ public class ItemServiceImpl implements ItemService {
         Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
         boolean isFinishedByTime = currDate.after(endsDate);
         if (isFinishedByTime) {
-//            finishAuction(id); //here we make eventFinish value true
             ItemEntity item2save = itemRepo.findByItemID(id);
             List<BidEntity> bids= item2save.getBids();
 
             if (bids.isEmpty())
-                item2save.setWinnerID(-1); //None won the item in the auction
-            else
-                item2save.setWinnerID(bids.get(bids.size()-1).getId()); //set winnerId
+                item2save.setWinnerUserId("NOBODY WON!"); //None won the item in the auction
+            else {
+                UserEntity winnerEntity = bids.get(bids.size() - 1).getBidder().getUser();
+                UserEntity sellerEntity = this.itemRepo.findByItemID(id).getSeller().getUser();
 
+                item2save.setWinnerUserId(winnerEntity.getUserId()); //set winnerId
+
+                if (! connectivityService.exist(winnerEntity,sellerEntity))
+                    connectivityService.createConnection(winnerEntity,sellerEntity);
+
+            }
             item2save.setEventFinished(true);
 
             itemRepo.save(item2save);
@@ -116,13 +121,42 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
+
+    @Override
+    public void buyout(Long auctionId) throws ParseException {
+
+        if (isAuctionFinishedByTime(auctionId)) throw new RuntimeException("Cannot buyout in a finished auction!"); //check if is ended
+
+        if (bidsInAuctionExist(auctionId)) throw new RuntimeException("Buyout is not anymore in the table!You have to offer more ;) ");
+
+        ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
+
+        if (item2save.getBuyPrice().equals(new BigDecimal(0))) throw new RuntimeException("There is no Buyout price set");
+
+
+        String winnerUserId = securityService.getCurrentUser().getUserId();
+        UserEntity winnerEntity = this.userRepo.findByUserId(winnerUserId);
+
+        UserEntity sellerEntity = item2save.getSeller().getUser();
+
+        item2save.setWinnerUserId(winnerUserId);//set winnerId to the winner userId
+        item2save.setCurrently(item2save.getBuyPrice());
+
+        if (! connectivityService.exist(winnerEntity,sellerEntity))
+            connectivityService.createConnection(winnerEntity,sellerEntity);
+
+        item2save.setEnds(Utils.getCurrentDateToStringDataType());
+        item2save.setEventFinished(true);
+
+        itemRepo.save(item2save);
+
+    }
+
+
 //    private void finishAuction(Long id) {
 //        if( ! this.itemRepo.findByItemID(id).isEventFinished() )
 //            this.itemRepo.findByItemID(id).setEventFinished(true);
 //    }
-
-
-
 
     private boolean categoriesExist(List<CategoryEntity> categories){
 
@@ -153,18 +187,11 @@ public class ItemServiceImpl implements ItemService {
 
         item.setNumberOfBids(0);
         item.setStarted("Not started yet!");
-
-//        if (item.getFirstBid().equals(new BigDecimal("0")))
-//            item.setCurrently(new BigDecimal("0")); //set Currenlty to 0
-//        else
-            item.setCurrently(item.getFirstBid());
-
+        item.setCurrently(item.getFirstBid());
         item.setEventStarted(false);
         item.setEventFinished(false);
-
 //        item.setEnds(Utils.convertFrontDateTypeToBack(item.getEnds())); //this was before the Date format from front
         item.setEnds(item.getEnds());
-
 
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
@@ -244,9 +271,6 @@ public class ItemServiceImpl implements ItemService {
         return 0;
     }
 
-
-
-    //todo
     @Override
     public void editAuction(Long id, ItemDto itemDto2update) throws ParseException {
 
@@ -256,13 +280,7 @@ public class ItemServiceImpl implements ItemService {
 
         if ( bidsInAuctionExist(id)) throw new RuntimeException("Bids have been made thus cannot edit auction-Item now!");
 
-
-        //        UserRest returnValue =new UserRest();
-
         ItemEntity itemEntity = itemRepo.findByItemID(id);
-
-
-
 
         if (itemDto2update.getName()        != null)    {itemEntity.setName(itemDto2update.getName()); }
 
@@ -341,28 +359,7 @@ public class ItemServiceImpl implements ItemService {
 
 
 
-    @Override
-    public void buyout(Long auctionId) throws ParseException {
 
-        if (isAuctionFinishedByTime(auctionId)) throw new RuntimeException("Cannot buyout in a finished auction!"); //check if is ended
-
-        if (bidsInAuctionExist(auctionId)) throw new RuntimeException("Buyout is not anymore in the table!You have to offer more ;) ");
-
-
-
-        int bidderId = securityService.getCurrentUser().getId();
-
-        ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
-
-        if (item2save.getBuyPrice().equals(new BigDecimal(0))) throw new RuntimeException("There is no Buyout price set");
-
-        item2save.setWinnerID(bidderId);//set winnerId
-        item2save.setEnds(Utils.getCurrentDateToStringDataType());
-        item2save.setEventFinished(true);
-
-        itemRepo.save(item2save);
-
-    }
 
     @Override
     public void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception {

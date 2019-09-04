@@ -17,6 +17,8 @@ public interface ItemRepository  extends JpaRepository<ItemEntity, Long> {
 
     List<ItemEntity> findByEventStartedTrueAndEventFinishedFalse();
 
+    List<ItemEntity> findByEventStartedTrue();
+
     Page<ItemEntity> findByItemIDIn(List<Long> ids, Pageable pageable);
 
 }

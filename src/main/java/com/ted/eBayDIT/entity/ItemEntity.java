@@ -148,7 +148,7 @@ public class ItemEntity {
     private boolean eventFinished;
 
     @Column
-    private int winnerID;
+    private String winnerUserId;
 
 
     @OneToMany(mappedBy="item", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
@@ -285,13 +285,6 @@ public class ItemEntity {
         this.eventFinished = eventFinished;
     }
 
-    public int getWinnerID() {
-        return winnerID;
-    }
-
-    public void setWinnerID(int winnerID) {
-        this.winnerID = winnerID;
-    }
 
     public List<PhotoEntity> getPhotos() {
         return photos;
@@ -299,5 +292,13 @@ public class ItemEntity {
 
     public void setPhotos(List<PhotoEntity> photos) {
         this.photos = photos;
+    }
+
+    public String getWinnerUserId() {
+        return winnerUserId;
+    }
+
+    public void setWinnerUserId(String winnerUserId) {
+        this.winnerUserId = winnerUserId;
     }
 }
