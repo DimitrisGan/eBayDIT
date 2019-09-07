@@ -64,7 +64,7 @@ public class PhotoServiceImpl implements PhotoService {
             PhotoEntity itemPhoto = new PhotoEntity(); //set filename
 
             UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                    .scheme("http").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.ITEM_PHOTO).build();
+                    .scheme("https").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.ITEM_PHOTO).build();
 
 
 
@@ -103,7 +103,7 @@ public class PhotoServiceImpl implements PhotoService {
         if (photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO) == null) {
 
             UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                    .scheme("http").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.AUCTION_PHOTO).build();
+                    .scheme("https").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.AUCTION_PHOTO).build();
 
 
             PhotoEntity auctionPhoto = new PhotoEntity();
