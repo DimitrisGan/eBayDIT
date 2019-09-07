@@ -160,10 +160,27 @@ public class ItemServiceImpl implements ItemService {
 
     private boolean categoriesExist(List<CategoryEntity> categories){
 
+        int i=0;
+        int prevCategId=-1; //root category
+        CategoryEntity categ;
         for (CategoryEntity category : categories) {
-            CategoryEntity categ = categRepo.findByName(category.getName());
-            if (categ == null)
-                return false;
+            if (i==0){
+                categ = categRepo.findByName(category.getName());
+
+                if (categ == null)
+                    return false;
+
+            }
+            else {
+
+                categ = categRepo.findByNameAndParentId(category.getName() , prevCategId);
+                if (categ == null)
+                    return false;
+
+            }
+            i++;
+            prevCategId = categ.getId();
+
         }
         return true;
     }
@@ -173,10 +190,14 @@ public class ItemServiceImpl implements ItemService {
         /*here set-insert items_categories table*/
         List<CategoryEntity> categoriesToAddList = item.getCategories();
         int i=0;
+        int prevCategId=-1; //root category
+        CategoryEntity categ;
         for (CategoryEntity cat : categoriesToAddList ) {
-            CategoryEntity categ = categRepo.findByName(cat.getName());
+
+            categ = categRepo.findByNameAndParentId(cat.getName(),prevCategId);
 
             item.getCategories().set(i, categ);
+            prevCategId = categ.getId();
             i++;
         }
     }

@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
 
+    CategoryEntity findByNameAndParentId(String name,int parentId);
+
+
     CategoryEntity findByName(String name);
 
 
