@@ -86,6 +86,7 @@ public class ItemEntity {
 
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="item_id"/*,nullable = false*/,unique = true)
     private Long itemID;
 

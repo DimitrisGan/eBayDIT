@@ -183,7 +183,7 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemEntity saveAuction(ItemEntity item) throws ParseException {
         /*set default values for item*/
-        long itemID = generateNewItemID();  item.setItemID(itemID);
+//        long itemID = generateNewItemID();  item.setItemID(itemID);
 
         item.setNumberOfBids(0);
         item.setStarted("Not started yet!");
