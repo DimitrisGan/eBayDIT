@@ -342,8 +342,13 @@ public class ItemServiceImpl implements ItemService {
         if (bidder.getId() == item2save.getSeller().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
 
+        //des edw gia an einai arxiko bid tote oxi !!!!
         int res = item2save.getCurrently().compareTo(bidAmount);
-        if (res >=0 ) throw new RuntimeException("Bid cannot be less than current best offer or first bid!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
+        if (item2save.getBids().size()==0 && res >0 ) throw new RuntimeException("First Bid cannot be less than first bid price!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
+
+
+
+        if (item2save.getBids().size()!=0 && res >=0 ) throw new RuntimeException("Bid cannot be less than current best offer!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
 
 
         item2save.setCurrently(bidAmount);
