@@ -139,6 +139,9 @@ public class ItemServiceImpl implements ItemService {
 
         UserEntity sellerEntity = item2save.getSeller().getUser();
 
+        if (winnerEntity.getId() == item2save.getSeller().getUser().getId()) throw new RuntimeException("Seller cannot buyoyt in his own auction!");
+
+
         item2save.setWinnerUserId(winnerUserId);//set winnerId to the winner userId
         item2save.setCurrently(item2save.getBuyPrice());
 
