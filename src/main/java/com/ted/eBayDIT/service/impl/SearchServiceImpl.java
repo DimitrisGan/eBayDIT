@@ -9,6 +9,7 @@ import com.ted.eBayDIT.repository.ItemRepository;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.SearchService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,22 +58,6 @@ public class SearchServiceImpl implements SearchService {
         return returnList;
     }
 
-//    @Override
-//    public List<ItemDto> getPaginatedFilteredAuctions(int pageNo, int pageSize, String sortBy, String orderType) {
-//
-//
-//
-//        //todo sortbyCategoy
-//        //todo sortbyDescription  ---> str1.toLowerCase().contains(str2.toLowerCase())
-//        //todo sortByPrice
-//        //todo sortByLocation
-//        //todo tha emfanizontai se paging ta auctions paging
-//
-//
-//
-//
-//        return null;
-//    }
 
 
     @Override
@@ -93,6 +78,8 @@ public class SearchServiceImpl implements SearchService {
         List<ItemEntity> items = pagedResult.getContent();
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         for (ItemEntity itemEntity : items) {
             ItemDto itemDto = modelMapper.map(itemEntity, ItemDto.class);
 
