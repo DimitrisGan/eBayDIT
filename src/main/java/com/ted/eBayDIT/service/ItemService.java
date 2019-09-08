@@ -40,4 +40,5 @@ public interface ItemService {
 
     ItemDto getItem(Long id);
 
+    List<ItemDto> allItems();
 }

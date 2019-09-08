@@ -410,6 +410,20 @@ public class ItemServiceImpl implements ItemService {
         return modelMapper.map(itemEntity, ItemDto.class);
     }
 
+    @Override
+    public List<ItemDto> allItems() {
+        List<ItemDto> returnList = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        List<ItemEntity> entitiesList = itemRepo.findAll();
+
+        for (ItemEntity itemEntity : entitiesList) {
+            ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
+            returnList.add(itemDto);
+        }
+        return returnList;
+    }
+
 
     @Override
     public List<ItemDto> getAllUserAuctions() throws ParseException {

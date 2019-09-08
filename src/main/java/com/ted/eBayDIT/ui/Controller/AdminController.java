@@ -1,13 +1,18 @@
 package com.ted.eBayDIT.ui.Controller;
 
 
+import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.ui.model.response.AdminRest;
+import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import com.ted.eBayDIT.ui.model.response.UserDetailsResponseModel;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +32,41 @@ public class AdminController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ItemService itemService;
+
+
+
+//    @RequestMapping(value="/findByID", method=RequestMethod.GET, produces=MediaType.APPLICATION_XML_VALUE)
+//    public @ResponseBody MyXmlAnnotatedObject findById(@Param("id") BigInteger id) {
+//
+//        return someRepository.findById(id);
+//    }
+
+    @GetMapping(path = "/download_auctions", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> downloadAuction(){
+
+//        UserDto userDto = userService.getUserByUserId(id);
+//        ModelMapper modelMapper = new ModelMapper();
+//        returnValue = modelMapper.map(userDto, UserRest.class);
+
+        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        List<ItemDto> items = itemService.allItems();
+
+        for (ItemDto itemDto : items) {
+            AuctionsResponseModel auction =  modelMapper.map(itemDto, AuctionsResponseModel.class);
+            auctionsRespList.add(auction);
+
+        }
+
+        return new ResponseEntity<>(auctionsRespList,HttpStatus.OK);
+
+    }
+
 
     @GetMapping("/not_verified_users") //ex : /userlist
     public ResponseEntity<Object> getNotVerifiedUsersList(/*@RequestParam(value = "page",defaultValue = "0") int page,
