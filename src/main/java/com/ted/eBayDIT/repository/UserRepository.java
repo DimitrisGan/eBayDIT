@@ -26,4 +26,6 @@ public interface  UserRepository extends JpaRepository<UserEntity,Integer> {
     //todo logika tha xwsw kai alla px findByLastName
 
     List<UserEntity> findByVerifiedFalse();//VerifiedFalse();
+
+    List<UserEntity> findByVerifiedTrue();
 }

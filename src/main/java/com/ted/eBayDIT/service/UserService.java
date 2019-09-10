@@ -24,7 +24,10 @@ public interface UserService extends UserDetailsService {
 
     List<UserDto> getAllUsersFiltered(int pageNo, int pageSize, String sortBy, String sortType);
 
+
     List<UserDto> getAllNotVerifiedUsers();
+
+    List<UserDto> getAllVerifiedUsers();
 
     UserDto verifyUser(String userId);
     void verifyAll();

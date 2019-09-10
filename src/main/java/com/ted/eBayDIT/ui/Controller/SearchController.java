@@ -5,6 +5,7 @@ import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.PhotoService;
+import com.ted.eBayDIT.service.RecommendService;
 import com.ted.eBayDIT.service.SearchService;
 import com.ted.eBayDIT.ui.model.response.AuctionsFilteredSearchResponseModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
@@ -38,6 +39,42 @@ public class SearchController {
 
     @Autowired
     ItemService itemService;
+
+    @Autowired
+    RecommendService recommendService;
+
+
+
+    @PostMapping(path ="/auctions/start_lsh")
+    public ResponseEntity<Object> startLsh()  {
+
+
+        recommendService.createLsh();
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+
+    @GetMapping(path ="/auctions/recommend_auctions")
+    public ResponseEntity<Object> getRecommendedAuctions()  {
+
+        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+        List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
+
+        List<ItemDto> auctionsList = recommendService.getRecommendedAuctions();
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (ItemDto itemDto : auctionsList) {
+            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+            auctionsRespList.add(auctionsResp);
+        }
+
+        return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
+
+    }
+
 
 
     @GetMapping(path ="/auctions/active")

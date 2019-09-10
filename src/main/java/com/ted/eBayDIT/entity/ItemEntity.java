@@ -118,7 +118,7 @@ public class ItemEntity {
 
 
     //Do not apply cascading deletes!
-    @ManyToMany(/*cascade={*//*CascadeType.PERSIST,*//*CascadeType.REFRESH, CascadeType.MERGE,
+    @ManyToMany(fetch = FetchType.LAZY/*cascade={*//*CascadeType.PERSIST,*//*CascadeType.REFRESH, CascadeType.MERGE,
             CascadeType.DETACH ,CascadeType.REMOVE}*/)
     @JoinTable(
             name = "item_category",
@@ -129,7 +129,7 @@ public class ItemEntity {
 
 
 
-    @OneToMany(mappedBy="itemDetails", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
+    @OneToMany(mappedBy="itemDetails",fetch = FetchType.EAGER, cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
             CascadeType.DETACH})
     private List<BidEntity> bids ; //todo check if needs new table Bids
 

@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     private BidderDetailsRepository bidderRepo;
 
 
-    private void saveNewSellerRecord(UserEntity user){
+    private void saveNewSellerRecord(UserEntity user) {
         SellerDetailsEntity seller = new SellerDetailsEntity();
         seller.setRating(5); //set starting rating value to 5
         seller.setUser(user);
@@ -113,7 +113,6 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        
     }
 
 
@@ -145,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
 
         userEntity2save.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        String publicUserId =utils.generateUserId(30);
+        String publicUserId = utils.generateUserId(30);
         userEntity2save.setUserId(publicUserId);
         userEntity2save.setRole(this.roleRepo.findByUserRole(RoleName.USER.name()));
 
@@ -156,7 +155,7 @@ public class UserServiceImpl implements UserService {
         saveNewSellerRecord(userEntity2save);
         saveNewBidderRecord(userEntity2save);
 
-        storedUserDetails =  userRepo.save(userEntity2save);
+        storedUserDetails = userRepo.save(userEntity2save);
 
 
         //now we have to return this back to our restcontroller
@@ -166,26 +165,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto  updateUser(String userId ,UserDto user2update) {
+    public UserDto updateUser(String userId, UserDto user2update) {
 
-        UserDto returnValue =new UserDto();
+        UserDto returnValue = new UserDto();
         UserEntity userEntity = userRepo.findByUserId(userId);
 
         if (userEntity == null) { //if username was not found throw exception
             throw new UsernameNotFoundException(userId);
         }
 
-        if (user2update.getEmail()      != null)    {userEntity.setEmail(user2update.getEmail()); }
-        if (user2update.getFirstName()  != null)    {userEntity.setFirstName(user2update.getFirstName()); }
-        if (user2update.getLastName()   != null)    {userEntity.setLastName(user2update.getLastName()); }
+        if (user2update.getEmail() != null) {
+            userEntity.setEmail(user2update.getEmail());
+        }
+        if (user2update.getFirstName() != null) {
+            userEntity.setFirstName(user2update.getFirstName());
+        }
+        if (user2update.getLastName() != null) {
+            userEntity.setLastName(user2update.getLastName());
+        }
 
-        if (user2update.getLocation()        != null)    {userEntity.setLocation(user2update.getLocation()); }
-        if (user2update.getPhoneNumber()    != null)    {userEntity.setPhoneNumber(user2update.getPhoneNumber()); }
-        if (user2update.getCountry()        != null)    {userEntity.setCountry(user2update.getCountry()); }
-        if (user2update.getAfm()            != null)    {userEntity.setAfm(user2update.getAfm()); }
-
-
-
+        if (user2update.getLocation() != null) {
+            userEntity.setLocation(user2update.getLocation());
+        }
+        if (user2update.getPhoneNumber() != null) {
+            userEntity.setPhoneNumber(user2update.getPhoneNumber());
+        }
+        if (user2update.getCountry() != null) {
+            userEntity.setCountry(user2update.getCountry());
+        }
+        if (user2update.getAfm() != null) {
+            userEntity.setAfm(user2update.getAfm());
+        }
 
 
         UserEntity updatedUserDetails = userRepo.save(userEntity);
@@ -201,7 +211,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto verifyUser(String userId) {
-        UserDto returnValue =new UserDto();
+        UserDto returnValue = new UserDto();
 
         UserEntity userEntity = userRepo.findByUserId(userId);
 
@@ -240,7 +250,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updatePassword(String userId, String newPassword) {
-        UserDto returnValue =new UserDto();
+        UserDto returnValue = new UserDto();
 
         UserEntity userEntity = userRepo.findByUserId(userId);
 
@@ -321,7 +331,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsers() {
         List<UserDto> returnUsersList = new ArrayList<>();
 
-        List<UserEntity> usersEntity =this.userRepo.findAll();
+        List<UserEntity> usersEntity = this.userRepo.findAll();
 
         ModelMapper modelMapper = new ModelMapper();
         for (UserEntity userEntity : usersEntity) {
@@ -335,7 +345,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUserId(String userId) {
-        UserDto returnValue =new UserDto();
+        UserDto returnValue = new UserDto();
         UserEntity user = userRepo.findByUserId(userId);
 
         if (user == null) { //if username was not found throw exception
@@ -359,7 +369,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username);
         }
 
-        return new User(userEntity.getUsername(),userEntity.getEncryptedPassword(),new ArrayList<>()); //ArrayList stands for the authorities
+        return new User(userEntity.getUsername(), userEntity.getEncryptedPassword(), new ArrayList<>()); //ArrayList stands for the authorities
     }
 
 
@@ -382,7 +392,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> users = pagedResult.getContent();
 
-        for (UserEntity userEntity: users){
+        for (UserEntity userEntity : users) {
             ModelMapper modelMapper = new ModelMapper();
             UserDto userDto = modelMapper.map(userEntity, UserDto.class);
             userDto.setTotalPages(totalPages);
@@ -397,10 +407,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllNotVerifiedUsers() {
 
-
         List<UserDto> returnList = new ArrayList<>();
-
-
 
         List<UserEntity> notVerifiedUsersList = new ArrayList<>();
         notVerifiedUsersList = userRepo.findByVerifiedFalse();
@@ -416,5 +423,22 @@ public class UserServiceImpl implements UserService {
         return returnList;
     }
 
+    @Override
+    public List<UserDto> getAllVerifiedUsers() {
 
+        List<UserDto> returnList = new ArrayList<>();
+
+        List<UserEntity> verifiedUsersList = new ArrayList<>();
+        verifiedUsersList = userRepo.findByVerifiedTrue();
+
+        ModelMapper modelMapper = new ModelMapper();
+        for (UserEntity user : verifiedUsersList) {
+            new UserDto();
+
+            UserDto userDto = modelMapper.map(user, UserDto.class);
+            returnList.add(userDto);
+        }
+
+        return returnList;
+    }
 }

@@ -18,7 +18,7 @@ public class BidEntity {
     @Column(name="id")
     private  Integer id;
 
-    @ManyToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH, CascadeType.MERGE,
+    @ManyToOne(fetch = FetchType.EAGER,cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH, CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name="item_id")
     private ItemEntity itemDetails;
