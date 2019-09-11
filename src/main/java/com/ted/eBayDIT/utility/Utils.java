@@ -26,6 +26,30 @@ public class Utils {
 //    }
 
 
+
+    public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+
+        for (int i = 0; i < vectorA.length; i++) {
+            dotProduct += vectorA[i] * vectorB[i];
+            normA += Math.pow(vectorA[i], 2);
+            normB += Math.pow(vectorB[i], 2);
+        }
+
+        double cos;
+
+        if (normA == 0.0 && normB == 0.0)
+            cos= 0.0;
+        else
+            cos = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+
+
+        return (1.0 - cos); //return dist
+    }
+
+
     private String generateRandomString(int length) {
         StringBuilder returnValue = new StringBuilder(length);
 
