@@ -34,6 +34,11 @@ public class VisitServiceImpl implements VisitService {
 
         ItemEntity itemEntity = this.itemRepo.findByItemID(auctionId);
 
+        if (userEntity == null) throw new RuntimeException("User doens't exist in [VisitService]!");
+
+        if (itemEntity == null) throw new RuntimeException("Auction doens't exist in [VisitService]!");
+
+
         VisitEntity visit= this.visitRepo.findByVisitorAndAndItem(userEntity,itemEntity);
 
         if (visit == null) //create new visitEntity

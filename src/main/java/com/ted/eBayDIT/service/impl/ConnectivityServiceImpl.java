@@ -44,7 +44,6 @@ public class ConnectivityServiceImpl implements ConnectivityService {
     }
 
 
-    //todo check and debug!
     @Override
     public List<UserDto> getAllContacts(String currUserId) {
         List<UserDto> returnValue = new ArrayList<>();
