@@ -90,6 +90,13 @@ public class UserEntity implements Serializable {
     private List<MessageEntity> receivedMessages;
 
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "visitor" /*, orphanRemoval = true*/)
+    private List<VisitEntity> itemsVisited;
+
+
+
+
     public int getId() {
         return id;
     }
@@ -226,5 +233,13 @@ public class UserEntity implements Serializable {
 
     public void setReceivedMessages(List<MessageEntity> receivedMessages) {
         this.receivedMessages = receivedMessages;
+    }
+
+    public List<VisitEntity> getItemsVisited() {
+        return itemsVisited;
+    }
+
+    public void setItemsVisited(List<VisitEntity> itemsVisited) {
+        this.itemsVisited = itemsVisited;
     }
 }

@@ -3,6 +3,7 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -82,8 +83,9 @@ import java.util.List;
 
 @Entity
 @Table(name="item")
-public class ItemEntity {
+public class ItemEntity implements Serializable {
 
+    private static final long serialVersionUID = -8863719389166568917L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -155,6 +157,13 @@ public class ItemEntity {
     @OneToMany(mappedBy="item", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<PhotoEntity> photos;
+
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "item" /*, orphanRemoval = true*/)
+    private List<VisitEntity> itemVisits;
+
 
 
 
@@ -301,5 +310,13 @@ public class ItemEntity {
 
     public void setWinnerUserId(String winnerUserId) {
         this.winnerUserId = winnerUserId;
+    }
+
+    public List<VisitEntity> getItemVisits() {
+        return itemVisits;
+    }
+
+    public void setItemVisits(List<VisitEntity> itemVisits) {
+        this.itemVisits = itemVisits;
     }
 }

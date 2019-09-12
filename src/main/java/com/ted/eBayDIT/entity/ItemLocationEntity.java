@@ -2,6 +2,7 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 //<Location Latitude="43.108241" Longitude="-88.48935">Oconomowoc, WI</Location>
@@ -13,7 +14,9 @@ import javax.persistence.*;
 //@Data
 @Entity
 @Table(name="location")
-public class ItemLocationEntity {
+public class ItemLocationEntity implements Serializable {
+
+    private static final long serialVersionUID = -3728615755351500682L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

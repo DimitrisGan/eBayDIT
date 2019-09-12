@@ -4,14 +4,16 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 //@Data
 
 @Entity
 @Table(name="bid")
-public class BidEntity {
+public class BidEntity implements Serializable {
 
+    private static final long serialVersionUID = 5643795988124058020L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

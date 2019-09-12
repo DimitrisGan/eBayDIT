@@ -2,10 +2,13 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "messages")
-public class MessageEntity {
+public class MessageEntity implements Serializable {
+
+    private static final long serialVersionUID = 8255615242366850373L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

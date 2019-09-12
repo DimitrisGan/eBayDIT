@@ -3,13 +3,16 @@ package com.ted.eBayDIT.entity;
 import javax.persistence.*;
 
 
+import java.io.Serializable;
 import java.util.List;
 //Source: https://www.baeldung.com/jpa-one-to-one
 
 
 @Entity
 @Table(name="bidder")
-public class BidderDetailsEntity {
+public class BidderDetailsEntity implements Serializable {
+
+    private static final long serialVersionUID = 1539092960638980319L;
 
     @Id
     @Column(name="id")

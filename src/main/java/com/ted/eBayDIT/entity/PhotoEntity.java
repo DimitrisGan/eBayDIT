@@ -2,11 +2,14 @@ package com.ted.eBayDIT.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name="photos")
-public class PhotoEntity {
+public class PhotoEntity implements Serializable {
+
+    private static final long serialVersionUID = -6887631391492689803L;
 
     @Id
     @GeneratedValue

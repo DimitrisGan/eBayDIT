@@ -1,6 +1,7 @@
 package com.ted.eBayDIT.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "role")
-public class RoleEntity {
+public class RoleEntity implements Serializable {
+
+    private static final long serialVersionUID = -9119897726002017115L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
