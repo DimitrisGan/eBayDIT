@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Component
@@ -26,6 +28,33 @@ public class Utils {
 //    }
 
 
+
+    public static ArrayList<Double> sum2ArrayLists(double[] v1 , double[] v2  ){
+
+        if(v1.length != v2.length) {throw new RuntimeException("Can't sum vectors of different size!");}
+
+        ArrayList<Double> sumVector = new ArrayList<>();
+//        double[] sumVector = new double[v1.length];
+
+
+        for (int i = 0; i < v1.length; i++) {
+
+            sumVector.add( v1[i]+ v2[i] );
+        }
+
+
+        return sumVector;
+    }
+
+    public static double euclideanDistance(double[] array1, double[] array2)
+    {
+        double Sum = 0.0;
+        for(int i=0;i<array1.length;i++) {
+            Sum = Sum + Math.pow((array1[i]-array2[i]),2.0);
+        }
+
+        return Math.sqrt(Sum);
+    }
 
     public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
         double dotProduct = 0.0;
@@ -46,7 +75,7 @@ public class Utils {
             cos = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 
 
-        return (1.0 - cos); //return dist
+        return  cos; //return dist
     }
 
 
