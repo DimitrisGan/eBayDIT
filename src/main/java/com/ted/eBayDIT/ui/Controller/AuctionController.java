@@ -156,10 +156,6 @@ public class AuctionController {
     }
 
 
-
-
-
-
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource

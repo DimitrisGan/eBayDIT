@@ -3,10 +3,9 @@ package com.ted.eBayDIT.ui.Controller;
 
 import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.PhotoDto;
-import com.ted.eBayDIT.service.ItemService;
-import com.ted.eBayDIT.service.PhotoService;
-import com.ted.eBayDIT.service.RecommendService;
-import com.ted.eBayDIT.service.SearchService;
+import com.ted.eBayDIT.dto.UserDto;
+import com.ted.eBayDIT.security.SecurityService;
+import com.ted.eBayDIT.service.*;
 import com.ted.eBayDIT.ui.model.response.AuctionsFilteredSearchResponseModel;
 import com.ted.eBayDIT.ui.model.response.AuctionsResponseModel;
 import com.ted.eBayDIT.ui.model.response.PhotoResponseModel;
@@ -42,6 +41,13 @@ public class SearchController {
 
     @Autowired
     RecommendService recommendService;
+
+    @Autowired
+    SecurityService securityService;
+
+    @Autowired
+    VisitService visitService;
+
 
 
 
@@ -164,6 +170,12 @@ public class SearchController {
     @GetMapping(path ="/auctions/{id}")
     public ResponseEntity<Object> getAuctionInfo(@PathVariable Long id){  //id = auctionId
         AuctionsResponseModel auctionResp = new AuctionsResponseModel();
+
+        UserDto currUser = securityService.getCurrentUser();
+
+        if (currUser != null){
+            visitService.addVisit(currUser,id);
+        }
 
         ItemDto itemDto = this.itemService.getItem(id);
 
