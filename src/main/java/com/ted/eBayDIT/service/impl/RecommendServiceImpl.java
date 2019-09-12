@@ -39,8 +39,9 @@ public class RecommendServiceImpl implements RecommendService {
     @Autowired
     SecurityService securityService;
 
-
     private int stages=4;
+
+    private int nearestUsersNum = 2;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
 
@@ -301,23 +302,29 @@ public class RecommendServiceImpl implements RecommendService {
 
             }
 
-            pairList.sort(Collections.reverseOrder());
+            Collections.sort(pairList);
 
-            System.out.println("telos");
 
+
+            //==================================================
             //todo now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!
+
+        ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<>();
+
+        for (int i = 0; i < this.nearestUsersNum; i++) {
+            String nearestUserName = pairList.get(i).getE1();
+            ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
+
+            //TODO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOODO EDW EIMAI AURIO APO EDW KSEKINAW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//            sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(toPrimitive(sumOfMostRelevantUserVectors) , toPrimitive(nearestUserVector) );
+
+        }
+
+        //todo now take the best 5 scores from there take the auctions
 
 
 
         //todo check the size if zero
-
-
-
-
-
-
-
-
 
 
 
@@ -329,7 +336,9 @@ public class RecommendServiceImpl implements RecommendService {
 
 
 
+    private void calculateBest(){
 
+    }
 
 
     @Override
