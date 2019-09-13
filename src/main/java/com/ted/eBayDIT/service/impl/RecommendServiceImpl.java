@@ -368,11 +368,17 @@ public class RecommendServiceImpl implements RecommendService {
 //        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         /*now take the k best auction scores */
-        for (int i = 0; i < recommendAuctionsNum; i++) {
+        int auctions2recommendNum = recommendAuctionsNum;
+        for (int i = 0; i < auctions2recommendNum; i++) {
 
             int itemIndex =  pairList2.get(i).getIndex();
 
             ItemEntity itemEntity2recommend = this.items.get(itemIndex);
+
+            if ( itemEntity2recommend.isEventFinished()) { //if auction has finished continue to the next one!Because we cant recommend a finished auction
+                auctions2recommendNum++; //check to recommend 1 more  because we want to return 5 auctions recommendations
+                continue;
+            }
 
             returnValue.add(itemEntity2recommend.getItemID());
         }
