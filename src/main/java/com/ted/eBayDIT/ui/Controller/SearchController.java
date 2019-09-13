@@ -66,15 +66,21 @@ public class SearchController {
     @GetMapping(path ="/auctions/recommend_auctions")
     public ResponseEntity<Object> getRecommendedAuctions()  {
 
+
+
         AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
-        List<ItemDto> auctionsList = recommendService.getRecommendedAuctions();
+        List<Long> recommendedAuctionIdsList = recommendService.getRecommendedAuctionIds();
 
         ModelMapper modelMapper = new ModelMapper();
-        for (ItemDto itemDto : auctionsList) {
-            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+
+        for (Long auctionId : recommendedAuctionIdsList) {
+            ItemDto itemDto2recommend = itemService.getItem(auctionId);
+
+            auctionsResp = modelMapper.map(itemDto2recommend, AuctionsResponseModel.class);
             auctionsRespList.add(auctionsResp);
+
         }
 
         return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);

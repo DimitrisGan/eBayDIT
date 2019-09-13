@@ -8,7 +8,7 @@ import java.util.List;
 public interface RecommendService {
 
 
-    List<ItemDto> getRecommendedAuctions();
+    List<Long> getRecommendedAuctionIds();
 
 
     void createLsh();

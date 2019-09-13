@@ -14,8 +14,11 @@ import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.RecommendService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.utility.Pair;
+import com.ted.eBayDIT.utility.Pair2;
 import com.ted.eBayDIT.utility.Utils;
 import info.debatty.java.lsh.LSHSuperBit;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +48,8 @@ public class RecommendServiceImpl implements RecommendService {
 
     private static final int stages=4;
 
-    private static final int nearestUsersNum = 2;
+    private static final int nearestUsersNum = 4;
+    private static final int suggestAuctionsNum = 5;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
 
@@ -261,7 +265,7 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
 
-        private ArrayList<String> getAllRelevantUsersList(ArrayList<Double> userVector2query) {
+    private ArrayList<String> getAllRelevantUsersList(ArrayList<Double> userVector2query) {
 
         int[] hashVector =  lsh.hash( Utils.toPrimitive(userVector2query) );
 
@@ -278,8 +282,9 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     @Override
-    public List<ItemDto> getRecommendedAuctions() {
-        List<ItemDto> returnValue= new ArrayList<>();
+    public List<Long> getRecommendedAuctionIds() {
+        List<Long> returnValue= new ArrayList<>();
+
         UserEntity currUserEntity  = this.userRepo.findByUserId(  this.securityService.getCurrentUser().getUserId() ) ;
 
         //==================================================================================
@@ -323,18 +328,38 @@ public class RecommendServiceImpl implements RecommendService {
 
         //==================================================
 
-        //todo now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!
+        /*now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!*/
 
-        ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<>();
+        ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
+
 
         for (int i = 0; i < nearestUsersNum; i++) {
             String nearestUserName = pairList.get(i).getE1();
             ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
 
-            //TODO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOODO EDW EIMAI AURIO APO EDW KSEKINAW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//            sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(toPrimitive(sumOfMostRelevantUserVectors) , toPrimitive(nearestUserVector) );
+            sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(Utils.toPrimitive(sumOfMostRelevantUserVectors) , Utils.toPrimitive(nearestUserVector) );
+
+            System.out.println("hi fro debug purpose");
 
         }
+
+//        sumOfMostRelevantUserVectors
+
+        ArrayList<Pair2> pairList2 = new ArrayList<Pair2>();
+
+
+        for (int i = 0; i < sumOfMostRelevantUserVectors.size(); i++) {
+
+            pairList2.add(new Pair2(i, sumOfMostRelevantUserVectors.get(i)));
+
+        }
+
+
+        /* Sorting in decreasing (descending) order*/
+        pairList2.sort(Collections.reverseOrder());
+
+
+        System.out.println("hi fro debug purpose");
 
         //todo now take the best 5 scores from there take the auctions
 
@@ -342,6 +367,19 @@ public class RecommendServiceImpl implements RecommendService {
 
         //todo check the size if zero
 
+        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+
+
+        for (int i = 0; i < suggestAuctionsNum; i++) {
+
+            int itemIndex =  pairList2.get(i).getIndex();
+
+            ItemEntity itemEntity2recommend = this.items.get(itemIndex);
+
+            returnValue.add(itemEntity2recommend.getItemID());
+        }
 
 
         return returnValue;
