@@ -50,7 +50,7 @@ public class RecommendServiceImpl implements RecommendService {
 
     private static final int stages=4;
 
-    private static final int nearestUsersNum = 4;
+    private static final int nearestUsersNum = 1;//3
     private static final int recommendAuctionsNum = 5;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
@@ -177,10 +177,8 @@ public class RecommendServiceImpl implements RecommendService {
         this.items = this.itemRepo.findByEventStartedTrue();
         int sizeOfVectors = items.size(); //aka number of auctions
 
-        init_userVectorsHT(items);
-
-        initListOfMapsFromLSH();
-
+        initLSH(); //recreate lsh instance
+        
         System.out.println("Debug here");
 
     }
