@@ -98,6 +98,9 @@ public class SearchServiceImpl implements SearchService {
             return items;
         }
         for (ItemEntity itemEntity : items) {
+            if (itemEntity.getDescription() == null) //if item description is null continue
+                continue;
+
             if (itemEntity.getDescription().toLowerCase().contains(description.toLowerCase()))
                 returnValue.add(itemEntity);
         }
