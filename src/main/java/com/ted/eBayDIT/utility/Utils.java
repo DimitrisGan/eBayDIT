@@ -68,7 +68,7 @@ public class Utils {
         return Math.sqrt(Sum);
     }
 
-    public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
+    public static double cosineDistance(double[] vectorA, double[] vectorB) {
         double dotProduct = 0.0;
         double normA = 0.0;
         double normB = 0.0;
@@ -79,15 +79,15 @@ public class Utils {
             normB += Math.pow(vectorB[i], 2);
         }
 
-        double cos;
+        double cosineSimilarity;
 
         if (normA == 0.0 && normB == 0.0)
-            cos= 0.0;
+            cosineSimilarity = 0.0;
         else
-            cos = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+            cosineSimilarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 
 
-        return  cos; //return dist
+        return  1.0 - cosineSimilarity; //return dist
     }
 
 

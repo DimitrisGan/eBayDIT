@@ -251,7 +251,7 @@ public class RecommendServiceImpl implements RecommendService {
 
             ArrayList<Double> otherUserVector = this.userVectorsHT.get(relevantUser);
 
-            Double similarityScore = Utils.euclideanDistance(Utils.toPrimitive(userVector2query), Utils.toPrimitive(otherUserVector));
+            Double similarityScore = Utils.cosineDistance(Utils.toPrimitive(userVector2query), Utils.toPrimitive(otherUserVector));
 
             similarityScoreList.add(similarityScore);
 
@@ -322,7 +322,7 @@ public class RecommendServiceImpl implements RecommendService {
         Collections.sort(pairList);
 
         //==================================================
-        
+
         //todo now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!
 
         ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<>();
