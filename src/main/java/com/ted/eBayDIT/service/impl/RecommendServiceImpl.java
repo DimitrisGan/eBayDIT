@@ -6,6 +6,7 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.BidEntity;
 import com.ted.eBayDIT.entity.ItemEntity;
 import com.ted.eBayDIT.entity.UserEntity;
+import com.ted.eBayDIT.entity.VisitEntity;
 import com.ted.eBayDIT.repository.ItemRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.security.SecurityService;
@@ -39,9 +40,12 @@ public class RecommendServiceImpl implements RecommendService {
     @Autowired
     SecurityService securityService;
 
-    private int stages=4;
 
-    private int nearestUsersNum = 2;
+    private static final double visitScoreCoefficient = 0.05;
+
+    private static final int stages=4;
+
+    private static final int nearestUsersNum = 2;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
 
@@ -50,8 +54,6 @@ public class RecommendServiceImpl implements RecommendService {
     private LSHSuperBit lsh ;
 
     private List<Map<Integer, ArrayList<String>>> listOfMaps ;
-
-//    private Map<Integer, ArrayList<String>> indexInLSH_usersHT = new HashMap<Integer, ArrayList<String>>();
 
 
     private boolean isVectorZero(ArrayList<Double> vector){
@@ -66,6 +68,7 @@ public class RecommendServiceImpl implements RecommendService {
 
 
     private void init_userVectorsHT(List<ItemEntity> items){
+
         int sizeOfVectors = items.size(); //aka number of auctions
 
         for (UserDto verifiedUser : userService.getAllVerifiedUsers()) {
@@ -79,7 +82,7 @@ public class RecommendServiceImpl implements RecommendService {
         for (ItemEntity itemEntity : items) {
 
             for (BidEntity bid : itemEntity.getBids()) {
-                //todo tote des history of visits an ===0 des history visits
+                //todo see if should add in userVectors in lsh also the visits Score
 
                 String username = bid.getBidder().getUser().getUsername();
                 Double amount = bid.getAmount().doubleValue();
@@ -88,8 +91,8 @@ public class RecommendServiceImpl implements RecommendService {
                 Double score = amount / currently;
 
                 ArrayList<Double> userVector = userVectorsHT.get(username);
-                userVector.set(index,score);
-//                this.userVectorsHT.replace(username,userVector);    //PERITTO gt einai byreference update the userHashMap
+                userVector.set(index,score); //updates/replace also in hashMap the value
+
             }
 
             index++;
@@ -103,7 +106,7 @@ public class RecommendServiceImpl implements RecommendService {
         if (this.listOfMaps == null) {
             this.listOfMaps = new ArrayList<Map<Integer, ArrayList<String>>>();
 
-            for (int i = 0; i < this.stages; i++) {
+            for (int i = 0; i < stages; i++) {
                 Map<Integer, ArrayList<String>> indexInLSH_usersHT = new HashMap<>();
                 this.listOfMaps.add(indexInLSH_usersHT);
             }
@@ -116,16 +119,13 @@ public class RecommendServiceImpl implements RecommendService {
             if (isVectorZero(this.userVectorsHT.get(key))) //discard zero vectors!
                 continue;
 
-
-            double[] vector2insert = toPrimitive(userVectorsHT.get(key));
+            double[] vector2insert = Utils.toPrimitive(userVectorsHT.get(key));
 
             int[] hashVector =  lsh.hash(vector2insert);
-            //======================================== todo CHANGE BELOW
 
             /*for every lsh-HT */
             int listIndex=0;
             for (int indexInLSH : hashVector) {
-
 
                 ArrayList<String> usernamesBucket = this.listOfMaps.get(listIndex).get(indexInLSH);
 
@@ -133,8 +133,7 @@ public class RecommendServiceImpl implements RecommendService {
                     usernamesBucket = new ArrayList<>();
 
                 usernamesBucket.add(key);
-                this.listOfMaps.get(listIndex).put(indexInLSH,usernamesBucket);
-
+                this.listOfMaps.get(listIndex).put(indexInLSH,usernamesBucket); //maybe we can do it also with replace()
 
                 listIndex++;
             }
@@ -148,14 +147,11 @@ public class RecommendServiceImpl implements RecommendService {
     @PostConstruct
     private void initLSH() {
 
-
         this.items = this.itemRepo.findByEventStartedTrue();
         int sizeOfVectors = items.size(); //aka number of auctions
         int numberOfBuckets = 10;
-//        this.stages = 4;
 
         this.lsh = new LSHSuperBit(stages, numberOfBuckets, sizeOfVectors);
-
 
         init_userVectorsHT(items);
 
@@ -184,16 +180,6 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
 
-
-    //TODO GENIKA EDW PREPEI NA KANW FTIAKSW TO USERVECTOR TOU CURRENT USER KAI META NA TO HASHARW STO LSH
-    //TODO META NA PARW TO BUCKET STO OPOIO PEFTEI
-    //TODO APO KEI NA PARW TOUS ALLOUS USERS TOU BUCKET
-    //TODO NA ELEGKW MESW USERNAME OTI DEN PHRA TON IDIO
-    //TODO NA KANW COSINE SIMILARITY ME TON CURRENT USER ME TOUS ALLOUS TOU BUCKET
-    //TODO NA PARW TOUS 10 KONTINOTEROUS (IF EXIST)
-    //TODO OPOTE META NA TA SUNATHROISW KAI NA PARW TA 10 MEGALUTERA SCORE AUCTION
-    //TODO KAI NA EPISTREPSW AUTA TA 10 AUCTIONS
-
     private int getIndexItem(ItemEntity item){
         int index=0;
         for (ItemEntity itemEntity : this.items) {
@@ -205,113 +191,143 @@ public class RecommendServiceImpl implements RecommendService {
 
         return -1;
     }
+
+
+    //TODO GENIKA EDW PREPEI NA KANW FTIAKSW TO USERVECTOR TOU CURRENT USER KAI META NA TO HASHARW STO LSH
+    //TODO META NA PARW TO BUCKET STO OPOIO PEFTEI
+    //TODO APO KEI NA PARW TOUS ALLOUS USERS TOU BUCKET
+    //TODO NA ELEGKW MESW USERNAME OTI DEN PHRA TON IDIO
+    //TODO NA KANW COSINE SIMILARITY ME TON CURRENT USER ME TOUS ALLOUS TOU BUCKET
+    //TODO NA PARW TOUS 10 KONTINOTEROUS (IF EXIST)
+    //TODO OPOTE META NA TA SUNATHROISW KAI NA PARW TA 10 MEGALUTERA SCORE AUCTION
+    //TODO KAI NA EPISTREPSW AUTA TA 10 AUCTIONS
+
+    private ArrayList<Double> calculateUserVectorFromVisitsScore(UserEntity user){
+        ArrayList<Double> userVector = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
+
+        int itemIndex;
+        for (VisitEntity visitEntity : user.getItemsVisited()) {
+
+            ItemEntity item =visitEntity.getItem();
+
+            itemIndex = getIndexItem(item);
+
+            double score = visitEntity.getVisitsTimes() * visitScoreCoefficient;
+            if (score > 1.0) //pay attention to not surpass the maximum which is 1!
+                score = 1.0;
+
+            userVector.set(itemIndex,score);
+        }
+
+
+        return userVector;
+    }
+
+    private ArrayList<Double> calculateUserVectorFromBidsScore(UserEntity user) {
+        ArrayList<Double> userVector = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
+
+        int itemIndex;
+        for (BidEntity bid : user.getBidder().getBids()) {
+
+            itemIndex = getIndexItem(bid.getItemDetails());
+
+            Double currently = bid.getItemDetails().getCurrently().doubleValue();
+            Double amount = bid.getAmount().doubleValue();
+
+            Double score = amount / currently;
+
+            userVector.set(itemIndex,score);
+
+        }
+        return userVector;
+
+    }
+
+    private ArrayList<Double> calculateSimilarityScoreBetweenUsers(ArrayList<Double> userVector2query , ArrayList<String> allRelevantUsersList) {
+
+        ArrayList<Double> similarityScoreList =  new ArrayList<>();
+
+        for (String relevantUser : allRelevantUsersList) {
+
+            ArrayList<Double> otherUserVector = this.userVectorsHT.get(relevantUser);
+
+            Double similarityScore = Utils.euclideanDistance(Utils.toPrimitive(userVector2query), Utils.toPrimitive(otherUserVector));
+
+            similarityScoreList.add(similarityScore);
+
+        }
+
+        return similarityScoreList;
+    }
+
+
+        private ArrayList<String> getAllRelevantUsersList(ArrayList<Double> userVector2query) {
+
+        int[] hashVector =  lsh.hash( Utils.toPrimitive(userVector2query) );
+
+        Set<String> allRelevantUsersSet = new HashSet<>();
+
+        int hashIndex;
+        for (int i = 0; i < hashVector.length; i++) { //merge all buckets from the lsh hash Maps to one
+            hashIndex = hashVector[i];
+            allRelevantUsersSet.addAll( listOfMaps.get(i).get(hashIndex) ); //do not add duplicates usernames
+        }
+
+        return new ArrayList<>(allRelevantUsersSet);
+
+    }
+
     @Override
     public List<ItemDto> getRecommendedAuctions() {
         List<ItemDto> returnValue= new ArrayList<>();
         UserEntity currUserEntity  = this.userRepo.findByUserId(  this.securityService.getCurrentUser().getUserId() ) ;
 
         //==================================================================================
-        //todo ti tha ginei ama o arithmos twn auction exei megalwsei h mikrunei!
         List<ItemEntity> currentItems = this.itemRepo.findByEventStartedTrue();
         if ( this.items.equals(currentItems) ){ //if new items instance is different from current
             recreateMaps(); //recreate hash maps and hash to lsh
         }
         //==================================================================================
 
-        //TODO CHECH IF USER ALREADY EXIST IN userVectorsHT
+        ArrayList<Double> userVector2query;
 
-        ArrayList<Double> userVector2query = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
-
-
-        if ( currUserEntity.getBidder().getBids().size() == 0 ){
-
-            //todo tote des history of visits
-        }
-        else {
-
-            int index;
-            for (BidEntity bid : currUserEntity.getBidder().getBids()) {
-
-//                index = this.items.indexOf(bid.getItemDetails());
-                index = getIndexItem(bid.getItemDetails());
-
-                Double currently = bid.getItemDetails().getCurrently().doubleValue();
-                Double amount = bid.getAmount().doubleValue();
-
-                Double score = amount / currently;
-
-                userVector2query.set(index,score);
-
-            }
+        if ( currUserEntity.getBidder().getBids().size() == 0 ) { //if true means that we have to check users visit history
+            userVector2query = calculateUserVectorFromVisitsScore(currUserEntity); //get vector Score from visits history
+        } else {
+            userVector2query = calculateUserVectorFromBidsScore(currUserEntity); //get vector Score from bids history
         }
 
         //====================================================
-        //now query the userVector to lsh
 
-        int[] hashVector =  lsh.hash( toPrimitive(userVector2query) );
+        /*query the userVector to lsh and ge all relevant users from all the buckets of lsh hashMpas*/
+        ArrayList<String> allRelevantUsersList = getAllRelevantUsersList(userVector2query);
 
-        Set<String> allRelevantUsersSet = new HashSet<String>();
+        /*calculate distance/similarity our user with the other*/
+        List<Double> similarityScoreList = calculateSimilarityScoreBetweenUsers(userVector2query,allRelevantUsersList);
 
+        //================================================
 
+        /*here make a pair List and sort both relevantUsers and similarityScoreList and take the 5 most similar users*/
+        ArrayList<Pair> pairList = new ArrayList<Pair>();
 
-//        List<String> allRelevantUsersList = new ArrayList<>();
+        for (int i = 0; i < allRelevantUsersList.size(); i++) {
 
-        int hashIndex;
-        for (int i = 0; i < hashVector.length; i++) {
-            hashIndex = hashVector[i];
-            allRelevantUsersSet.addAll( listOfMaps.get(i).get(hashIndex) );
+            if (allRelevantUsersList.get(i).equals(currUserEntity.getUsername())) //if the relevant username equals with current user continue
+                continue;
+
+            pairList.add(new Pair(allRelevantUsersList.get(i), similarityScoreList.get(i)));
 
         }
 
+        Collections.sort(pairList);
 
-        ArrayList<String> allRelevantUsersList = new ArrayList<>(allRelevantUsersSet);
-
-//        List<String> relevantUsers = this.indexInLSH_usersHT.get(indexInLSH);
-
-        List<Double> similarityScoreList =  new ArrayList<>();
-
-            for (String relevantUser : allRelevantUsersSet) {
-
-
-                System.out.println("here we do now the cosine similarity nad pick the best 10 users");
-
-
-                ArrayList<Double> otherUserVector = this.userVectorsHT.get(relevantUser);
-
-                Double similarityScore = Utils.euclideanDistance(toPrimitive(userVector2query), toPrimitive(otherUserVector));
-
-                similarityScoreList.add(similarityScore);
-
-
-            }
-
-            //================================================
-            //here sort both relevantUsers and similarityScoreLit and take the 5 most similar users
-
-
-
-
-            ArrayList<Pair> pairList = new ArrayList<Pair>();
-
-            for (int i = 0; i < allRelevantUsersSet.size(); i++) {
-
-                if (allRelevantUsersList.get(i).equals(currUserEntity.getUsername())) //if the relevant username equals with current user continue
-                    continue;
-
-                pairList.add(new Pair(allRelevantUsersList.get(i), similarityScoreList.get(i)));
-
-            }
-
-            Collections.sort(pairList);
-
-
-
-            //==================================================
-            //todo now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!
+        //==================================================
+        
+        //todo now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!
 
         ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<>();
 
-        for (int i = 0; i < this.nearestUsersNum; i++) {
+        for (int i = 0; i < nearestUsersNum; i++) {
             String nearestUserName = pairList.get(i).getE1();
             ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
 
@@ -334,8 +350,6 @@ public class RecommendServiceImpl implements RecommendService {
 
 
 
-
-
     private void calculateBest(){
 
     }
@@ -351,16 +365,5 @@ public class RecommendServiceImpl implements RecommendService {
 
 
 
-    private static double[] toPrimitive(ArrayList<Double> arrayL) {
-        if (arrayL == null) {
-            return null;
-        }
-        final double[] result = new double[arrayL.size()];
-        for (int i = 0; i < arrayL.size(); i++) {
-            result[i] = arrayL.get(i);
-        }
-
-        return result;
-    }
 
 }

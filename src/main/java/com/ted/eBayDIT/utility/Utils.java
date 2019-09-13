@@ -27,6 +27,18 @@ public class Utils {
 //        return generateRandomString(length);
 //    }
 
+    public static double[] toPrimitive(ArrayList<Double> arrayL) {
+        if (arrayL == null) {
+            return null;
+        }
+        final double[] result = new double[arrayL.size()];
+        for (int i = 0; i < arrayL.size(); i++) {
+            result[i] = arrayL.get(i);
+        }
+
+        return result;
+    }
+
 
 
     public static ArrayList<Double> sum2ArrayLists(double[] v1 , double[] v2  ){
