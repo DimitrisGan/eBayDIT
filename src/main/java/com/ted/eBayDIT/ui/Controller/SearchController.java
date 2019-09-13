@@ -68,7 +68,7 @@ public class SearchController {
 
 
 
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+        AuctionsResponseModel auctionResp = new AuctionsResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
         List<Long> recommendedAuctionIdsList = recommendService.getRecommendedAuctionIds();
@@ -78,8 +78,15 @@ public class SearchController {
         for (Long auctionId : recommendedAuctionIdsList) {
             ItemDto itemDto2recommend = itemService.getItem(auctionId);
 
-            auctionsResp = modelMapper.map(itemDto2recommend, AuctionsResponseModel.class);
-            auctionsRespList.add(auctionsResp);
+            auctionResp = modelMapper.map(itemDto2recommend, AuctionsResponseModel.class);
+
+            if (auctionResp.getPhotos().isEmpty()){
+                PhotoResponseModel defaultPhotoResp = photoService.addDefaultPhotoIfNoPhotosExist();
+                auctionResp.setDefaultPhoto(defaultPhotoResp);
+            }
+            
+
+            auctionsRespList.add(auctionResp);
 
         }
 
