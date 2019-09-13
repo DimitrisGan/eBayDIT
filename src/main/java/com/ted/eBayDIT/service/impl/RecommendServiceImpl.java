@@ -107,11 +107,11 @@ public class RecommendServiceImpl implements RecommendService {
 
         if (this.listOfMaps == null) {
             this.listOfMaps = new ArrayList<Map<Integer, ArrayList<String>>>();
+        }
 
-            for (int i = 0; i < stages; i++) {
-                Map<Integer, ArrayList<String>> indexInLSH_usersHT = new HashMap<>();
-                this.listOfMaps.add(indexInLSH_usersHT);
-            }
+        for (int i = 0; i < stages; i++) {
+            Map<Integer, ArrayList<String>> indexInLSH_usersHT = new HashMap<>();
+            this.listOfMaps.add(indexInLSH_usersHT);
         }
 
         /*for every userVector*/
@@ -177,6 +177,7 @@ public class RecommendServiceImpl implements RecommendService {
 
         initListOfMapsFromLSH();
 
+        System.out.println("Debug here");
 
     }
 
@@ -325,9 +326,11 @@ public class RecommendServiceImpl implements RecommendService {
 
         //==================================================================================
         List<ItemEntity> currentItems = this.itemRepo.findByEventStartedTrue();
-        if ( this.items.equals(currentItems) ){ //if new items instance is different from current
+
+//        if ( ! (this.items.containsAll(currentItems) && this.items.size() == currentItems.size() ) ) //if new items instance is different from current
+         if (this.items.size() != currentItems.size())
             recreateMaps(); //recreate hash maps and hash to lsh
-        }
+
         //==================================================================================
 
         ArrayList<Double> userVector2query;
