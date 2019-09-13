@@ -1,7 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
 
-import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.BidEntity;
 import com.ted.eBayDIT.entity.ItemEntity;
@@ -18,7 +17,6 @@ import com.ted.eBayDIT.utility.Pair2;
 import com.ted.eBayDIT.utility.Utils;
 import info.debatty.java.lsh.LSHSuperBit;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +47,7 @@ public class RecommendServiceImpl implements RecommendService {
     private static final int stages=4;
 
     private static final int nearestUsersNum = 4;
-    private static final int suggestAuctionsNum = 5;
+    private static final int recommendAuctionsNum = 5;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
 
@@ -118,7 +116,6 @@ public class RecommendServiceImpl implements RecommendService {
 
         /*for every userVector*/
         for ( String key : this.userVectorsHT.keySet() ) {
-            System.out.println( key );
 
             if (isVectorZero(this.userVectorsHT.get(key))) //discard zero vectors!
                 continue;
@@ -197,14 +194,6 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
 
-    //TODO GENIKA EDW PREPEI NA KANW FTIAKSW TO USERVECTOR TOU CURRENT USER KAI META NA TO HASHARW STO LSH
-    //TODO META NA PARW TO BUCKET STO OPOIO PEFTEI
-    //TODO APO KEI NA PARW TOUS ALLOUS USERS TOU BUCKET
-    //TODO NA ELEGKW MESW USERNAME OTI DEN PHRA TON IDIO
-    //TODO NA KANW COSINE SIMILARITY ME TON CURRENT USER ME TOUS ALLOUS TOU BUCKET
-    //TODO NA PARW TOUS 10 KONTINOTEROUS (IF EXIST)
-    //TODO OPOTE META NA TA SUNATHROISW KAI NA PARW TA 10 MEGALUTERA SCORE AUCTION
-    //TODO KAI NA EPISTREPSW AUTA TA 10 AUCTIONS
 
     private ArrayList<Double> calculateUserVectorFromVisitsScore(UserEntity user){
         ArrayList<Double> userVector = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
@@ -281,6 +270,53 @@ public class RecommendServiceImpl implements RecommendService {
 
     }
 
+    private ArrayList<Pair> getSortedUsersSimilarityTupleList(UserEntity currUserEntity, ArrayList<String> allRelevantUsersList,List<Double> similarityScoreList) {
+
+        ArrayList<Pair> pairList = new ArrayList<Pair>();
+
+        for (int i = 0; i < allRelevantUsersList.size(); i++) {
+
+            if (allRelevantUsersList.get(i).equals(currUserEntity.getUsername())) //if the relevant username equals with current user continue
+                continue;
+
+            pairList.add(new Pair(allRelevantUsersList.get(i), similarityScoreList.get(i)));
+
+        }
+
+        Collections.sort(pairList);
+
+        return pairList;
+    }
+
+    private ArrayList<Double> getSumVectorOfTheNmostSimilarUserVectors(ArrayList<Pair> pairList){
+        ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
+
+        for (int i = 0; i < nearestUsersNum; i++) {
+            String nearestUserName = pairList.get(i).getE1();
+            ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
+
+            sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(Utils.toPrimitive(sumOfMostRelevantUserVectors) , Utils.toPrimitive(nearestUserVector) );
+
+        }
+
+        return sumOfMostRelevantUserVectors;
+    }
+
+    private ArrayList<Pair2> getSortedAuctionsScoreTupleList(ArrayList<Double> sumOfMostRelevantUserVectors){
+
+        ArrayList<Pair2> pairList2 = new ArrayList<Pair2>();
+
+        for (int i = 0; i < sumOfMostRelevantUserVectors.size(); i++) {
+            pairList2.add(new Pair2(i, sumOfMostRelevantUserVectors.get(i)));
+        }
+
+        /* Sorting in decreasing (descending) order*/
+        pairList2.sort(Collections.reverseOrder());
+
+        return pairList2;
+    }
+
+
     @Override
     public List<Long> getRecommendedAuctionIds() {
         List<Long> returnValue= new ArrayList<>();
@@ -302,7 +338,7 @@ public class RecommendServiceImpl implements RecommendService {
             userVector2query = calculateUserVectorFromBidsScore(currUserEntity); //get vector Score from bids history
         }
 
-        //====================================================
+        //==================================================================================
 
         /*query the userVector to lsh and ge all relevant users from all the buckets of lsh hashMpas*/
         ArrayList<String> allRelevantUsersList = getAllRelevantUsersList(userVector2query);
@@ -310,69 +346,29 @@ public class RecommendServiceImpl implements RecommendService {
         /*calculate distance/similarity our user with the other*/
         List<Double> similarityScoreList = calculateSimilarityScoreBetweenUsers(userVector2query,allRelevantUsersList);
 
-        //================================================
+        //==================================================================================
 
         /*here make a pair List and sort both relevantUsers and similarityScoreList and take the 5 most similar users*/
-        ArrayList<Pair> pairList = new ArrayList<Pair>();
-
-        for (int i = 0; i < allRelevantUsersList.size(); i++) {
-
-            if (allRelevantUsersList.get(i).equals(currUserEntity.getUsername())) //if the relevant username equals with current user continue
-                continue;
-
-            pairList.add(new Pair(allRelevantUsersList.get(i), similarityScoreList.get(i)));
-
-        }
-
-        Collections.sort(pairList);
-
-        //==================================================
-
-        /*now take the first 3 most similar user do the sum and take the top 5 auctions with the best score!!!*/
-
-        ArrayList<Double> sumOfMostRelevantUserVectors = new ArrayList<Double>(Collections.nCopies(this.items.size(), 0.0)); //init userVector to query with zeros
+        ArrayList<Pair> pairList = getSortedUsersSimilarityTupleList(currUserEntity,allRelevantUsersList,similarityScoreList);
 
 
-        for (int i = 0; i < nearestUsersNum; i++) {
-            String nearestUserName = pairList.get(i).getE1();
-            ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
+        //==================================================================================
 
-            sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(Utils.toPrimitive(sumOfMostRelevantUserVectors) , Utils.toPrimitive(nearestUserVector) );
+        /*now take the first n most similar user do the sum and take the top k auctions with the best score!!!*/
 
-            System.out.println("hi fro debug purpose");
+        ArrayList<Double> sumOfMostRelevantUserVectors = getSumVectorOfTheNmostSimilarUserVectors(pairList); //init userVector to query with zeros
 
-        }
 
 //        sumOfMostRelevantUserVectors
 
-        ArrayList<Pair2> pairList2 = new ArrayList<Pair2>();
+        ArrayList<Pair2> pairList2 = getSortedAuctionsScoreTupleList(sumOfMostRelevantUserVectors);
 
-
-        for (int i = 0; i < sumOfMostRelevantUserVectors.size(); i++) {
-
-            pairList2.add(new Pair2(i, sumOfMostRelevantUserVectors.get(i)));
-
-        }
-
-
-        /* Sorting in decreasing (descending) order*/
-        pairList2.sort(Collections.reverseOrder());
-
-
-        System.out.println("hi fro debug purpose");
-
-        //todo now take the best 5 scores from there take the auctions
-
-
-
-        //todo check the size if zero
 
         ModelMapper modelMapper = new ModelMapper();
 //        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-
-
-        for (int i = 0; i < suggestAuctionsNum; i++) {
+        /*now take the k best auction scores */
+        for (int i = 0; i < recommendAuctionsNum; i++) {
 
             int itemIndex =  pairList2.get(i).getIndex();
 
@@ -386,11 +382,6 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
 
-
-
-    private void calculateBest(){
-
-    }
 
 
     @Override
