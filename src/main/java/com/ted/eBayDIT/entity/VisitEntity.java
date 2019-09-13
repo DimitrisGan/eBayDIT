@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="visits")
-public class VisitEntity implements Serializable {
+public class VisitEntity implements Serializable,Comparable<VisitEntity> {
 
     private static final long serialVersionUID = 3758103777054040369L;
 
@@ -29,7 +29,7 @@ public class VisitEntity implements Serializable {
 
 
     @Column(name="times")
-    private int visitsTimes;
+    private Integer visitsTimes;
 
 
     public UserEntity getVisitor() {
@@ -48,19 +48,25 @@ public class VisitEntity implements Serializable {
         this.item = item;
     }
 
-    public int getVisitsTimes() {
-        return visitsTimes;
-    }
-
-    public void setVisitsTimes(int visitsTimes) {
-        this.visitsTimes = visitsTimes;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getVisitsTimes() {
+        return visitsTimes;
+    }
+
+    public void setVisitsTimes(Integer visitsTimes) {
+        this.visitsTimes = visitsTimes;
+    }
+
+
+    @Override
+    public int compareTo(VisitEntity o) {
+        return this.visitsTimes.compareTo(o.getVisitsTimes());
     }
 }

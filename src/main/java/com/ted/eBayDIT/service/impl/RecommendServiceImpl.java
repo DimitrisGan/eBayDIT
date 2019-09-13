@@ -12,6 +12,7 @@ import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.RecommendService;
 import com.ted.eBayDIT.service.UserService;
+import com.ted.eBayDIT.service.VisitService;
 import com.ted.eBayDIT.utility.Pair;
 import com.ted.eBayDIT.utility.Pair2;
 import com.ted.eBayDIT.utility.Utils;
@@ -40,6 +41,9 @@ public class RecommendServiceImpl implements RecommendService {
 
     @Autowired
     SecurityService securityService;
+
+    @Autowired
+    VisitService visitService;
 
 
     private static final double visitScoreCoefficient = 0.05;
@@ -319,7 +323,7 @@ public class RecommendServiceImpl implements RecommendService {
 
 
     @Override
-    public List<Long> getRecommendedAuctionIds() {
+    public List<Long> getRecommendedAuctionIdsForUser() {
         List<Long> returnValue= new ArrayList<>();
 
         UserEntity currUserEntity  = this.userRepo.findByUserId(  this.securityService.getCurrentUser().getUserId() ) ;
@@ -390,7 +394,10 @@ public class RecommendServiceImpl implements RecommendService {
         return returnValue;
     }
 
-
+    @Override
+    public List<Long> getRecommendedAuctionIdsForGuest() {
+       return this.visitService.getMostVisitedAuctions(recommendAuctionsNum);
+    }
 
 
     @Override

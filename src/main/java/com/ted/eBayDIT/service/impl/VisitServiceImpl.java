@@ -1,5 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
+import com.ted.eBayDIT.dto.ItemDto;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.ItemEntity;
 import com.ted.eBayDIT.entity.UserEntity;
@@ -7,11 +8,14 @@ import com.ted.eBayDIT.entity.VisitEntity;
 import com.ted.eBayDIT.repository.ItemRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.repository.VisitRepository;
+import com.ted.eBayDIT.service.SearchService;
 import com.ted.eBayDIT.service.UserService;
 import com.ted.eBayDIT.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,6 +52,25 @@ public class VisitServiceImpl implements VisitService {
 
 
 
+    }
+
+    @Override
+    public List<Long> getMostVisitedAuctions(int numOfAuction2recommend) {
+        List<Long> returnValue= new ArrayList<>();
+
+        List<VisitEntity> visitedAuctions = this.visitRepo.findAll();
+
+        visitedAuctions.sort(Collections.reverseOrder());
+
+        if (numOfAuction2recommend > visitedAuctions.size()) //make sure to not exceed the visit entities in db
+            numOfAuction2recommend = visitedAuctions.size();
+
+        for (int i = 0; i < numOfAuction2recommend; i++) {
+            Long itemId2add = visitedAuctions.get(i).getItem().getItemID();
+            returnValue.add(itemId2add);
+        }
+
+        return  returnValue;
     }
 
 

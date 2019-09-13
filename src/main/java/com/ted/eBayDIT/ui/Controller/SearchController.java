@@ -2,7 +2,6 @@ package com.ted.eBayDIT.ui.Controller;
 
 
 import com.ted.eBayDIT.dto.ItemDto;
-import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.security.SecurityService;
 import com.ted.eBayDIT.service.*;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -66,12 +64,22 @@ public class SearchController {
     @GetMapping(path ="/auctions/recommend_auctions")
     public ResponseEntity<Object> getRecommendedAuctions()  {
 
-
-
         AuctionsResponseModel auctionResp = new AuctionsResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
-        List<Long> recommendedAuctionIdsList = recommendService.getRecommendedAuctionIds();
+        List<Long> recommendedAuctionIdsList = new ArrayList<>();
+
+
+        UserDto currUser = securityService.getCurrentUser();
+
+        if (currUser != null){
+            recommendedAuctionIdsList = recommendService.getRecommendedAuctionIdsForUser(); //recommend for current user
+
+        }else{
+            recommendedAuctionIdsList = recommendService.getRecommendedAuctionIdsForGuest(); //recommend for current guest
+        }
+
+
 
         ModelMapper modelMapper = new ModelMapper();
 

@@ -8,7 +8,9 @@ import java.util.List;
 public interface RecommendService {
 
 
-    List<Long> getRecommendedAuctionIds();
+    List<Long> getRecommendedAuctionIdsForUser();
+
+    List<Long> getRecommendedAuctionIdsForGuest();
 
 
     void createLsh();
