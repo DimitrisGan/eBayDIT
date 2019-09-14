@@ -201,6 +201,8 @@ public class SearchController {
         ItemDto itemDto = this.itemService.getItem(id);
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
 
         auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
 
