@@ -330,8 +330,9 @@ public class RecommendServiceImpl implements RecommendService {
         //==================================================================================
         List<ItemEntity> currentItems = this.itemRepo.findByEventStartedTrue();
 
-//        if ( ! (this.items.containsAll(currentItems) && this.items.size() == currentItems.size() ) ) //if new items instance is different from current
-         if (this.items.size() != currentItems.size())
+         /*if new items instance size  is different from current or the last auction is diff then recreate the lsh table*/
+         /*if new items instance last item/auction is different from current item/auction recreate the lsh table*/
+         if (( this.items.size() != currentItems.size() ) || (!this.items.get(this.items.size() - 1).getItemID().equals(currentItems.get(currentItems.size() - 1).getItemID())) )
             recreateMaps(); //recreate hash maps and hash to lsh
 
         //==================================================================================

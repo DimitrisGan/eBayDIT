@@ -83,7 +83,7 @@ public class MessageController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(path ="/messages/{id}")
+    @PutMapping(path ="/messages/{id}")
     public ResponseEntity<Object> markMessageAsRead(@RequestParam Long id) {
 
         String currUserId = securityService.getCurrentUser().getUserId();
@@ -191,44 +191,6 @@ public class MessageController {
         return new ResponseEntity<>(returnSentList, HttpStatus.OK);
 
     }
-
-
-
-//todo unread messages
-    //gets the messages between current user and user specified by id
-//    @GetMapping(path ="/messages/sent/{id}")
-//    public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@RequestParam String id) {
-//
-//        String currUserId = securityService.getCurrentUser().getUserId();
-//
-//        List<MessageDto> sentList = messageService.getSentMessagesFromCurrentUserToOtherUser(currUserId , id);
-//
-//
-//        ModelMapper modelMapper = new ModelMapper();
-////        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class);
-//
-//
-//        return new ResponseEntity<>(/*auctionsRespList,*/ HttpStatus.OK);
-//
-//    }
-//
-
-//todo delete message
-//    @DeleteMapping(path ="/messages/sent/{id}")
-//    public ResponseEntity<Object> getSentMessagesFromUser(@RequestParam String id) {
-//
-//        String currUserId = securityService.getCurrentUser().getUserId();
-//
-//        List<MessageDto> sentList = messageService.getSentMessagesFromCurrentUserToOtherUser(currUserId , id);
-//
-//
-//        ModelMapper modelMapper = new ModelMapper();
-////        ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class);
-//
-//
-//        return new ResponseEntity<>(/*auctionsRespList,*/ HttpStatus.OK);
-//
-//    }
 
 
 
