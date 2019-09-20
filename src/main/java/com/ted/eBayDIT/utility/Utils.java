@@ -39,6 +39,10 @@ public class Utils {
         return result;
     }
 
+    public static void deepCopyrArrayList(ArrayList<Double> copia, ArrayList<Double> av) {
+        copia.clear();
+        copia.addAll(av);
+    }
 
 
     public static ArrayList<Double> sum2ArrayLists(double[] v1 , double[] v2  ){

@@ -50,7 +50,7 @@ public class RecommendServiceImpl implements RecommendService {
 
     private static final int stages=4;
 
-    private static final int nearestUsersNum = 1;//3
+    private static final int nearestUsersNum = 4;
     private static final int recommendAuctionsNum = 5;
 
     private Map<String, ArrayList<Double>> userVectorsHT  = new HashMap<String, ArrayList<Double>>();
@@ -88,8 +88,7 @@ public class RecommendServiceImpl implements RecommendService {
         for (ItemEntity itemEntity : items) {
 
             for (BidEntity bid : itemEntity.getBids()) {
-                //todo see if should add in userVectors in lsh also the visits Score
-
+                //It doesnt need to add the visit scores also in vector
                 String username = bid.getBidder().getUser().getUsername();
                 Double amount = bid.getAmount().doubleValue();
                 Double currently = itemEntity.getCurrently().doubleValue();
@@ -179,7 +178,6 @@ public class RecommendServiceImpl implements RecommendService {
 
         initLSH(); //recreate lsh instance
         
-        System.out.println("Debug here");
 
     }
 
@@ -296,8 +294,19 @@ public class RecommendServiceImpl implements RecommendService {
 
         for (int i = 0; i < nearestUsersNum; i++) {
             String nearestUserName = pairList.get(i).getE1();
-            ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
-            //todo weighted
+            ArrayList<Double> nearestUserVector = new ArrayList<>();
+            Utils.deepCopyrArrayList(nearestUserVector ,this.userVectorsHT.get(nearestUserName));
+
+            Double weight = i + 1.0;
+            Double score;
+
+            for (int j = 0; j < nearestUserVector.size() ; j++) {
+                if (nearestUserVector.get(j) != 0.0) {
+                    /*add weights depending of how "close" in dist is the otherUser*/
+                    score = nearestUserVector.get(j) / weight;
+                    nearestUserVector.set(j, score);
+                }
+            }
 
             sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(Utils.toPrimitive(sumOfMostRelevantUserVectors) , Utils.toPrimitive(nearestUserVector) );
 
