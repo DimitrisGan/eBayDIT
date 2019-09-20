@@ -8,6 +8,8 @@ public class MessageDto {
     private UserDto sender;
     private UserDto receiver;
 
+    private String subject;
+
     private String message;
 
     private boolean read;
@@ -51,5 +53,13 @@ public class MessageDto {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

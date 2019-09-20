@@ -297,6 +297,7 @@ public class RecommendServiceImpl implements RecommendService {
         for (int i = 0; i < nearestUsersNum; i++) {
             String nearestUserName = pairList.get(i).getE1();
             ArrayList<Double> nearestUserVector = this.userVectorsHT.get(nearestUserName);
+            //todo weighted
 
             sumOfMostRelevantUserVectors = Utils.sum2ArrayLists(Utils.toPrimitive(sumOfMostRelevantUserVectors) , Utils.toPrimitive(nearestUserVector) );
 

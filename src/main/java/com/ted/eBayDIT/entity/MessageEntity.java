@@ -15,8 +15,11 @@ public class MessageEntity implements Serializable {
     private Long id;
 
     @Column
-    private String message;
+    private String subject;
 
+
+    @Column
+    private String message;
 
 
     @ManyToOne(/*fetch = FetchType.LAZY*/)
@@ -68,6 +71,14 @@ public class MessageEntity implements Serializable {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }
 

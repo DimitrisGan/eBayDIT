@@ -31,6 +31,10 @@ public class MessageController {
     private ConnectivityService connectivityService;
 
 
+//todo    GET "/messages/notifs"
+//todo    DELETE /messages/{messageId}
+//TODO NA PAIRNEI OLA TA INBOX ++ THELOUME SUBJECT - TITLE
+//TODO NA PAIRNEI OLA TA SENT  ++ THELOUME SUBJECT - TITLE
     //todo needs debug
     @GetMapping(path ="/messages/allcontacts")
     public ResponseEntity<Object> getContacts() {
@@ -62,7 +66,7 @@ public class MessageController {
 
 
 
-
+    //todo needs debug
     //gets the inbox messages between current user and user specified by id
     @GetMapping(path ="/messages/inbox/{id}")
     public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@RequestParam String id) {
@@ -83,6 +87,7 @@ public class MessageController {
 
     }
 
+    //todo needs debug
     //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
     public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@RequestParam String id) {
