@@ -11,5 +11,15 @@ public interface MessageService {
 
     List<MessageDto> getSentMessagesFromCurrentUserToOtherUser(String currUserId, String otherUserId);
 
-    void sendMessage(String currUserId, String otherUserId, String message);
+    void sendMessage(String currUserId, String otherUserId, String message,String subject);
+
+    List<MessageDto> getAllInboxMessages(String currUserId);
+
+    List<MessageDto> getAllSentMessagesFromCurrentUserToAllOtherUsers(String currUserId);
+
+    void deleteMessage(long id);
+
+    void markMessageAsRead(long id);
+
+    Integer getNewNotifsNumber(String currUserId);
 }

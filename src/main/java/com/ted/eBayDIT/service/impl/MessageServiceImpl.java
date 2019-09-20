@@ -34,6 +34,27 @@ public class MessageServiceImpl implements MessageService {
     private UserRepository userRepo;
 
 
+    @Override
+    public List<MessageDto> getAllInboxMessages(String currUserId) {
+
+        List<MessageDto> returnValue = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        UserEntity currUser = this.userRepo.findByUserId(currUserId);
+        /*find all the records in Connective Table tha refer to currUser*/
+        List<MessageEntity> messagesInboxList = messageRepo.findAllByReceiver(currUser);
+
+
+        for (MessageEntity messageEntity : messagesInboxList) {
+            MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
+            returnValue.add(messageDto);
+
+        }
+
+        return returnValue;
+    }
+
+
 
     @Override
     public List<MessageDto> getInboxMessagesFromOtherUser(String currUserId, String otherUserId) {
@@ -45,17 +66,68 @@ public class MessageServiceImpl implements MessageService {
 
         if (otherUser == null) throw new RuntimeException("Not existing user with such id!"); //check if is ended
 
-        List<MessageEntity> messagesInboxList = messageRepo.findBySenderAndReceiver(otherUser,currUser); //find all the records in Connective Table tha refer to currUser
+        /*find all the records in Connective Table tha refer to currUser from specified other user*/
+        List<MessageEntity> messagesInboxList = messageRepo.findBySenderAndReceiver(otherUser,currUser);
 //        todo maybe messagesInboxList.sort by id
         for (MessageEntity messageEntity : messagesInboxList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
             returnValue.add(messageDto);
-            messageEntity.setRead(true);
+//            messageEntity.setRead(true);
 
         }
-        this.messageRepo.saveAll(messagesInboxList); //save the messages again but now with flag read = True
+//        this.messageRepo.saveAll(messagesInboxList); //save the messages again but now with flag read = True
 
         return returnValue;
+    }
+
+
+
+    @Override
+    public List<MessageDto> getAllSentMessagesFromCurrentUserToAllOtherUsers(String currUserId) {
+        List<MessageDto> returnValue = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity currUser = this.userRepo.findByUserId(currUserId);
+
+        List<MessageEntity> messagesSentList = messageRepo.findAllBySender(currUser); //find all the records in Connective Table tha refer to currUser
+
+        for (MessageEntity messageEntity : messagesSentList) {
+            MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
+            returnValue.add(messageDto);
+        }
+
+        return returnValue;
+
+
+    }
+
+    @Override
+    public void deleteMessage(long id) {
+        MessageEntity msg = this.messageRepo.findById(id);
+
+        if (msg == null) throw new RuntimeException("Can't delete message!Cause message with such id doesn't exist! "); //check if is ended
+
+        messageRepo.delete(msg);
+    }
+
+    @Override
+    public void markMessageAsRead(long id) {
+        MessageEntity msg = this.messageRepo.findById(id);
+
+        if (msg == null) throw new RuntimeException("Can't mark as read message!Cause message with such id doesn't exist! "); //check if is ended
+
+        msg.setRead(true);
+        this.messageRepo.save(msg);
+
+    }
+
+    @Override
+    public Integer getNewNotifsNumber(String currUserId) {
+        UserEntity currUser = this.userRepo.findByUserId(currUserId);
+
+        List<MessageEntity> newMessages = messageRepo.findByReceiverAndReadFalse(currUser);
+
+        return newMessages.size();
+
     }
 
     @Override
@@ -79,7 +151,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void sendMessage(String currUserId, String otherUserId, String message) {
+    public void sendMessage(String currUserId, String otherUserId, String message,String subject) {
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         UserEntity otherUser = this.userRepo.findByUserId(otherUserId);
 
@@ -90,13 +162,13 @@ public class MessageServiceImpl implements MessageService {
         msgEntity.setSender(currUser);
         msgEntity.setReceiver(otherUser);
         msgEntity.setMessage(message);
+        msgEntity.setSubject(subject);
         msgEntity.setRead(false);
 
         this.messageRepo.save(msgEntity);
 
 
     }
-
 
 
 

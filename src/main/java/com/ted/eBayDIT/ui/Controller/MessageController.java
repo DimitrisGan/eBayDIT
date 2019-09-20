@@ -30,12 +30,34 @@ public class MessageController {
     @Autowired
     private ConnectivityService connectivityService;
 
+    //todo msg
 
-//todo    GET "/messages/notifs"
-//todo    DELETE /messages/{messageId}
-//TODO NA PAIRNEI OLA TA INBOX ++ THELOUME SUBJECT - TITLE
-//TODO NA PAIRNEI OLA TA SENT  ++ THELOUME SUBJECT - TITLE
-    //todo needs debug
+//todo    GET "/messages/notifs" -->check
+//todo    DELETE /messages/{messageId} --> check
+//TODO NA PAIRNEI OLA TA INBOX ++ THELOUME SUBJECT - TITLE  --> check
+//TODO NA PAIRNEI OLA TA SENT  ++ THELOUME SUBJECT - TITLE  --> check
+
+    //todo delete a msg from mesg id -->check
+
+    //todo todo get all sent messages -->check
+
+    //todo change notif policy  --> check
+
+    //todo --notif number for all new msgs --> check
+
+    //todo read msg front will give id of msg and i will mark it as read --> check
+
+    @GetMapping(path ="/messages/notifs")
+    public ResponseEntity<Object> getNewNotifs() {
+        Integer notifsNumber;
+        String currUserId = securityService.getCurrentUser().getUserId();
+
+        notifsNumber = this.messageService.getNewNotifsNumber(currUserId);
+
+        return new ResponseEntity<>(notifsNumber, HttpStatus.OK);
+    }
+
+
     @GetMapping(path ="/messages/allcontacts")
     public ResponseEntity<Object> getContacts() {
         ModelMapper modelMapper = new ModelMapper();
@@ -52,17 +74,61 @@ public class MessageController {
         return new ResponseEntity<>(returnContactsList, HttpStatus.OK);
     }
 
+    //delete message with given id
+    @DeleteMapping(path ="/messages/{id}")
+    public ResponseEntity<Object> deleteMessage(@RequestParam Long id) {
+
+        this.messageService.deleteMessage(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path ="/messages/{id}")
+    public ResponseEntity<Object> markMessageAsRead(@RequestParam Long id) {
+
+        String currUserId = securityService.getCurrentUser().getUserId();
+
+        messageService.markMessageAsRead(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
     //todo needs debug
     @PostMapping(path ="/messages")
     public ResponseEntity<Object> sendMessageTo(@RequestBody MessageRequestInputModel input) {
 
         String currUserId = securityService.getCurrentUser().getUserId();
 
-        messageService.sendMessage(currUserId,input.getUserId(),input.getMessage());
+        messageService.sendMessage(currUserId,input.getUserId(),input.getMessage(),input.getSubject());
 
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+
+    //todo get all inbox messages from all users
+
+    @GetMapping(path ="/messages/inbox/all")
+    public ResponseEntity<Object> getAllInboxMessagesFromAllOtherUsersToCurrentUser() {
+        ModelMapper modelMapper = new ModelMapper();
+        List<MessageResponseModel> returnInboxList = new ArrayList<>();
+
+        String currUserId = securityService.getCurrentUser().getUserId();
+
+        List<MessageDto> inboxList = messageService.getAllInboxMessages(currUserId);
+
+        for (MessageDto messageDto : inboxList) {
+            MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            returnInboxList.add(msgResp);
+
+        }
+
+        return new ResponseEntity<>(returnInboxList, HttpStatus.OK);
+
+    }
+
 
 
 
@@ -87,6 +153,25 @@ public class MessageController {
 
     }
 
+
+    @GetMapping(path ="/messages/sent/all")
+    public ResponseEntity<Object> getAllSentMessagesFromUserToAllOtherUsers() {
+        ModelMapper modelMapper = new ModelMapper();
+        List<MessageResponseModel> returnSentList = new ArrayList<>();
+
+        String currUserId = securityService.getCurrentUser().getUserId();
+
+        List<MessageDto> sentList = messageService.getAllSentMessagesFromCurrentUserToAllOtherUsers(currUserId);
+
+        for (MessageDto messageDto : sentList) {
+            MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            returnSentList.add(msgResp);
+        }
+
+        return new ResponseEntity<>(returnSentList, HttpStatus.OK);
+
+    }
+
     //todo needs debug
     //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
@@ -106,6 +191,7 @@ public class MessageController {
         return new ResponseEntity<>(returnSentList, HttpStatus.OK);
 
     }
+
 
 
 //todo unread messages
