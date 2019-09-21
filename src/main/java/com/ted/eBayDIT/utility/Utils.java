@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class Utils {
@@ -111,7 +108,8 @@ public class Utils {
     public static String getCurrentDateToStringDataType(){ //In Ebay date format
 
         String pattern = "MMM-dd-yy HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.US);
+
         String dateStr = simpleDateFormat.format(new Date());
         System.out.println(dateStr);
         return dateStr;
@@ -121,7 +119,7 @@ public class Utils {
 
         String pattern = "MMM-dd-yy HH:mm:ss";
 
-        Date date1=new SimpleDateFormat(pattern).parse(timeOra);
+        Date date1=new SimpleDateFormat(pattern, Locale.US).parse(timeOra);
         System.out.println(timeOra+"\t"+date1);
 
         return date1;
@@ -139,8 +137,8 @@ public class Utils {
     public static String convertFrontDateTypeToBack(String srcEnds) throws ParseException {
         String pattern = "MMM-dd-yy HH:mm:ss";
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        SimpleDateFormat outputFormat = new SimpleDateFormat(pattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(pattern, Locale.US);
 
         Date date = inputFormat.parse(srcEnds);
         //        System.out.println(formattedDate); // prints 10-04-2018
