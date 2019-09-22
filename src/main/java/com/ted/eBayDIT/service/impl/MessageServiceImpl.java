@@ -42,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         /*find all the records in Connective Table tha refer to currUser*/
-        List<MessageEntity> messagesInboxList = messageRepo.findAllByReceiver(currUser);
+        List<MessageEntity> messagesInboxList = messageRepo.findByReceiver(currUser);
 
 
         for (MessageEntity messageEntity : messagesInboxList) {
@@ -88,7 +88,7 @@ public class MessageServiceImpl implements MessageService {
         ModelMapper modelMapper = new ModelMapper();
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
 
-        List<MessageEntity> messagesSentList = messageRepo.findAllBySender(currUser); //find all the records in Connective Table tha refer to currUser
+        List<MessageEntity> messagesSentList = messageRepo.findBySender(currUser); //find all the records in Connective Table tha refer to currUser
 
         for (MessageEntity messageEntity : messagesSentList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
