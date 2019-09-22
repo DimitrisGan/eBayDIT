@@ -9,7 +9,7 @@ import java.util.List;
 //@Data
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = -7915207677438866300L;
@@ -73,13 +73,15 @@ public class UserEntity implements Serializable {
     private SellerDetailsEntity seller;
 
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-//            mappedBy="connectedUser1")
-//    private List<ConnectivityEntity> connections;
-//
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-//            mappedBy = "connectedUser2")
-//    private List<ConnectivityEntity> connectedTo;
+    @OneToMany(mappedBy="connectedUser1",
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    private List<ConnectivityEntity> connections;
+
+    @OneToMany(mappedBy = "connectedUser2" ,
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ConnectivityEntity> connectedTo;
+
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "sender" /*, orphanRemoval = true*/)
@@ -88,6 +90,7 @@ public class UserEntity implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "receiver" /*, orphanRemoval = true*/)
     private List<MessageEntity> receivedMessages;
+
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
@@ -241,5 +244,21 @@ public class UserEntity implements Serializable {
 
     public void setItemsVisited(List<VisitEntity> itemsVisited) {
         this.itemsVisited = itemsVisited;
+    }
+
+    public List<ConnectivityEntity> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<ConnectivityEntity> connections) {
+        this.connections = connections;
+    }
+
+    public List<ConnectivityEntity> getConnectedTo() {
+        return connectedTo;
+    }
+
+    public void setConnectedTo(List<ConnectivityEntity> connectedTo) {
+        this.connectedTo = connectedTo;
     }
 }

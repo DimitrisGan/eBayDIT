@@ -51,4 +51,12 @@ public class ConnectivityEntity implements Serializable {
     public void setConnectedUser2(UserEntity connectedUser2) {
         this.connectedUser2 = connectedUser2;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

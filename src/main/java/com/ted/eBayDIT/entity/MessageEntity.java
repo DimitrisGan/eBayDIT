@@ -4,34 +4,39 @@ package com.ted.eBayDIT.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "messages")
 public class MessageEntity implements Serializable {
 
     private static final long serialVersionUID = 8255615242366850373L;
 
+    //since this is auto incremental id, to retrieve the message list we just sort by this in decreasing order
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Column
     private String subject;
 
-
     @Column
     private String message;
 
 
-    @ManyToOne(/*fetch = FetchType.LAZY*/)
-    @JoinColumn(name = "sender")
+    @ManyToOne(cascade= CascadeType.ALL/*fetch = FetchType.LAZY*/)
+    @JoinColumn(name = "user_1" /*,referencedColumnName = "id"*/)
     private UserEntity sender;
 
-    @ManyToOne(/*fetch = FetchType.LAZY*/)
-    @JoinColumn(name = "receiver")
+    @ManyToOne(cascade= CascadeType.ALL/*fetch = FetchType.LAZY*/)
+    @JoinColumn(name = "user_2"/*,referencedColumnName = "id"*/)
     private UserEntity receiver;
 
-    @Column(name="read")
+
+
+    @Column(name="is_read")
     private boolean read;
+
 
     public Long getId() {
         return id;
@@ -39,6 +44,14 @@ public class MessageEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getMessage() {
@@ -73,33 +86,8 @@ public class MessageEntity implements Serializable {
         this.read = read;
     }
 
-    public String getSubject() {
-        return subject;
-    }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+
 }
 
 
-
-
-
-
-//    //since this is auto incremental id, to retrieve the message list we just sort by this in decreasing order
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "sender")
-//    private UserEntity sender;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "receiver")
-//    private UserEntity receiver;
-//
-//    @Column
-//    private String message;
-//

@@ -7,6 +7,7 @@ import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +21,11 @@ import org.springframework.web.filter.CorsFilter;
 import org.apache.catalina.connector.Connector;
 
 
-
 import java.util.Arrays;
 import java.util.Collections;
 
-import java.io.*; // will be using only File class from this package
-import javax.xml.bind.*; // will be using JAXBContext,Marshaller and JAXBException classes from this package
-
 @SpringBootApplication
+@EntityScan("com.ted.eBayDIT.entity")
 public class EBayDitApplication {
 
     public static void main(String[] args) {
