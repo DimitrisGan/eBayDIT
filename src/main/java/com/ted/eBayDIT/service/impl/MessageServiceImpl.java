@@ -10,6 +10,7 @@ import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.ConnectivityService;
 import com.ted.eBayDIT.service.MessageService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
     public List<MessageDto> getAllInboxMessages(String currUserId) {
 
         List<MessageDto> returnValue = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         /*find all the records in Connective Table tha refer to currUser*/
@@ -59,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDto> getInboxMessagesFromOtherUser(String currUserId, String otherUserId) {
         List<MessageDto> returnValue = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         UserEntity otherUser = this.userRepo.findByUserId(otherUserId);
@@ -85,7 +86,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDto> getAllSentMessagesFromCurrentUserToAllOtherUsers(String currUserId) {
         List<MessageDto> returnValue = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
 
         List<MessageEntity> messagesSentList = messageRepo.findBySender(currUser); //find all the records in Connective Table tha refer to currUser
@@ -133,7 +134,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDto> getSentMessagesFromCurrentUserToOtherUser(String currUserId, String otherUserId) {
         List<MessageDto> returnValue = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         UserEntity otherUser = this.userRepo.findByUserId(otherUserId);

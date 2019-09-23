@@ -4,6 +4,7 @@ import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,7 @@ public class SecurityServiceImpl implements SecurityService{
         try {
             UserEntity authUser =  userRepository.findByUsername((String)auth.getPrincipal());
 
-            ModelMapper modelMapper = new ModelMapper();
+            ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
             return modelMapper.map(authUser, UserDto.class);
         } catch (Exception e) {

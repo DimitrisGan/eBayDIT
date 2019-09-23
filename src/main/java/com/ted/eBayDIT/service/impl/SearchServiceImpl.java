@@ -41,7 +41,7 @@ public class SearchServiceImpl implements SearchService {
 
         List<ItemEntity> auctions_list = itemRepo.findByEventStartedTrueAndEventFinishedFalse();
         List<ItemDto> returnList = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 
         for (ItemEntity itemEntity : auctions_list) {
@@ -77,8 +77,7 @@ public class SearchServiceImpl implements SearchService {
 
         List<ItemEntity> items = pagedResult.getContent();
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         for (ItemEntity itemEntity : items) {
             ItemDto itemDto = modelMapper.map(itemEntity, ItemDto.class);

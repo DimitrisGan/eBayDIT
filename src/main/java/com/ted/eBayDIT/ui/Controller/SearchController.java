@@ -81,7 +81,7 @@ public class SearchController {
 
 
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         for (Long auctionId : recommendedAuctionIdsList) {
             ItemDto itemDto2recommend = itemService.getItem(auctionId);
@@ -112,7 +112,7 @@ public class SearchController {
 
         List<ItemDto> auctionsList = searchService.getActiveAuctions();
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (ItemDto itemDto : auctionsList) {
             auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
             auctionsRespList.add(auctionsResp);
@@ -164,8 +164,7 @@ public class SearchController {
         List<ItemDto> auctionsList = searchService.getPaginatedFilteredAuctions(pageNo, pageSize, sortBy, orderType, filteredList);
 
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         AuctionsResponseModel auctionResp  = new AuctionsResponseModel();
         for (ItemDto itemDto : auctionsList) {
@@ -200,8 +199,7 @@ public class SearchController {
 
         ItemDto itemDto = this.itemService.getItem(id);
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 
         auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);

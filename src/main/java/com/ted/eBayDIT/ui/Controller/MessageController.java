@@ -9,6 +9,7 @@ import com.ted.eBayDIT.ui.model.request.MessageRequestInputModel;
 import com.ted.eBayDIT.ui.model.response.MessageResponseModel;
 import com.ted.eBayDIT.ui.model.response.UserDetailsResponseModel;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,7 @@ public class MessageController {
 
     @GetMapping(path ="/messages/allcontacts")
     public ResponseEntity<Object> getContacts() {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<UserDetailsResponseModel> returnContactsList = new ArrayList<>();
 
         String currUserId = securityService.getCurrentUser().getUserId();
@@ -112,7 +113,7 @@ public class MessageController {
 
     @GetMapping(path ="/messages/inbox/all")
     public ResponseEntity<Object> getAllInboxMessagesFromAllOtherUsersToCurrentUser() {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnInboxList = new ArrayList<>();
 
         String currUserId = securityService.getCurrentUser().getUserId();
@@ -138,7 +139,7 @@ public class MessageController {
     //gets the inbox messages between current user and user specified by id
     @GetMapping(path ="/messages/inbox/{id}")
     public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@RequestParam String id) {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnInboxList = new ArrayList<>();
 
         String currUserId = securityService.getCurrentUser().getUserId();
@@ -160,7 +161,7 @@ public class MessageController {
 
     @GetMapping(path ="/messages/sent/all")
     public ResponseEntity<Object> getAllSentMessagesFromUserToAllOtherUsers() {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnSentList = new ArrayList<>();
 
         String currUserId = securityService.getCurrentUser().getUserId();
@@ -182,7 +183,7 @@ public class MessageController {
     //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
     public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@RequestParam String id) {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnSentList = new ArrayList<>();
 
         String currUserId = securityService.getCurrentUser().getUserId();

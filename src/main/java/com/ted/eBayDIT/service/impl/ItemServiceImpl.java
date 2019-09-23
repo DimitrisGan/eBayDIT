@@ -12,6 +12,7 @@ import com.ted.eBayDIT.service.ItemService;
 import com.ted.eBayDIT.service.PhotoService;
 import com.ted.eBayDIT.utility.Utils;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -240,7 +241,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addNewItem(ItemDto item) throws ParseException {
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         ItemEntity itemEntity2save = modelMapper.map(item, ItemEntity.class);
 
         //check if itemID already exists in db and throw exceptions
@@ -319,14 +320,14 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto2update.getDescription() != null)    {itemEntity.setDescription(itemDto2update.getDescription()); }
 
         if (itemDto2update.getLocation()    != null){
-            ModelMapper modelMapper = new ModelMapper();
+            ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
             ItemLocationEntity locEnt = modelMapper.map(itemDto2update.getLocation(), ItemLocationEntity.class);
             itemEntity.setLocation(locEnt);
         }
 
         if (itemDto2update.getCategories()  != null) {
             itemEntity.getCategories().clear();
-            ModelMapper modelMapper = new ModelMapper();
+            ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
             CategoryEntity categEntity = new CategoryEntity();
             for (CategoryDto categoryDto : itemDto2update.getCategories()) {
                 categEntity = modelMapper.map(categoryDto, CategoryEntity.class);
@@ -405,7 +406,7 @@ public class ItemServiceImpl implements ItemService {
         if (itemEntity == null) throw new RuntimeException("Item-Auction doesn't exist");
 
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return modelMapper.map(itemEntity, ItemDto.class);
     }
@@ -413,7 +414,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> allItems() {
         List<ItemDto> returnList = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         List<ItemEntity> entitiesList = itemRepo.findAll();
 
@@ -433,7 +434,7 @@ public class ItemServiceImpl implements ItemService {
 
         SellerDetailsEntity seller = sellerRepo.findById(currUser.getId());
         List<ItemEntity> returnEntitiesList = seller.getItems();
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         /*cinvert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
