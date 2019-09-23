@@ -133,8 +133,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public void save(PhotoDto photoDtO) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         PhotoEntity photoEntity = modelMapper.map(photoDtO, PhotoEntity.class);
 
@@ -165,7 +164,7 @@ public class PhotoServiceImpl implements PhotoService {
     public PhotoDto loadDefaultItemImage() {
 
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.ITEM_PHOTO);
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 
         return modelMapper.map(photoEntity,PhotoDto.class);
@@ -174,7 +173,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public PhotoDto loadDefaultNkuaImage() {
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.NKUA_PHOTO);
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return modelMapper.map(photoEntity,PhotoDto.class);
     }
@@ -209,7 +208,7 @@ public class PhotoServiceImpl implements PhotoService {
     public PhotoDto getDefaultAUctionImage(){
 
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.AUCTION_PHOTO);
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return modelMapper.map(photoEntity,PhotoDto.class);
 
@@ -217,7 +216,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public PhotoResponseModel addDefaultPhotoIfNoPhotosExist(){
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         PhotoDto defaultPhotoDto = loadDefaultItemImage();
         return modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
     }

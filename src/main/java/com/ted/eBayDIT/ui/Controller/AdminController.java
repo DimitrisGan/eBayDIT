@@ -47,13 +47,8 @@ public class AdminController {
     @GetMapping(path = "/download_auctions", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> downloadAuction(){
 
-//        UserDto userDto = userService.getUserByUserId(id);
-//        ModelMapper modelMapper = new ModelMapper();
-//        returnValue = modelMapper.map(userDto, UserRest.class);
-
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         List<ItemDto> items = itemService.allItems();
 
@@ -78,7 +73,8 @@ public class AdminController {
         List<UserDto> allNotVerifiedUsersList = userService.getAllNotVerifiedUsers();
 
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         for (UserDto userDto : allNotVerifiedUsersList) {
 
             UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
@@ -101,7 +97,7 @@ public class AdminController {
 
         List<UserDetailsResponseModel> returnUsersList =new ArrayList<>();
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (UserDto userDto : list) {
 
             UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
@@ -147,7 +143,7 @@ public class AdminController {
 
         userDto = this.userService.verifyUser(id);
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDetailsResponseModel returnValue = modelMapper.map(userDto, UserDetailsResponseModel.class);
 
 

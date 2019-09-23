@@ -18,6 +18,7 @@ import com.ted.eBayDIT.utility.Pair2;
 import com.ted.eBayDIT.utility.Utils;
 import info.debatty.java.lsh.LSHSuperBit;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -380,8 +381,7 @@ public class RecommendServiceImpl implements RecommendService {
         ArrayList<Pair2> pairList2 = getSortedAuctionsScoreTupleList(sumOfMostRelevantUserVectors);
 
 
-        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         /*now take the k best auction scores */
         int auctions2recommendNum = recommendAuctionsNum;

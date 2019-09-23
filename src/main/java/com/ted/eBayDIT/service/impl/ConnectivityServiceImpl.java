@@ -8,6 +8,7 @@ import com.ted.eBayDIT.repository.ConnectivityRepository;
 import com.ted.eBayDIT.repository.UserRepository;
 import com.ted.eBayDIT.service.ConnectivityService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,7 @@ public class ConnectivityServiceImpl implements ConnectivityService {
         connectionsList = connectivityRepo.findByConnectedUser1OrConnectedUser2(currUser,currUser); //find all the records in Connective Table tha refer to currUser
 
         UserEntity connUser1,connUser2;
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 
         for (ConnectivityEntity connectivityEntity : connectionsList) {

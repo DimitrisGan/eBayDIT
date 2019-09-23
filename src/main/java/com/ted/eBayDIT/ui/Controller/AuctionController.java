@@ -85,9 +85,6 @@ public class AuctionController {
 
         }
 
-//        ModelMapper modelMapper = new ModelMapper();
-//        AuctionsResponseModel returnVaule = modelMapper.map(createAuctionRequestModel, ItemDto.class);
-
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -97,7 +94,7 @@ public class AuctionController {
     public ResponseEntity<Object> createAuction(@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel)
             throws ParseException {
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         ItemDto itemDto = modelMapper.map(auctionDetailsRequestModel, ItemDto.class);
 
         ItemDto newlyCreatedItemDto = itemService.addNewItem(itemDto); //create item-auction
@@ -127,7 +124,7 @@ public class AuctionController {
             String msg = "Auction doesn't exist to edit!";
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         ItemDto itemDto = modelMapper.map(editAuctionDetails, ItemDto.class);
 
         try {
@@ -314,8 +311,7 @@ public class AuctionController {
 
         AuctionsResponseModel auctionResp = new AuctionsResponseModel();
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         for (ItemDto itemDto : auctionsList) {
             auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);

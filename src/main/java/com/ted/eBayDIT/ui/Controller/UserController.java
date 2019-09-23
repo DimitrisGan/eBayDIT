@@ -9,6 +9,7 @@ import com.ted.eBayDIT.ui.model.request.UserDetailsRequestModel;
 import com.ted.eBayDIT.ui.model.request.UsernameExistsRequestModel;
 import com.ted.eBayDIT.ui.model.response.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class UserController {
 
         UserDto userDto = userService.getUserByUserId(id) ;
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDetailsResponseModel returnUser = modelMapper.map(userDto, UserDetailsResponseModel.class);
 
         return   new ResponseEntity<>(returnUser, HttpStatus.OK);
@@ -61,7 +62,7 @@ public class UserController {
 
 //        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         userService.createUser(userDto);
@@ -109,7 +110,7 @@ public class UserController {
 
 //        UserDetailsResponseModel returnValue =new UserDetailsResponseModel();
 
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id,userDto);

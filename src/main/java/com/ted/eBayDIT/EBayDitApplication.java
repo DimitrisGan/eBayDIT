@@ -79,13 +79,6 @@ public class EBayDitApplication {
         return new SpringApplicationContext();
     }
 
-//    @Bean
-//    public ModelMapper modelMapper() {
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration()
-//                .setMatchingStrategy(MatchingStrategies.STRICT);
-//    }
-
 
     @Bean
     public CorsFilter corsFilter() {
