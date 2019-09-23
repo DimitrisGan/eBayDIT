@@ -29,7 +29,7 @@ public class SecurityServiceImpl implements SecurityService{
         try {
             UserEntity authUser =  userRepository.findByUsername((String)auth.getPrincipal());
 
-            ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+            ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
             return modelMapper.map(authUser, UserDto.class);
         } catch (Exception e) {
