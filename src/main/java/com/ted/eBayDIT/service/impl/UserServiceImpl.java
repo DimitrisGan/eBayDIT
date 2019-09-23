@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity2save = new UserEntity();
 
 //        BeanUtils.copyProperties(user,userEntity2save);
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         userEntity2save = modelMapper.map(user, UserEntity.class);
 
 
@@ -202,7 +202,7 @@ public class UserServiceImpl implements UserService {
         UserEntity updatedUserDetails = userRepo.save(userEntity);
 
 //        BeanUtils.copyProperties(updatedUserDetails,returnValue);
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
 
 
@@ -224,7 +224,7 @@ public class UserServiceImpl implements UserService {
 
         this.userRepo.save(userEntity);
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(userEntity, UserDto.class);
 
         return returnValue;
@@ -264,7 +264,7 @@ public class UserServiceImpl implements UserService {
         UserEntity updatedUserDetails = userRepo.save(userEntity);
 
         //        BeanUtils.copyProperties(updatedUserDetails,returnValue);
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
 
         return returnValue;
@@ -295,7 +295,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) throw new UsernameNotFoundException(username);
 
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         return modelMapper.map(userEntity, UserDto.class);
     }
@@ -334,7 +334,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> usersEntity = this.userRepo.findAll();
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (UserEntity userEntity : usersEntity) {
 
             UserDto userDto = modelMapper.map(userEntity, UserDto.class);
@@ -353,7 +353,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(userId);
         }
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(user, UserDto.class);
         //BeanUtils.copyProperties(userEntity,returnValue);
 
@@ -393,7 +393,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> users = pagedResult.getContent();
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (UserEntity userEntity : users) {
             UserDto userDto = modelMapper.map(userEntity, UserDto.class);
             userDto.setTotalPages(totalPages);
@@ -413,7 +413,7 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> notVerifiedUsersList = new ArrayList<>();
         notVerifiedUsersList = userRepo.findByVerifiedFalse();
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (UserEntity user : notVerifiedUsersList) {
             new UserDto();
 
@@ -432,7 +432,7 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> verifiedUsersList = new ArrayList<>();
         verifiedUsersList = userRepo.findByVerifiedTrue();
 
-        ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (UserEntity user : verifiedUsersList) {
             new UserDto();
 
