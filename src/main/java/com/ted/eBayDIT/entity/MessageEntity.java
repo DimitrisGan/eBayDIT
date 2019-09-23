@@ -24,12 +24,12 @@ public class MessageEntity implements Serializable {
     private String message;
 
 
-    @ManyToOne(cascade= CascadeType.ALL/*fetch = FetchType.LAZY*/)
-    @JoinColumn(name = "user_1" /*,referencedColumnName = "id"*/)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id" /*,referencedColumnName = "id"*/)
     private UserEntity sender;
 
-    @ManyToOne(cascade= CascadeType.ALL/*fetch = FetchType.LAZY*/)
-    @JoinColumn(name = "user_2"/*,referencedColumnName = "id"*/)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id"/*,referencedColumnName = "id"*/)
     private UserEntity receiver;
 
 
