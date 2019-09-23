@@ -121,6 +121,8 @@ public class MessageController {
 
         for (MessageDto messageDto : inboxList) {
             MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            msgResp.setSenderUserId(messageDto.getSender().getUserId());
+            msgResp.setReceiverUserId(messageDto.getReceiver().getUserId());
             returnInboxList.add(msgResp);
 
         }
@@ -145,6 +147,8 @@ public class MessageController {
 
         for (MessageDto messageDto : inboxList) {
             MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            msgResp.setSenderUserId(messageDto.getSender().getUserId());
+            msgResp.setReceiverUserId(messageDto.getReceiver().getUserId());
             returnInboxList.add(msgResp);
 
         }
@@ -165,6 +169,8 @@ public class MessageController {
 
         for (MessageDto messageDto : sentList) {
             MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            msgResp.setSenderUserId(messageDto.getSender().getUserId());
+            msgResp.setReceiverUserId(messageDto.getReceiver().getUserId());
             returnSentList.add(msgResp);
         }
 
@@ -185,6 +191,8 @@ public class MessageController {
 
         for (MessageDto messageDto : sentList) {
             MessageResponseModel msgResp = modelMapper.map(messageDto, MessageResponseModel.class);
+            msgResp.setSenderUserId(messageDto.getSender().getUserId());
+            msgResp.setReceiverUserId(messageDto.getReceiver().getUserId());
             returnSentList.add(msgResp);
         }
 

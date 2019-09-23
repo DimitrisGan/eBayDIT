@@ -9,6 +9,9 @@ public class MessageResponseModel {
     private String message;
     private boolean read;
 
+    private String senderUserId;
+    private String receiverUserId;
+
 
     public Long getId() {
         return id;
@@ -40,5 +43,21 @@ public class MessageResponseModel {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getSenderUserId() {
+        return senderUserId;
+    }
+
+    public void setSenderUserId(String senderUserId) {
+        this.senderUserId = senderUserId;
+    }
+
+    public String getReceiverUserId() {
+        return receiverUserId;
+    }
+
+    public void setReceiverUserId(String receiverUserId) {
+        this.receiverUserId = receiverUserId;
     }
 }
