@@ -106,7 +106,7 @@ public class SearchController {
 
     @GetMapping(path ="/auctions/active")
     public ResponseEntity<Object> getActiveAuctions() throws ParseException {
-        AuctionsResponseModel auctionsResp = new AuctionsResponseModel();
+        AuctionsResponseModel auctionResp = new AuctionsResponseModel();
 
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
@@ -114,8 +114,14 @@ public class SearchController {
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for (ItemDto itemDto : auctionsList) {
-            auctionsResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
-            auctionsRespList.add(auctionsResp);
+            auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+
+            if (auctionResp.getPhotos().isEmpty()){
+                PhotoResponseModel defaultPhotoResp = photoService.addDefaultPhotoIfNoPhotosExist();
+                auctionResp.setDefaultPhoto(defaultPhotoResp);
+            }
+
+            auctionsRespList.add(auctionResp);
         }
 
         return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
