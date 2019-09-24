@@ -77,7 +77,7 @@ public class MessageController {
 
     //delete message with given id
     @DeleteMapping(path ="/messages/{id}")
-    public ResponseEntity<Object> deleteMessage(@RequestParam Long id) {
+    public ResponseEntity<Object> deleteMessage(@PathVariable Long id) {
 
         this.messageService.deleteMessage(id);
 
@@ -85,7 +85,7 @@ public class MessageController {
     }
 
     @PutMapping(path ="/messages/{id}")
-    public ResponseEntity<Object> markMessageAsRead(@RequestParam Long id) {
+    public ResponseEntity<Object> markMessageAsRead(@PathVariable Long id) {
 
         String currUserId = securityService.getCurrentUser().getUserId();
 
@@ -138,7 +138,7 @@ public class MessageController {
     //todo needs debug
     //gets the inbox messages between current user and user specified by id
     @GetMapping(path ="/messages/inbox/{id}")
-    public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@RequestParam String id) {
+    public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@PathVariable String id) {
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnInboxList = new ArrayList<>();
 
@@ -182,7 +182,7 @@ public class MessageController {
     //todo needs debug
     //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
-    public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@RequestParam String id) {
+    public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@PathVariable String id) {
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         List<MessageResponseModel> returnSentList = new ArrayList<>();
 
