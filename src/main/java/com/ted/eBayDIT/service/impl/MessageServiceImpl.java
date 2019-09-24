@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,7 +46,8 @@ public class MessageServiceImpl implements MessageService {
         /*find all the records in Connective Table tha refer to currUser*/
         List<MessageEntity> messagesInboxList = messageRepo.findByReceiver(currUser);
 
-
+        Collections.reverse(messagesInboxList);
+        
         for (MessageEntity messageEntity : messagesInboxList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
             returnValue.add(messageDto);
@@ -70,6 +72,9 @@ public class MessageServiceImpl implements MessageService {
         /*find all the records in Connective Table tha refer to currUser from specified other user*/
         List<MessageEntity> messagesInboxList = messageRepo.findBySenderAndReceiver(otherUser,currUser);
 //        todo maybe messagesInboxList.sort by id
+
+        Collections.reverse(messagesInboxList);
+
         for (MessageEntity messageEntity : messagesInboxList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
             returnValue.add(messageDto);
@@ -90,6 +95,8 @@ public class MessageServiceImpl implements MessageService {
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
 
         List<MessageEntity> messagesSentList = messageRepo.findBySender(currUser); //find all the records in Connective Table tha refer to currUser
+
+        Collections.reverse(messagesSentList);
 
         for (MessageEntity messageEntity : messagesSentList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
@@ -142,6 +149,8 @@ public class MessageServiceImpl implements MessageService {
         if (otherUser == null) throw new RuntimeException("Not existing user with such id!"); //check if is ended
 
         List<MessageEntity> messagesSentList = messageRepo.findBySenderAndReceiver(currUser,otherUser); //find all the records in Connective Table tha refer to currUser
+
+        Collections.reverse(messagesSentList);
 
         for (MessageEntity messageEntity : messagesSentList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
