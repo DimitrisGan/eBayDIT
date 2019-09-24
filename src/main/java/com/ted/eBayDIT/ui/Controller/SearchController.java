@@ -201,8 +201,12 @@ public class SearchController {
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-
         auctionResp = modelMapper.map(itemDto, AuctionsResponseModel.class);
+        if (auctionResp.getPhotos().isEmpty()){
+            //add default photo
+            PhotoResponseModel defaultPhotoResp =   photoService.addDefaultPhotoIfNoPhotosExist();
+            auctionResp.setDefaultPhoto(defaultPhotoResp);
+        }
 
         return new ResponseEntity<>(auctionResp,HttpStatus.OK);
 
