@@ -47,14 +47,11 @@ public class Utils {
         if(v1.length != v2.length) {throw new RuntimeException("Can't sum vectors of different size!");}
 
         ArrayList<Double> sumVector = new ArrayList<>();
-//        double[] sumVector = new double[v1.length];
-
 
         for (int i = 0; i < v1.length; i++) {
 
             sumVector.add( v1[i]+ v2[i] );
         }
-
 
         return sumVector;
     }
@@ -86,7 +83,6 @@ public class Utils {
             cosineSimilarity = 0.0;
         else
             cosineSimilarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-
 
         return  1.0 - cosineSimilarity; //return dist
     }
@@ -141,9 +137,7 @@ public class Utils {
         SimpleDateFormat outputFormat = new SimpleDateFormat(pattern, Locale.US);
 
         Date date = inputFormat.parse(srcEnds);
-        //        System.out.println(formattedDate); // prints 10-04-2018
-
-
+        
         return outputFormat.format(date);
     }
 
