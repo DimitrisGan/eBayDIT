@@ -9,7 +9,6 @@ public class AuctionsFilteredSearchResponseModel {
 
     private int totalFilteredAuctions;
 
-
     public int getTotalFilteredAuctions() {
         return totalFilteredAuctions;
     }

@@ -12,7 +12,7 @@ public class ItemLocationDto implements Serializable {
     private String longitude;
     private String text;
 
-    private ItemDto item; //todo maybe delete it
+    private ItemDto item;
 
     public Long getId() {
         return id;

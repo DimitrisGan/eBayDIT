@@ -13,11 +13,9 @@ public class UserDetailsResponseModel {
     private String phoneNumber;
     private String country;
     private String location;
-    private String address; //todo wait from front to change it
+    private String address;
     private String afm;
-
     private boolean verified;
-
     private String userRole;
 
     //in response model we should not contain password

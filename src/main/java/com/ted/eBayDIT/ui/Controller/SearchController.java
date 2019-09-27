@@ -24,10 +24,6 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchController {
 
-    //todo searchByCategoryEndpoint
-    //todo searchActiveAuctions
-    //todo searchByDescription
-
     @Autowired
     SearchService searchService;
 
@@ -47,28 +43,13 @@ public class SearchController {
     VisitService visitService;
 
 
-
-
-    @PostMapping(path ="/auctions/start_lsh")
-    public ResponseEntity<Object> startLsh()  {
-
-
-        recommendService.createLsh();
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-
-
     @GetMapping(path ="/auctions/recommend_auctions")
     public ResponseEntity<Object> getRecommendedAuctions()  {
 
         AuctionsResponseModel auctionResp = new AuctionsResponseModel();
         List<AuctionsResponseModel> auctionsRespList  = new ArrayList<>();
 
-        List<Long> recommendedAuctionIdsList = new ArrayList<>();
-
+        List<Long> recommendedAuctionIdsList;
 
         UserDto currUser = securityService.getCurrentUser();
 
@@ -78,8 +59,6 @@ public class SearchController {
         }else{
             recommendedAuctionIdsList = recommendService.getRecommendedAuctionIdsForGuest(); //recommend for current guest
         }
-
-
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -92,7 +71,6 @@ public class SearchController {
                 PhotoResponseModel defaultPhotoResp = photoService.addDefaultPhotoIfNoPhotosExist();
                 auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
-            
 
             auctionsRespList.add(auctionResp);
 
@@ -101,7 +79,6 @@ public class SearchController {
         return new ResponseEntity<>(auctionsRespList, HttpStatus.OK);
 
     }
-
 
 
     @GetMapping(path ="/auctions/active")
@@ -129,9 +106,6 @@ public class SearchController {
     }
 
 
-//    public String controllerMethod(@RequestParam(value="myParam[]") String[] myParams)
-
-
     @GetMapping(path ="/auctions/filters")
     public ResponseEntity<Object> getAllAuctionsByFilter(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                                          @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
@@ -146,7 +120,6 @@ public class SearchController {
                                                          @RequestParam(value = "highestPrice", required = false ) BigDecimal highestPrice
 
                                                                         ) {
-
 
 
         AuctionsFilteredSearchResponseModel auctionsFilterResp = new AuctionsFilteredSearchResponseModel();
@@ -179,9 +152,7 @@ public class SearchController {
                PhotoResponseModel defaultPhotoResp = photoService.addDefaultPhotoIfNoPhotosExist();
                auctionResp.setDefaultPhoto(defaultPhotoResp);
             }
-
             auctionsRespList.add(auctionResp);
-
         }
 
         auctionsFilterResp.setTotalFilteredAuctions(filteredList.size());
@@ -190,7 +161,6 @@ public class SearchController {
         return new ResponseEntity<>(auctionsFilterResp, HttpStatus.OK);
 
     }
-
 
 
     @GetMapping(path ="/auctions/{id}")

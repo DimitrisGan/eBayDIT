@@ -20,18 +20,16 @@ public class BidEntity implements Serializable {
     @Column(name="id")
     private  Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH, CascadeType.MERGE,
+    @ManyToOne(fetch = FetchType.EAGER,cascade={CascadeType.REFRESH, CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name="item_id")
     private ItemEntity itemDetails;
 
-    @ManyToOne(cascade=CascadeType.ALL)/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})*/
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "bidder_id")
     private BidderDetailsEntity bidder;
-
     @Column
-    private String time; //todo change type to Date //todo2 check not be the same from same bidder
+    private String time;
     @Column
     private BigDecimal amount;
 
@@ -68,7 +66,6 @@ public class BidEntity implements Serializable {
         this.time = time;
     }
 
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -78,23 +75,3 @@ public class BidEntity implements Serializable {
     }
 }
 
-
-
-
-
-
-//@Entity
-//@Table(name="bid")
-//public class BidEntity {
-//
-//
-//    @Id
-//    @GeneratedValue(strategy= GenerationType.IDENTITY)
-//    @Column(name="id")
-//    private  int id;
-//
-//
-//    //todo user bidder
-//    //todo
-//
-//}

@@ -5,12 +5,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-//<Location Latitude="43.108241" Longitude="-88.48935">Oconomowoc, WI</Location>
-//{
-//        "@Latitude": "37.680181",
-//        "@Longitude": "-121.921498",
-//        "#text": "Hayward, CA"
-//}
+
 //@Data
 @Entity
 @Table(name="location")

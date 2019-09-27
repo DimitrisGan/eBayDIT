@@ -21,5 +21,4 @@ public class BidderResponseModel {
         this.rating = rating;
     }
 
-  
 }

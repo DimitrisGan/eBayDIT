@@ -19,23 +19,22 @@ public class UserEntity implements Serializable {
     @Column(name="id")
     private  int id;
 
-    @Column(name="public_id"/*,nullable = false*/,unique = true)
+    @Column(name="public_id",unique = true)
     private String userId;
 
     @Column(name="username" ,nullable=false ,unique = true)
     private String username;
 
-    @Column(name="password"/*,nullable=false*/)
+    @Column(name="password")
     private String encryptedPassword;
 
-
-    @Column(name="first_name"/*,nullable=false*/)
+    @Column(name="first_name")
     private String firstName;
 
-    @Column(name="last_name"/*,nullable=false*/)
+    @Column(name="last_name")
     private String lastName;
 
-    @Column(name="email"/*,nullable=false*/)
+    @Column(name="email")
     private String email;
 
     @Column(name="phone_number")
@@ -50,15 +49,12 @@ public class UserEntity implements Serializable {
     @Column(name="afm")
     private String afm;
 
-
     @Column(name="verified")
     private boolean verified;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role;
-
 
 
     /*
@@ -82,7 +78,6 @@ public class UserEntity implements Serializable {
     private List<ConnectivityEntity> connectedTo;
 
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "sender" /*, orphanRemoval = true*/)
     private List<MessageEntity> sentMessages;
@@ -92,11 +87,9 @@ public class UserEntity implements Serializable {
     private List<MessageEntity> receivedMessages;
 
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "visitor" /*, orphanRemoval = true*/)
     private List<VisitEntity> itemsVisited;
-
 
 
 

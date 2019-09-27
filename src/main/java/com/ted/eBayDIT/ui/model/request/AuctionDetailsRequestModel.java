@@ -11,8 +11,6 @@ import java.util.List;
 
 public class AuctionDetailsRequestModel {
 
-//    private Long itemID;
-//    private String currently;
 
     private String name;
     private BigDecimal buyPrice;
@@ -23,11 +21,10 @@ public class AuctionDetailsRequestModel {
     private String description;
 
     private List<CategoryDto> categories;
-//    private SellerDto seller;
+
     private ItemLocationDto location;
 
     private List<PhotoDto> photos;
-
 
 
     public String getName() {
@@ -63,7 +60,6 @@ public class AuctionDetailsRequestModel {
     }
 
 
-
     public String getEnds() {
         return ends;
     }
@@ -88,13 +84,6 @@ public class AuctionDetailsRequestModel {
         this.categories = categories;
     }
 
-//    public SellerDto getSeller() {
-//        return seller;
-//    }
-//
-//    public void setSeller(SellerDto seller) {
-//        this.seller = seller;
-//    }
 
     public ItemLocationDto getLocation() {
         return location;

@@ -21,8 +21,7 @@ public class CategoryEntity implements Serializable {
     private String name;
 
 
-    @ManyToMany(/*cascade = CascadeType.ALL*/)/*(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE})*/
+    @ManyToMany
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "category_id"), //refers to "category_id" column in "item_category" join  table
@@ -33,7 +32,7 @@ public class CategoryEntity implements Serializable {
     @Column(name="parent_id")
     private int parentId;
 
-    @Column(name="level"/*todo ,nullable=false*/)
+    @Column(name="level")
     private int level;
 
     public int getParentId() {

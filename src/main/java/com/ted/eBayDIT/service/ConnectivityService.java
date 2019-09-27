@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ConnectivityService {
 
-
     boolean exist(UserEntity winnerEntity, UserEntity sellerEntity);
 
     void createConnection(UserEntity winnerEntity, UserEntity sellerEntity);

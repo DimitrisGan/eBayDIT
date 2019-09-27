@@ -15,15 +15,12 @@ public interface UserService extends UserDetailsService {
     UserDto getUser(String username);
     UserDto getUserByUserId(String userId);
     boolean userExists(String username);
-    String getRole(String username);
 
     void deleteUser(String userId);
-//    UserDto getUser(String email);
-//    UserDto updateUser(String userId, UserDto user);
+
     List<UserDto> getUsers(); //returns list of users
 
     List<UserDto> getAllUsersFiltered(int pageNo, int pageSize, String sortBy, String sortType);
-
 
     List<UserDto> getAllNotVerifiedUsers();
 

@@ -7,11 +7,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//todo edw tha to peiraksw otan thelw na xwsw XML leitourgikothta
 public class UserDetailsRequestModel {
 
 
-    @NotNull(message = "username cannot be missing")
+    @NotNull(message = "Username cannot be missing")
     private String username;
 
     @Size(min=8, max=16, message=" Password must be equal to or greater than 8 characters and less than 16 characters")
@@ -26,12 +25,16 @@ public class UserDetailsRequestModel {
     @Email
     private String email;
 
-
     private String phoneNumber;
+
+    @NotNull(message = "Country cannot be missing")
     private String country;
+
     private String location;
+
     private String afm;
 
+    @NotNull(message = "Location cannot be missing")
     private String address;
 
     private RoleDto role;
@@ -43,8 +46,6 @@ public class UserDetailsRequestModel {
     public void setRole(RoleDto role) {
         this.role = role;
     }
-
-
 
 
     public String getUsername() {

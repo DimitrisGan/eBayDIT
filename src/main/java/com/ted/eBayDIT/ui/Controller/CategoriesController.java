@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-public class CategoriesController { //todo needs testing
+public class CategoriesController {
 
 
     @Autowired
@@ -74,7 +74,6 @@ public class CategoriesController { //todo needs testing
         return new ResponseEntity<>(returnCategList, HttpStatus.OK);
 
     }
-
 
     @GetMapping("/categories/all")
     public ResponseEntity<Object> getAllCategories(){

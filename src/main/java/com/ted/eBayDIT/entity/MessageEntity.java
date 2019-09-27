@@ -38,10 +38,8 @@ public class MessageEntity implements Serializable {
     @Column(name="is_deleted_by_receiver")
     private boolean deletedByReceiver;
 
-
     @Column(name="is_read")
     private boolean read;
-
 
 
     public Long getId() {
@@ -91,7 +89,6 @@ public class MessageEntity implements Serializable {
     public void setRead(boolean read) {
         this.read = read;
     }
-
 
     public boolean isDeletedBySender() {
         return deletedBySender;

@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /*
      *   Configure users (in memory, database, ldap, etc)
      * */
-    //  Create 2 users for demo
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -74,10 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-//
-//    /*Configure security of web paths in application, login, logout etc
-//     */
-//    // Secure the endpoins with HTTP Basic authentication
+
+    /*Configure security of web paths in application, login, logout etc*/
+    // Secure the endpoins with HTTP Basic authentication
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -110,33 +109,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy((SessionCreationPolicy.STATELESS));
 
 
-
-//                .antMatchers("/").hasAnyRole("ADMIN", "MEMBER", "VISITOR")
-//                .antMatchers("/members/**").hasRole("MEMBER")
-//                .antMatchers("/systems/**").hasRole("ADMIN")
-//                .and()
-//
-//                .formLogin()
-////                .loginPage("/login")
-////                .loginProcessingUrl("/authenticateTheUser")
-//                .successHandler(mySuccessHandler)
-//                .failureHandler(myFailureHandler)
-////                .permitAll()
-//                .and()
-//
-//                .logout().permitAll();
-
-
-
-
-//                .antMatchers(HttpMethod.GET, "/books/**").hasRole("USER")
-//                .antMatchers(HttpMethod.POST, "/books").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/books/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/books/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
-//                .and()
-//                .csrf().disable()
-//                .formLogin().disable();
     }
 
 

@@ -25,7 +25,6 @@ public class UserDto implements Serializable {
     private String email;
     private String encryptedPassword;
 
-
     private String phoneNumber;
     private String country;
     private String location;
@@ -111,7 +110,6 @@ public class UserDto implements Serializable {
         this.encryptedPassword = encryptedPassword;
     }
 
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -143,7 +141,6 @@ public class UserDto implements Serializable {
     public void setAfm(String afm) {
         this.afm = afm;
     }
-
 
     public boolean isVerified() {
         return verified;

@@ -11,7 +11,7 @@ public class BidDto implements Serializable {
     private BigDecimal amount;
 
     private BidderDto bidder;
-    private ItemDto itemDetails; //TODO maybe not needed
+    private ItemDto itemDetails;
 
 
     public int getId() {

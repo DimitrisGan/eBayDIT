@@ -11,7 +11,6 @@ import java.util.List;
 
 public class AuctionsResponseModel {
 
-    //todo needs to add bidder !!!!
     private Long itemID;
     private String name;
     private BigDecimal buyPrice;
@@ -33,15 +32,11 @@ public class AuctionsResponseModel {
     private List <BidResponseModel> bids;
     private BigDecimal currently;
 
-
-
     private List<PhotoResponseModel> photos;
 
     private PhotoResponseModel defaultPhoto;
 
-
-    public AuctionsResponseModel() {
-    }
+    public AuctionsResponseModel() {}
 
     public Long getItemID() {
         return itemID;
@@ -188,13 +183,4 @@ public class AuctionsResponseModel {
     }
 
 
-    //    private List<ItemDto> auctions;
-//
-//    public List<ItemDto> getAuctions() {
-//        return auctions;
-//    }
-//
-//    public void setAuctions(List<ItemDto> auctions) {
-//        this.auctions = auctions;
-//    }
 }

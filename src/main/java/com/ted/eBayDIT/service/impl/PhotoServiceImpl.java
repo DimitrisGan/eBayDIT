@@ -32,7 +32,6 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
 
-
     @Value("${server.address}")
     private String serverAddress;
 
@@ -40,25 +39,12 @@ public class PhotoServiceImpl implements PhotoService {
     private String serverPort;
 
 
-//    @LocalServerPort
-//    private int port;
-
-    //initialize db with 2 admins
+    //initialize db with default photos
     @PostConstruct
     private void initPhotosInDB()  {
 
-
-
         Path currentPath = Paths.get(".");
         Path absolutePath = currentPath.toAbsolutePath();
-
-
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/downloadFile/")
-//                .path(DefaultPhotosConstants.ITEM_PHOTO)
-//                .toUriString();
-
-
 
         if (photoRepository.findByFileName(DefaultPhotosConstants.ITEM_PHOTO) == null) {
             PhotoEntity itemPhoto = new PhotoEntity(); //set filename
@@ -66,31 +52,6 @@ public class PhotoServiceImpl implements PhotoService {
             UriComponents uriComponents = UriComponentsBuilder.newInstance()
                     .scheme("https").host(serverAddress).port(Integer.parseInt(serverPort)).path("/api/downloadFile/").path(DefaultPhotosConstants.ITEM_PHOTO).build();
 
-
-
-//            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                    .path("/downloadFile/")
-//                    .path(DefaultPhotosConstants.ITEM_PHOTO)
-//                    .toUriString();
-
-
-//            FileInputStream input = null;
-//            try {
-//                input = new FileInputStream(DefaultPhotosConstants.ITEM_PHOTO);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//
-//            }
-//            try {
-//                MultipartFile multipartFile = new MockMultipartFile("fileItem",
-//                        DefaultPhotosConstants.ITEM_PHOTO, "image/png", IOUtils.toByteArray(input));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
-
-
-            // TODO AUTO NA XWNW MESA STH VASH http://localhost:8080/api/downloadFile/item_default.jpg
 
             itemPhoto.setFileDownloadUri(uriComponents.toUriString());
 
@@ -116,7 +77,6 @@ public class PhotoServiceImpl implements PhotoService {
         }
 
     }
-
 
     @Override
     public void savePhotoImage(PhotoDto photoDtO, MultipartFile imageFile) throws Exception {
@@ -146,16 +106,13 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             Path filePath = Paths.get("." + "/src/main/resources/static/photos/" ).resolve(fileName).normalize();
 
-//            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
             } else {
-//                throw new MyFileNotFoundException("File not found " + fileName);
                 throw new RuntimeException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-//            throw new MyFileNotFoundException("File not found " + fileName, ex);
             throw new RuntimeException("File not found " + fileName, ex);
         }
     }
@@ -165,7 +122,6 @@ public class PhotoServiceImpl implements PhotoService {
 
         PhotoEntity photoEntity = this.photoRepository.findByFileName(DefaultPhotosConstants.ITEM_PHOTO);
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
 
         return modelMapper.map(photoEntity,PhotoDto.class);
     }
@@ -185,8 +141,6 @@ public class PhotoServiceImpl implements PhotoService {
                 .path("/downloadFile/")
                 .path(imageFile.getOriginalFilename())
                 .toUriString();
-
-
 
         PhotoDto photoDto = new PhotoDto();
         photoDto.setFileName(imageFile.getOriginalFilename());
@@ -221,57 +175,7 @@ public class PhotoServiceImpl implements PhotoService {
         return modelMapper.map(defaultPhotoDto, PhotoResponseModel.class);
     }
 
-    //=================================================================================================
-    //=================================================================================================
 
-
-//    private final Path fileStorageLocation;
-//
-//    @Autowired
-//    public FileStorageService(FileStorageProperties fileStorageProperties) {
-//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-//                .toAbsolutePath().normalize();
-//
-//        try {
-//            Files.createDirectories(this.fileStorageLocation);
-//        } catch (Exception ex) {
-//            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-//        }
-//    }
-//
-//    public String storeFile(MultipartFile file) {
-//        // Normalize file name
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//
-//        try {
-//            // Check if the file's name contains invalid characters
-//            if(fileName.contains("..")) {
-//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-//            }
-//
-//            // Copy file to the target location (Replacing existing file with the same name)
-//            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-//
-//            return fileName;
-//        } catch (IOException ex) {
-//            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-//        }
-//    }
-//
-//    public Resource loadFileAsResource(String fileName) {
-//        try {
-//            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-//            Resource resource = new UrlResource(filePath.toUri());
-//            if(resource.exists()) {
-//                return resource;
-//            } else {
-//                throw new MyFileNotFoundException("File not found " + fileName);
-//            }
-//        } catch (MalformedURLException ex) {
-//            throw new MyFileNotFoundException("File not found " + fileName, ex);
-//        }
-//    }
 
 
 }

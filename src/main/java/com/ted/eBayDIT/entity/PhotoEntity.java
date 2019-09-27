@@ -27,12 +27,9 @@ public class PhotoEntity implements Serializable {
     @Column(name="filename")
     private String fileName;
 
-
     @ManyToOne
     @JoinColumn(name="item_id")
     private ItemEntity item;
-
-
 
 
     public int getPhotoId() {

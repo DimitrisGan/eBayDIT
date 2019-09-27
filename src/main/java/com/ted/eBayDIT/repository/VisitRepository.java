@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitRepository extends JpaRepository<VisitEntity,Integer> {
 
-    VisitEntity findByVisitorAndAndItem(UserEntity visitor, ItemEntity item);
+    VisitEntity findByVisitorAndItem(UserEntity visitor, ItemEntity item);
 
 }

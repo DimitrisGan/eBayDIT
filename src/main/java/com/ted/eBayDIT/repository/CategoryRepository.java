@@ -14,9 +14,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Intege
 
     CategoryEntity findByNameAndParentId(String name,int parentId);
 
-
     CategoryEntity findByName(String name);
-
 
     //example1:    @Query("SELECT u FROM User u WHERE u.status = 1")
     //example2:    @Query(value = "select c from category c where c.parentId = -1")
@@ -26,8 +24,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Intege
     List<CategoryEntity> findRootCategories();
 
     List<CategoryEntity> findByLevel(int level);
-
-
 
     @Query(
             value = "SELECT * FROM category c WHERE c.parent_id = :parentId",

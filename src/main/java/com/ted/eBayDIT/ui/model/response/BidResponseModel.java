@@ -10,7 +10,6 @@ public class BidResponseModel {
     private BidderResponseModel bidder;
 
 
-
     public int getId() {
         return id;
     }

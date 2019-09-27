@@ -27,12 +27,6 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
 
-    //when http request is made and this filter is triggered then this methos is called
-
-    //comments for me : otan kapoios stelnei users/{userId}
-    //prepei na kserw oti autos einai o xrhsths pou exei to JWT
-    //opote prepei na to diastaurwnw kai na mhn afhnw opoiondhpote na kanei PUT etc.
-    //an gnwrizei to userId kai sunepws tou endpoint tou url
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -83,7 +77,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             authorities.add(new SimpleGrantedAuthority(role));
 
             if (user!=null){
-                /*get/return the user!*/
+                /* get/return the user! */
                 return new UsernamePasswordAuthenticationToken(user,null,authorities);
 
             }
@@ -94,19 +88,3 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
 }
-    // parse the token.
-//    Long userId = Long.parseLong(Jwts.parser()
-//            .setSigningKey(SECRET)
-//            .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-//            .getBody()
-//            .getSubject());
-//    UserEntity currUser = userRepo.findById(userId).orElse(null);
-//    String authority = (String) Jwts.parser()
-//            .setSigningKey(SECRET)
-//            .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-//            .getBody().get("auth");
-//    Set<GrantedAuthority> authorities = new HashSet<>();
-//			  authorities.add(new SimpleGrantedAuthority(authority));
-//                      return currUser != null ?
-//                      new UsernamePasswordAuthenticationToken(currUser.getId(), null, authorities) :
-//                      null;

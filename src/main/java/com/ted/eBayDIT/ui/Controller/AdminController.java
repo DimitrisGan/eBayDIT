@@ -20,15 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//todo I need to query all users that verified=false
 @RestController
 @RequestMapping("admin")
 public class AdminController {
-
-
-    //todo getUsers that are not verified
-    //todo getDetails of user
-    //todo post /{id} user to verify him
 
     @Autowired
     UserService userService;
@@ -36,13 +30,6 @@ public class AdminController {
     @Autowired
     ItemService itemService;
 
-
-
-//    @RequestMapping(value="/findByID", method=RequestMethod.GET, produces=MediaType.APPLICATION_XML_VALUE)
-//    public @ResponseBody MyXmlAnnotatedObject findById(@Param("id") BigInteger id) {
-//
-//        return someRepository.findById(id);
-//    }
 
     @GetMapping(path = "/download_auctions", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> downloadAuction(){
@@ -63,15 +50,12 @@ public class AdminController {
     }
 
 
-    @GetMapping("/not_verified_users") //ex : /userlist
-    public ResponseEntity<Object> getNotVerifiedUsersList(/*@RequestParam(value = "page",defaultValue = "0") int page,
-                                                          @RequestParam(value = "limit",defaultValue = "2") int limit,
-                                                          @RequestParam(value = "orderBy",defaultValue = "username") int sortBy*/) {
+    @GetMapping("/not_verified_users")
+    public ResponseEntity<Object> getNotVerifiedUsersList() {
 
         List<UserDetailsResponseModel> returnUsersList = new ArrayList<>();
 
         List<UserDto> allNotVerifiedUsersList = userService.getAllNotVerifiedUsers();
-
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -86,7 +70,7 @@ public class AdminController {
 
     }
 
-    @GetMapping(path ="/users") //ex : /allUsers
+    @GetMapping(path ="/users")
     public ResponseEntity<Object> getUsers(@RequestParam(value = "pageNo",defaultValue = "0") int pageNo,
                                            @RequestParam(value = "pageSize",defaultValue = "5") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "username") String sortBy,
@@ -113,7 +97,6 @@ public class AdminController {
 
     }
 
-    //verify all the users
     @PutMapping(path ="/verify") //verify all users!
     public ResponseEntity<Object> verifyAllUsers() {
 
@@ -151,6 +134,4 @@ public class AdminController {
     }
 
 
-
-    //todo exportInXML()
 }

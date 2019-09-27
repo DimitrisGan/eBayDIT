@@ -73,7 +73,6 @@ public class RecommendServiceImpl implements RecommendService {
 
 
 
-
     private void init_userVectorsHT(List<ItemEntity> items){
 
         int sizeOfVectors = items.size(); //aka number of auctions
@@ -138,7 +137,7 @@ public class RecommendServiceImpl implements RecommendService {
                     usernamesBucket = new ArrayList<>();
 
                 usernamesBucket.add(key);
-                this.listOfMaps.get(listIndex).put(indexInLSH,usernamesBucket); //maybe we can do it also with replace()
+                this.listOfMaps.get(listIndex).put(indexInLSH,usernamesBucket); //we can do it also with replace()
 
                 listIndex++;
             }
@@ -234,6 +233,7 @@ public class RecommendServiceImpl implements RecommendService {
             userVector.set(itemIndex,score);
 
         }
+
         return userVector;
 
     }
@@ -340,8 +340,8 @@ public class RecommendServiceImpl implements RecommendService {
         //==================================================================================
         List<ItemEntity> currentItems = this.itemRepo.findByEventStartedTrue();
 
-         /*if new items instance size  is different from current or the last auction is diff then recreate the lsh table*/
-         /*if new items instance last item/auction is different from current item/auction recreate the lsh table*/
+         /*if new items instance size  is different from current or the last auction is diff then recreate the lsh table
+         && if new items instance last item/auction is different from current item/auction recreate the lsh table*/
          if (( this.items.size() != currentItems.size() ) || (!this.items.get(this.items.size() - 1).getItemID().equals(currentItems.get(currentItems.size() - 1).getItemID())) )
             recreateMaps(); //recreate hash maps and hash to lsh
 
@@ -376,8 +376,6 @@ public class RecommendServiceImpl implements RecommendService {
         ArrayList<Double> sumOfMostRelevantUserVectors = getSumVectorOfTheNmostSimilarUserVectors(pairList); //init userVector to query with zeros
 
 
-//        sumOfMostRelevantUserVectors
-
         ArrayList<Pair2> pairList2 = getSortedAuctionsScoreTupleList(sumOfMostRelevantUserVectors);
 
 
@@ -406,15 +404,6 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public List<Long> getRecommendedAuctionIdsForGuest() {
        return this.visitService.getMostVisitedAuctions(recommendAuctionsNum);
-    }
-
-
-    @Override
-    public void createLsh() {
-
-        System.out.println("TESTING");
-
-
     }
 
 

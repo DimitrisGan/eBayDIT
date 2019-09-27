@@ -13,8 +13,6 @@ public class SellerDto implements Serializable {
     private List<ItemDto> items;
 
 
-
-
     public Integer getId() {
         return id;
     }

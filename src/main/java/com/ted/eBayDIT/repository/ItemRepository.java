@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface ItemRepository  extends JpaRepository<ItemEntity, Long> {
 
-
     ItemEntity findByItemID(Long id);
 
     List<ItemEntity> findByEventStartedTrueAndEventFinishedFalse();

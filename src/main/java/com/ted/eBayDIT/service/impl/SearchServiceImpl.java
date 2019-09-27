@@ -43,9 +43,7 @@ public class SearchServiceImpl implements SearchService {
         List<ItemDto> returnList = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-
         for (ItemEntity itemEntity : auctions_list) {
-
 
             if (itemService.isAuctionFinishedByTime(itemEntity.getItemID()))
                 continue;
@@ -200,8 +198,6 @@ public class SearchServiceImpl implements SearchService {
     public List<Long> filterAuctions(List<String> categoryNameList, String description, String locationText, BigDecimal lowestPrice, BigDecimal highestPrice) {
         List<Long> returnValue = new ArrayList<>();
 
-//        List<ItemEntity> items = itemRepo.findAll();
-//        List<ItemEntity> items = itemRepo.findByEventStartedTrueAndEventFinishedFalse();
         List<ItemEntity> items = itemRepo.findByEventStartedTrue();
 
         List<ItemEntity> itemsAfterCategoriesFilter = doCategoriesFilter(categoryNameList, items); //filter No1

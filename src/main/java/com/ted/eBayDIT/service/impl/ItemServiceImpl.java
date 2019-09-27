@@ -34,9 +34,6 @@ public class ItemServiceImpl implements ItemService {
     private UserRepository userRepo;
 
     @Autowired
-    private Utils utils;
-
-    @Autowired
     private CategoryRepository categRepo;
 
     @Autowired
@@ -48,10 +45,8 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     BidderDetailsRepository bidderRepo;
 
-
     @Autowired
     ItemLocationRepository itemLocationRepo;
-
 
     @Autowired
     PhotoService photoService;
@@ -94,8 +89,6 @@ public class ItemServiceImpl implements ItemService {
         String endsDateString = this.itemRepo.findByItemID(id).getEnds();
         String currentDateString = Utils.getCurrentDateToStringDataType();
         Date currDate = Utils.convertStringDateToDateDataType(currentDateString);
-
-//        Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);  //this was before the Date format from front
         Date endsDate = Utils.convertStringDateToDateDataType(endsDateString);
         boolean isFinishedByTime = currDate.after(endsDate);
         if (isFinishedByTime) {
@@ -134,14 +127,12 @@ public class ItemServiceImpl implements ItemService {
 
         if (item2save.getBuyPrice().equals(new BigDecimal(0))) throw new RuntimeException("There is no Buyout price set");
 
-
         String winnerUserId = securityService.getCurrentUser().getUserId();
         UserEntity winnerEntity = this.userRepo.findByUserId(winnerUserId);
 
         UserEntity sellerEntity = item2save.getSeller().getUser();
 
         if (winnerEntity.getId() == item2save.getSeller().getUser().getId()) throw new RuntimeException("Seller cannot buyoyt in his own auction!");
-
 
         item2save.setWinnerUserId(winnerUserId);//set winnerId to the winner userId
         item2save.setCurrently(item2save.getBuyPrice());
@@ -157,11 +148,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-//    private void finishAuction(Long id) {
-//        if( ! this.itemRepo.findByItemID(id).isEventFinished() )
-//            this.itemRepo.findByItemID(id).setEventFinished(true);
-//    }
-
     private boolean categoriesExist(List<CategoryEntity> categories){
 
         int i=0;
@@ -170,17 +156,13 @@ public class ItemServiceImpl implements ItemService {
         for (CategoryEntity category : categories) {
             if (i==0){
                 categ = categRepo.findByName(category.getName());
-
                 if (categ == null)
                     return false;
-
             }
             else {
-
                 categ = categRepo.findByNameAndParentId(category.getName() , prevCategId);
                 if (categ == null)
                     return false;
-
             }
             i++;
             prevCategId = categ.getId();
@@ -208,22 +190,17 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemEntity saveAuction(ItemEntity item) throws ParseException {
         /*set default values for item*/
-//        long itemID = generateNewItemID();  item.setItemID(itemID);
-
         item.setNumberOfBids(0);
         item.setStarted("Not started yet!");
         item.setCurrently(item.getFirstBid());
         item.setEventStarted(false);
         item.setEventFinished(false);
-//        item.setEnds(Utils.convertFrontDateTypeToBack(item.getEnds())); //this was before the Date format from front
         item.setEnds(item.getEnds());
 
         connectCategoriesToNewItem(item); //join item_categories table
         ItemLocationEntity location = this.itemLocationRepo.save(item.getLocation());   item.setLocation(location); //add item location
-        //----------------------
         UserEntity currUser =  userRepo.findByUserId(this.securityService.getCurrentUser().getUserId());//modelMapper.map(this.securityService.getCurrentUser() , UserEntity.class);
         SellerDetailsEntity currSellerUser = this.sellerRepo.findById(currUser.getId());
-        //----------------------
         item.setSeller(currSellerUser);
 
         return itemRepo.save(item);
@@ -253,9 +230,6 @@ public class ItemServiceImpl implements ItemService {
 
         return modelMapper.map(storedItemEntity, ItemDto.class);
     }
-
-
-
 
     @Override
     public void startAuction(Long id) {
@@ -337,11 +311,9 @@ public class ItemServiceImpl implements ItemService {
 
         connectCategoriesToNewItem(itemEntity); //join item_categories table
 
-
         itemRepo.save(itemEntity);
 
     }
-
 
 
     private BidEntity createBid (BigDecimal amount , ItemEntity itemDetails, BidderDetailsEntity bidder){
@@ -354,27 +326,22 @@ public class ItemServiceImpl implements ItemService {
 
         return  returnValue;
     }
+
+
     @Override
     public void addBid(Long auctionId, BigDecimal bidAmount, int bidderId) throws ParseException { //add bid to started auction
 
         ItemEntity item2save = this.itemRepo.findByItemID(auctionId); //get auction details
 
-
         if (isAuctionFinishedByTime(item2save.getItemID())) throw new RuntimeException("Cannot bid in a finished auction!");
-
 
         BidderDetailsEntity bidder = this.bidderRepo.findById(bidderId);
         if (bidder.getId() == item2save.getSeller().getId()) throw new RuntimeException("Seller cannot bid in his own auction!");
 
-
-        //des edw gia an einai arxiko bid tote oxi !!!!
         int res = item2save.getCurrently().compareTo(bidAmount);
         if (item2save.getBids().size()==0 && res >0 ) throw new RuntimeException("First Bid cannot be less than first bid price!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
 
-
-
         if (item2save.getBids().size()!=0 && res >=0 ) throw new RuntimeException("Bid cannot be less than current best offer!"); //Source: https://www.tutorialspoint.com/java/math/bigdecimal_compareto.htm
-
 
         item2save.setCurrently(bidAmount);
         BidEntity bidEntity2save = createBid(bidAmount,item2save,bidder);
@@ -382,14 +349,9 @@ public class ItemServiceImpl implements ItemService {
         item2save.getBids().add(bidEntity2save);
         item2save.setNumberOfBids(item2save.getNumberOfBids()+1); // numOfBids++;
 
-
         this.itemRepo.save(item2save);
 
     }
-
-
-
-
 
     @Override
     public void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception {
@@ -404,7 +366,6 @@ public class ItemServiceImpl implements ItemService {
         ItemEntity itemEntity = itemRepo.findByItemID(id);
 
         if (itemEntity == null) throw new RuntimeException("Item-Auction doesn't exist");
-
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -425,7 +386,6 @@ public class ItemServiceImpl implements ItemService {
         return returnList;
     }
 
-
     @Override
     public List<ItemDto> getAllUserAuctions() throws ParseException {
         List<ItemDto> returnList = new ArrayList<>();
@@ -436,7 +396,7 @@ public class ItemServiceImpl implements ItemService {
         List<ItemEntity> returnEntitiesList = seller.getItems();
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        /*cinvert items/auctions List from Entity to Dto datatype*/
+        /*convert items/auctions List from Entity to Dto datatype*/
         for (ItemEntity itemEntity : returnEntitiesList) {
 
             boolean uselessVar = isAuctionFinishedByTime(itemEntity.getItemID());
@@ -447,18 +407,6 @@ public class ItemServiceImpl implements ItemService {
 
         return returnList;
     }
-
-
-
-
-//    @Override
-//    public List<ItemDto> getAllUsersActiveAuctions()
-//    @Override
-//    public List<ItemDto> getAllUsersFinishedAuctions()
-//    @Override
-//    public List<ItemDto> getAllUsersNotStartedAuctions()
-
-
 
 
 

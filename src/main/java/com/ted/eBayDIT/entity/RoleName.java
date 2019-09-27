@@ -5,9 +5,7 @@ public enum RoleName {
     ADMIN("ADMIN"),
     USER("USER");
 
-
     private String RoleName;
-
 
     RoleName(String roleName) {
         RoleName = roleName;

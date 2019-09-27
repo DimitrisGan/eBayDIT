@@ -8,10 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BidRepository extends JpaRepository<BidEntity, Integer>  {
 
-//    BidEntity findAllBy
     BidEntity findById(int id);
-
-//    BidEntity findByItemDetails(int id);
-
 
 }

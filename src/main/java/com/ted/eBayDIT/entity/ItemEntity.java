@@ -16,22 +16,22 @@ public class ItemEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="item_id"/*,nullable = false*/,unique = true)
+    @Column(name="item_id",unique = true)
     private Long itemID;
 
     @Column(name="name" ,nullable=false)
     private String name;
 
-    @Column(name="currently" /*,nullable=false */)
+    @Column(name="currently")
     private BigDecimal currently;
 
-    @Column(name="buy_price" /*,nullable=false */)
+    @Column(name="buy_price")
     private BigDecimal buyPrice;
 
-    @Column(name="first_bid" /*,nullable=false */)
+    @Column(name="first_bid")
     private BigDecimal firstBid;
 
-    @Column(name="number_of_bids" /*,nullable=false */)
+    @Column(name="number_of_bids")
     private Integer numberOfBids;
 
     @Column
@@ -47,8 +47,7 @@ public class ItemEntity implements Serializable {
 
 
     //Do not apply cascading deletes!
-    @ManyToMany(fetch = FetchType.LAZY/*cascade={*//*CascadeType.PERSIST,*//*CascadeType.REFRESH, CascadeType.MERGE,
-            CascadeType.DETACH ,CascadeType.REMOVE}*/)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "item_category",
             joinColumns = @JoinColumn(name = "item_id"), //refers to "item_id" column in "item_category" join  table
@@ -57,17 +56,16 @@ public class ItemEntity implements Serializable {
     private List<CategoryEntity> categories;
 
 
-
     @OneToMany(mappedBy="itemDetails",fetch = FetchType.EAGER, cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
             CascadeType.DETACH})
-    private List<BidEntity> bids ; //todo check if needs new table Bids
+    private List<BidEntity> bids ;
 
     @ManyToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,/*CascadeType.REMOVE,*/ CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name="seller_id")
     private SellerDetailsEntity seller;
 
-    @OneToOne(cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
+    @OneToOne(cascade={CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private ItemLocationEntity location;
@@ -80,17 +78,13 @@ public class ItemEntity implements Serializable {
     @Column
     private String winnerUserId;
 
-
     @OneToMany(mappedBy="item", cascade={/*CascadeType.PERSIST,*/CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<PhotoEntity> photos;
 
-
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-            mappedBy = "item" /*, orphanRemoval = true*/)
+            mappedBy = "item" )
     private List<VisitEntity> itemVisits;
-
 
 
 

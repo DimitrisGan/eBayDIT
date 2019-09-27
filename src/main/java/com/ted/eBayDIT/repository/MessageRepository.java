@@ -15,7 +15,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
     List<MessageEntity> findByReceiverAndReadFalse(UserEntity receiver);
 
-    //todo maybe search by int id only not all the object
     List<MessageEntity> findBySenderAndReceiver(UserEntity sender ,UserEntity receiver );
 
     List<MessageEntity> findByReceiverAndDeletedByReceiverFalse(UserEntity receiver);

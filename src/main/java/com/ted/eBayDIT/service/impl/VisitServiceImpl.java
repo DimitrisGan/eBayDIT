@@ -43,16 +43,15 @@ public class VisitServiceImpl implements VisitService {
         if (itemEntity == null) throw new RuntimeException("Auction doens't exist in [VisitService]!");
 
 
-        VisitEntity visit= this.visitRepo.findByVisitorAndAndItem(userEntity,itemEntity);
+        VisitEntity visit= this.visitRepo.findByVisitorAndItem(userEntity,itemEntity);
 
         if (visit == null) //create new visitEntity
             createNewVisitEntity(userEntity,itemEntity);
         else //counter++
             addVisit(visit);
 
-
-
     }
+
 
     @Override
     public List<Long> getMostVisitedAuctions(int numOfAuction2recommend) {

@@ -15,18 +15,13 @@ public class VisitEntity implements Serializable,Comparable<VisitEntity> {
     @Column(name="id")
     private  int id;
 
-
-    @ManyToOne(cascade= CascadeType.ALL)/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})*/
+    @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity visitor;
 
-
-    @ManyToOne(cascade= CascadeType.ALL)/*(cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})*/
+    @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name = "item_id")
     private ItemEntity item;
-
 
     @Column(name="times")
     private Integer visitsTimes;

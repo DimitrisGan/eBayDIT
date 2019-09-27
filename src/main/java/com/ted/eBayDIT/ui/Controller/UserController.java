@@ -17,15 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-// mou vgazei same origin provlima
-// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:8080/api/register.
-// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
-//
-// opote evala auto, an thes allakse to apla tsekare pws na to vgaloume
-// alla na min exoume tripes sto security
-//@CrossOrigin
-//http://localhost:8080/register [previous /users]
-
 
 @RestController
 @RequestMapping
@@ -58,10 +49,6 @@ public class UserController {
     @PostMapping("register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
-        UserDetailsResponseModel returnValue =new UserDetailsResponseModel();
-
-//        if (userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
-
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
@@ -69,7 +56,6 @@ public class UserController {
 
         return   new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
 
     @PostMapping(path = "/exists")
@@ -97,7 +83,6 @@ public class UserController {
     }
 
 
-
     @PutMapping(path ="users/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails){
 
@@ -108,14 +93,12 @@ public class UserController {
             return new ResponseEntity<>(msg, HttpStatus.FORBIDDEN);
         }
 
-//        UserDetailsResponseModel returnValue =new UserDetailsResponseModel();
-
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id,userDto);
 
-        return new ResponseEntity<>(/*returnValue, */HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path ="users/{id}")

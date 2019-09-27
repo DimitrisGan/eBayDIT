@@ -32,56 +32,11 @@ import java.util.Set;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
-//    @Autowired
-//    SecurityService securityService;
-//
-//    @Autowired
-//    UserService userService;
-//
-
-
-
     private final AuthenticationManager authenticationManager; //it will be used to authenticate user
 
     public AuthenticationFilter(AuthenticationManager authenticationManagerl) {
         this.authenticationManager = authenticationManagerl;
     }
-
-
-
-//    @Override
-//    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
-//            throws AuthenticationException, IOException, ServletException {
-//
-//        AccountCredentials creds = new ObjectMapper()
-//                .readValue(req.getInputStream(), AccountCredentials.class);
-//        UserEntity currUser = userRepo.findByEmail(creds.getEmail());
-//        Set<GrantedAuthority> authorities = new HashSet<>();
-//        if (currUser != null) {
-//            authorities.add(new SimpleGrantedAuthority(currUser.getRole().getName()));
-//        }
-//        return getAuthenticationManager().authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        creds.getEmail(),
-//                        creds.getPassword(),
-//                        authorities
-//                )
-//        );
-//    }
-
-
-//    UserEntity currUser = userRepo.findByEmail(creds.getEmail());
-//    Set<GrantedAuthority> authorities = new HashSet<>();
-//	  if (currUser != null) {
-//        authorities.add(new SimpleGrantedAuthority(currUser.getRole().getName()));
-//    }
-//	  return getAuthenticationManager().authenticate(
-//    			new UsernamePasswordAuthenticationToken(
-//            creds.getEmail(),
-//    				creds.getPassword(),
-//    authorities
-//        		)
-
 
 
     @Override
@@ -105,7 +60,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                     new UsernamePasswordAuthenticationToken(
                             creds.getUsername(),
                             creds.getPassword(),
-                            authorities) //todo edw tha to allaksw
+                            authorities)
             );
 
         } catch (IOException e) {
@@ -115,8 +70,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
     //if user with username and password is succesfully authenticated then succesfulAuthentications is called
-    //Otherwise,
-
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
@@ -130,14 +83,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = userDto.getUserRole();
 
-//        String role = userService.getUser(userName).getUserRole();
-
         Claims claims = Jwts.claims().setSubject(userName);
 
         claims.put("role", new SimpleGrantedAuthority(role).getAuthority());
 
         String token = Jwts.builder()
-//                .setSubject(userName)
                 .setClaims(claims)//
 
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
@@ -145,20 +95,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
 
 
-//        UserService userService = (UserService)SpringApplicationContext.getBean("userServiceImpl");
-//        UserDto userDto = userService.getUser(userName);
-
         //after web token JWT is generated then it will be added to the header
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-
-//        UserDto currUser = new UserDto();
-
-//        String roleName = userService.getUser(userName).getRoleDto().getName();
-
-//        res.getWriter().append("OK!!");
-
-
-//        RoleEntity r = currUser.getCurrentUser().getRole();userName
 
         res.addHeader("UserID", userDto.getUserId());
 

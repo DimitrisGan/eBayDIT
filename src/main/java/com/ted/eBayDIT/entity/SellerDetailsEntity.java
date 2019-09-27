@@ -15,11 +15,9 @@ public class SellerDetailsEntity implements Serializable {
 
     private static final long serialVersionUID = -2570021379769487425L;
 
-//    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     @Column(name="id")
     private int id;
-
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @MapsId
@@ -27,13 +25,12 @@ public class SellerDetailsEntity implements Serializable {
 
     //Do not apply cascading deletes!
     @OneToMany(mappedBy="seller",
-            cascade={/*CascadeType.PERSIST,*/ CascadeType.MERGE,
+            cascade={CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<ItemEntity> items;
 
     @Column
     private int rating;
-
 
     public int getId() {
         return id;

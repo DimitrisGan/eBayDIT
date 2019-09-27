@@ -7,7 +7,6 @@ import java.util.List;
 
 public class CategoriesResponse {
 
-
     private  int id;
     private String name;
     private int parentId;

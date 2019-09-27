@@ -15,11 +15,11 @@ public class ConnectivityEntity implements Serializable {
     private Long id;
 
 
-    @ManyToOne(/*fetch = FetchType.LAZY*/)
+    @ManyToOne
     @JoinColumn(name = "user_1")
     private UserEntity connectedUser1;
 
-    @ManyToOne(/*fetch = FetchType.LAZY*/)
+    @ManyToOne
     @JoinColumn(name = "user_2")
     private UserEntity connectedUser2;
 

@@ -20,20 +20,11 @@ import java.util.List;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-
-    @Autowired
-    private ConnectivityRepository connectivityRepo;
-
-    @Autowired
-    private ConnectivityService connectivityService;
-
     @Autowired
     private MessageRepository messageRepo;
 
-
     @Autowired
     private UserRepository userRepo;
-
 
     @Override
     public List<MessageDto> getAllInboxMessages(String currUserId) {
@@ -70,17 +61,13 @@ public class MessageServiceImpl implements MessageService {
 
         /*find all the records in Connective Table tha refer to currUser from specified other user*/
         List<MessageEntity> messagesInboxList = messageRepo.findBySenderAndReceiver(otherUser,currUser);
-//        todo maybe messagesInboxList.sort by id
 
-        Collections.reverse(messagesInboxList);
+        Collections.reverse(messagesInboxList); /*sort messages by id --> this means by latest msg to oldest*/
 
         for (MessageEntity messageEntity : messagesInboxList) {
             MessageDto messageDto = modelMapper.map(messageEntity, MessageDto.class);
             returnValue.add(messageDto);
-//            messageEntity.setRead(true);
-
         }
-//        this.messageRepo.saveAll(messagesInboxList); //save the messages again but now with flag read = True
 
         return returnValue;
     }
@@ -194,7 +181,6 @@ public class MessageServiceImpl implements MessageService {
 
 
     }
-
 
 
 }

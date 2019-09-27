@@ -44,19 +44,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private SellerDetailsRepository sellerRepo;
-
-    @Autowired
-    private BidderDetailsRepository bidderRepo;
-
 
     private void saveNewSellerRecord(UserEntity user) {
         SellerDetailsEntity seller = new SellerDetailsEntity();
         seller.setRating(5); //set starting rating value to 5
         seller.setUser(user);
         user.setSeller(seller);
-//        sellerRepo.save(seller);
     }
 
     private void saveNewBidderRecord(UserEntity user) {
@@ -64,7 +57,6 @@ public class UserServiceImpl implements UserService {
         bidder.setRating(3); //set starting rating value to 3
         bidder.setUser(user);
         user.setBidder(bidder);
-//        bidderRepo.save(bidder);
     }
 
     //initialize db with 2 admins
@@ -131,18 +123,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDto user) {
 
-
-        //todo check if username already exists in db
         UserEntity storedUserDetails = userRepo.findByUsername(user.getUsername());
         if (storedUserDetails != null) throw new RuntimeException("Record(username) already exists");
 
         //we have to store/save this info to userEntity
         UserEntity userEntity2save = new UserEntity();
 
-//        BeanUtils.copyProperties(user,userEntity2save);
         ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         userEntity2save = modelMapper.map(user, UserEntity.class);
-
 
         userEntity2save.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         String publicUserId = utils.generateUserId(30);
@@ -150,18 +138,13 @@ public class UserServiceImpl implements UserService {
         userEntity2save.setRole(this.roleRepo.findByUserRole(RoleName.USER.name()));
 
         //set verification =false to the newly created user
-        //todo maybe(?) add routine if its admin to me verified instantly
         userEntity2save.setVerified(false);
 
         saveNewSellerRecord(userEntity2save);
         saveNewBidderRecord(userEntity2save);
 
-        storedUserDetails = userRepo.save(userEntity2save);
+        userRepo.save(userEntity2save);
 
-
-        //now we have to return this back to our restcontroller
-//        UserDto returnValue = new UserDto();
-//        BeanUtils.copyProperties(storedUserDetails ,returnValue);
 
     }
 
@@ -198,13 +181,10 @@ public class UserServiceImpl implements UserService {
             userEntity.setAfm(user2update.getAfm());
         }
 
-
         UserEntity updatedUserDetails = userRepo.save(userEntity);
 
-//        BeanUtils.copyProperties(updatedUserDetails,returnValue);
         ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
-
 
         return returnValue;
     }
@@ -263,7 +243,6 @@ public class UserServiceImpl implements UserService {
 
         UserEntity updatedUserDetails = userRepo.save(userEntity);
 
-        //        BeanUtils.copyProperties(updatedUserDetails,returnValue);
         ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(updatedUserDetails, UserDto.class);
 
@@ -308,14 +287,7 @@ public class UserServiceImpl implements UserService {
         return userEntity != null; //if userEntity is null return false
     }
 
-    @Override
-    public String getRole(String username) {
 
-//        this.roleRepo.findByUserRole()
-        return null;
-    }
-
-    //    @Transactional
     @Override
     public void deleteUser(String userId) {
 
@@ -355,7 +327,6 @@ public class UserServiceImpl implements UserService {
 
         ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         returnValue = modelMapper.map(user, UserDto.class);
-        //BeanUtils.copyProperties(userEntity,returnValue);
 
         return returnValue;
     }
@@ -410,7 +381,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserDto> returnList = new ArrayList<>();
 
-        List<UserEntity> notVerifiedUsersList = new ArrayList<>();
+        List<UserEntity> notVerifiedUsersList;
         notVerifiedUsersList = userRepo.findByVerifiedFalse();
 
         ModelMapper modelMapper = new ModelMapper();//modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

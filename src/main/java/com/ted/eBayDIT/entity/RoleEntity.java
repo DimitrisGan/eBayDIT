@@ -5,12 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * {@code} Entity representing a RoleEntity
- * contains an user role
- *
- */
+
 @Entity
 @Table(name = "role")
 public class RoleEntity implements Serializable {
@@ -25,14 +20,10 @@ public class RoleEntity implements Serializable {
     @Column(name = "role_name")
     private String userRole;
 
-
     @OneToMany(mappedBy="role")
     private List<UserEntity> userEntities = new ArrayList<>();
 
-
-    public RoleEntity() {
-    }
-
+    public RoleEntity() {}
 
     public RoleEntity(String userRole) {
         this.userRole = userRole;
@@ -63,5 +54,3 @@ public class RoleEntity implements Serializable {
     }
 }
 
-
-//other fields, constructor, getters/setters omitted for brevity

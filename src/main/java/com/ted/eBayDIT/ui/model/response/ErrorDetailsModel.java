@@ -9,30 +9,30 @@ public class ErrorDetailsModel {
     private String message;
     private String details;
 
-        public ErrorDetailsModel() {}
+    public ErrorDetailsModel() {}
 
-        public ErrorDetailsModel(Date timestamp, String message, String details)
-        {
-            this.message = message;
-            this.timestamp = timestamp;
-            this.details = details;
-        }
+    public ErrorDetailsModel(Date timestamp, String message, String details)
+    {
+        this.message = message;
+        this.timestamp = timestamp;
+        this.details = details;
+    }
 
-        public Date getTimestamp() {
-            return timestamp;
-        }
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-        public void setTimestamp(Date timestamp) {
-            this.timestamp = timestamp;
-        }
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-        public String getMessage() {
-            return message;
-        }
+    public String getMessage() {
+        return message;
+    }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 
     public String getDetails() {

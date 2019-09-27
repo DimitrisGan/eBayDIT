@@ -5,7 +5,6 @@ public class UserChangePasswordRequestModel {
     private String currPassword;
     private String newPassword;
 
-
     public String getCurrPassword() {
         return currPassword;
     }

@@ -35,9 +35,6 @@ public interface ItemService {
 
     void saveImage(MultipartFile imageFile, PhotoDto photoDto) throws Exception;
 
-
-//    void addPhotoInAuction(Long id, MultipartFile imageFile);
-
     ItemDto getItem(Long id);
 
     List<ItemDto> allItems();

@@ -53,12 +53,9 @@ public class AuctionController {
     PhotoService photoService;
 
 
-
     private static final Logger logger = LoggerFactory.getLogger(AuctionController.class);
 
 
-
-//    @RequestMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("auctions/{id}/upload_multiple_photos")
     public List<ResponseEntity<Object>> uploadMultipleFiles(@PathVariable Long id, @RequestParam(name="imageFile", required=false) MultipartFile[] imageFile) {
         return Arrays.stream(imageFile)
@@ -71,7 +68,7 @@ public class AuctionController {
     @PostMapping("auctions/{id}/upload_photo")
     public ResponseEntity<Object> uploadFile(@PathVariable Long id,@RequestParam(name="file", required=false) MultipartFile imageFile) {
 
-        ItemDto itemDto = itemService.getItem(id); //create item-auction
+        ItemDto itemDto = itemService.getItem(id);
 
         if (imageFile != null) {
 
@@ -133,21 +130,6 @@ public class AuctionController {
             e.printStackTrace();
         }
 
-
-//        try {
-////todo            this.itemService.editAuction(id, );
-//
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//
-//        }
-
-
-        //todo findAuctionById(auctionID)
-
-        //todo send back exception if startedEvent == true
-
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
@@ -157,8 +139,6 @@ public class AuctionController {
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = photoService.loadFileAsResource(fileName);
-
-
 
         // Try to determine file's content type
         String contentType = null;
@@ -184,7 +164,7 @@ public class AuctionController {
 
     @PutMapping(path ="/auctions/buyout/{auctionId}") //add new bid for example
 
-    public ResponseEntity<Object> buyItemInAuction(@PathVariable Long auctionId/*,@RequestBody AddBidAuctionRequestModel newBidRequest*/) throws ParseException {
+    public ResponseEntity<Object> buyItemInAuction(@PathVariable Long auctionId) throws ParseException {
 
         UserDto buyerDto = this.securityService.getCurrentUser();
 
@@ -206,12 +186,9 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
-
         //the check for if auction has finished is done inside the itemService.addBid()
         itemService.buyout(auctionId);
-                //addBid(auctionId,newBidRequest.getAmount(),newBidRequest.getBidderId());
 
-        //todo addThebidder that won the item maybe
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
@@ -222,7 +199,6 @@ public class AuctionController {
         String currUserId = this.securityService.getCurrentUser().getUserId();
 
         int bidderId = this.userService.getBidderIdByUserId(currUserId);
-
 
         //check first if item/auction exists!
         if (! itemService.itemExists(id)){
@@ -242,7 +218,6 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
-
         //the check for if auction has finished is done inside the itemService.addBid()
         itemService.addBid(id,newBidRequest.getAmount(),bidderId);
 
@@ -251,10 +226,8 @@ public class AuctionController {
     }
 
 
-
     @PutMapping(path ="/auctions/start/{id}") //add new bid for example
-    public ResponseEntity<Object> startAuction(@PathVariable Long id) throws ParseException {//id : auctionId
-
+    public ResponseEntity<Object> startAuction(@PathVariable Long id) {//id : auctionId
 
         //check first if item/auction exists to start it!
         if (! itemService.itemExists(id)){
@@ -272,15 +245,11 @@ public class AuctionController {
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
-
         itemService.startAuction(id);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
-
-
-
 
 
     @DeleteMapping(path ="/auctions/{id}")
@@ -296,12 +265,6 @@ public class AuctionController {
     }
 
 
-
-//    -------------------- UNDER CONSTRUCTON -----------------------------
-
-    //todo search GET check!!!!!!!!!!!!!!!!!!
-
-    //todo param
     @GetMapping(path ="/auctions")
     public ResponseEntity<Object> getAllUsersAuctions() throws ParseException {
 
@@ -326,11 +289,6 @@ public class AuctionController {
         return new ResponseEntity<>(auctionsRespList,HttpStatus.OK);
 
     }
-
-
-
-
-
 
 
 

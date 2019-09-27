@@ -31,22 +31,6 @@ public class MessageController {
     @Autowired
     private ConnectivityService connectivityService;
 
-    //todo msg
-
-//todo    GET "/messages/notifs" -->check
-//todo    DELETE /messages/{messageId} --> check
-//TODO NA PAIRNEI OLA TA INBOX ++ THELOUME SUBJECT - TITLE  --> check
-//TODO NA PAIRNEI OLA TA SENT  ++ THELOUME SUBJECT - TITLE  --> check
-
-    //todo delete a msg from mesg id -->check
-
-    //todo todo get all sent messages -->check
-
-    //todo change notif policy  --> check
-
-    //todo --notif number for all new msgs --> check
-
-    //todo read msg front will give id of msg and i will mark it as read --> check
 
     @GetMapping(path ="/messages/notifs")
     public ResponseEntity<Object> getNewNotifs() {
@@ -98,7 +82,6 @@ public class MessageController {
     }
 
 
-    //todo needs debug
     @PostMapping(path ="/messages")
     public ResponseEntity<Object> sendMessageTo(@RequestBody MessageRequestInputModel input) {
 
@@ -110,8 +93,6 @@ public class MessageController {
 
     }
 
-
-    //todo get all inbox messages from all users
 
     @GetMapping(path ="/messages/inbox/all")
     public ResponseEntity<Object> getAllInboxMessagesFromAllOtherUsersToCurrentUser() {
@@ -137,7 +118,6 @@ public class MessageController {
 
 
 
-    //todo needs debug
     //gets the inbox messages between current user and user specified by id
     @GetMapping(path ="/messages/inbox/{id}")
     public ResponseEntity<Object> getInboxMessagesFromOtherUserToCurrentUser(@PathVariable String id) {
@@ -181,7 +161,7 @@ public class MessageController {
 
     }
 
-    //todo needs debug
+
     //gets the sent messages between user specified by id and current user
     @GetMapping(path ="/messages/sent/{id}")
     public ResponseEntity<Object> getSentMessagesFromUserToOtherUser(@PathVariable String id) {

@@ -48,7 +48,7 @@ public class ConnectivityServiceImpl implements ConnectivityService {
     @Override
     public List<UserDto> getAllContacts(String currUserId) {
         List<UserDto> returnValue = new ArrayList<>();
-        List<ConnectivityEntity> connectionsList= new ArrayList<>();
+        List<ConnectivityEntity> connectionsList;
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
 

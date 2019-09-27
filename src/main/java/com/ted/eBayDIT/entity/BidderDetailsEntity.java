@@ -18,8 +18,7 @@ public class BidderDetailsEntity implements Serializable {
     @Column(name="id")
     private int id;
 
-//    @JoinColumn(name = "ID")
-    @OneToOne(/*fetch = FetchType.LAZY,*/cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     private UserEntity user;
 
@@ -31,10 +30,6 @@ public class BidderDetailsEntity implements Serializable {
 
     @Column
     private int rating;
-//    @Column
-//    private String country;
-//    @Column
-//    private String location;
 
     public int getId() {
         return id;
@@ -68,19 +63,5 @@ public class BidderDetailsEntity implements Serializable {
         this.rating = rating;
     }
 
-//    public String getCountry() {
-//        return country;
-//    }
-//
-//    public void setCountry(String country) {
-//        this.country = country;
-//    }
-//
-//    public String getLocation() {
-//        return location;
-//    }
-//
-//    public void setLocation(String location) {
-//        this.location = location;
-//    }
+
 }
