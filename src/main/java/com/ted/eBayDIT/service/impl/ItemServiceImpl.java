@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -397,7 +398,10 @@ public class ItemServiceImpl implements ItemService {
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         /*convert items/auctions List from Entity to Dto datatype*/
-        for (ItemEntity itemEntity : returnEntitiesList) {
+        Iterator<ItemEntity> iter = returnEntitiesList.iterator();
+        while (iter.hasNext()) {
+            ItemEntity itemEntity = iter.next();
+//        for (ItemEntity itemEntity : returnEntitiesList) {
 
             boolean uselessVar = isAuctionFinishedByTime(itemEntity.getItemID());
 
