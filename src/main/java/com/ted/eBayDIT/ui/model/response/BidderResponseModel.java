@@ -1,9 +1,13 @@
 package com.ted.eBayDIT.ui.model.response;
 
+import com.ted.eBayDIT.dto.UserDto;
+
 public class BidderResponseModel {
 
     private Integer id;
     private Integer rating;
+
+    private UserDetailsResponseModel user;
 
     public Integer getId() {
         return id;
@@ -21,4 +25,11 @@ public class BidderResponseModel {
         this.rating = rating;
     }
 
+    public UserDetailsResponseModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserDetailsResponseModel user) {
+        this.user = user;
+    }
 }

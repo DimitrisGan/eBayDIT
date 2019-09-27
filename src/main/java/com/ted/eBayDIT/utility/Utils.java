@@ -137,7 +137,7 @@ public class Utils {
         SimpleDateFormat outputFormat = new SimpleDateFormat(pattern, Locale.US);
 
         Date date = inputFormat.parse(srcEnds);
-        
+
         return outputFormat.format(date);
     }
 
