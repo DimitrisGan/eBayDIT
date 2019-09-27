@@ -1,7 +1,5 @@
 package com.ted.eBayDIT.ui.model.response;
 
-import com.ted.eBayDIT.dto.UserDto;
-
 public class BidderResponseModel {
 
     private Integer id;

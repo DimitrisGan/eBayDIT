@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class AuctionController {
 
 
     @PostMapping(path ="/auctions", consumes={"application/json"} )
-    public ResponseEntity<Object> createAuction(@RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel)
+    public ResponseEntity<Object> createAuction(@Valid @RequestBody AuctionDetailsRequestModel auctionDetailsRequestModel)
             throws ParseException {
 
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -114,7 +115,7 @@ public class AuctionController {
 
 
     @PutMapping(path ="/auctions/{id}") //add new bid for example
-    public ResponseEntity<Object> editAuction(@PathVariable Long id,@RequestBody AuctionDetailsRequestModel editAuctionDetails){
+    public ResponseEntity<Object> editAuction(@PathVariable Long id,@Valid @RequestBody AuctionDetailsRequestModel editAuctionDetails){
 
         //check first if item/auction exists!
         if (! itemService.itemExists(id)){

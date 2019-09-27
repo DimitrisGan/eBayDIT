@@ -6,18 +6,26 @@ import com.ted.eBayDIT.dto.ItemLocationDto;
 import com.ted.eBayDIT.dto.PhotoDto;
 import com.ted.eBayDIT.dto.SellerDto;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class AuctionDetailsRequestModel {
 
 
+    @NotNull(message = "Item Name cannot be missing")
     private String name;
+
     private BigDecimal buyPrice;
+
+    @NotNull(message = "FirstBid Price cannot be missing")
     private BigDecimal firstBid;
+
     private String country;
 
+    @NotNull(message = "Ends Date cannot be missing")
     private String ends;
+
     private String description;
 
     private List<CategoryDto> categories;

@@ -28,7 +28,7 @@ public class ItemEntity implements Serializable {
     @Column(name="buy_price")
     private BigDecimal buyPrice;
 
-    @Column(name="first_bid")
+    @Column(name="first_bid",nullable=false)
     private BigDecimal firstBid;
 
     @Column(name="number_of_bids")
@@ -38,7 +38,8 @@ public class ItemEntity implements Serializable {
     private String country;
     @Column
     private String started;
-    @Column
+
+    @Column(nullable=false)
     private String ends;
 
     @Lob //LONGTEXT for description column
