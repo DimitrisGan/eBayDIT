@@ -164,9 +164,26 @@ public class SearchServiceImpl implements SearchService {
         }
         /*from here it means that filter with Categories has been added!*/
 
+        int i=0;
+        int prevCategId=-1; //root category
+
         List<CategoryEntity> CategoriesToSearchIfExistInItem = new ArrayList<>();
+        CategoryEntity categ;
+
         for (String categStr : categoryNameList) {
-            CategoriesToSearchIfExistInItem.add(this.categRepo.findByName(categStr));
+
+            if (i==0) {
+                categ = categRepo.findByName(categStr);
+            }
+            else {
+
+                categ = categRepo.findByNameAndParentId(categStr, prevCategId);
+            }
+
+            CategoriesToSearchIfExistInItem.add(this.categRepo.findByNameAndParentId(categStr,categ.getParentId()));
+
+            prevCategId = categ.getId();
+            i++;
         }
 
         /*add only the items that contain all the categories*/
