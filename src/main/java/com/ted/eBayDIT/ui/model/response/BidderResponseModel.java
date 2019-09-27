@@ -7,7 +7,7 @@ public class BidderResponseModel {
     private Integer id;
     private Integer rating;
 
-    private UserDetailsResponseModel user;
+    private UserShortInfoResponseModel user;
 
     public Integer getId() {
         return id;
@@ -25,11 +25,12 @@ public class BidderResponseModel {
         this.rating = rating;
     }
 
-    public UserDetailsResponseModel getUser() {
+
+    public UserShortInfoResponseModel getUser() {
         return user;
     }
 
-    public void setUser(UserDetailsResponseModel user) {
+    public void setUser(UserShortInfoResponseModel user) {
         this.user = user;
     }
 }
