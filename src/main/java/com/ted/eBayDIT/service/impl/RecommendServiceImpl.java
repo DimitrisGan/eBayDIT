@@ -204,6 +204,9 @@ public class RecommendServiceImpl implements RecommendService {
 
             ItemEntity item =visitEntity.getItem();
 
+            if (! this.items.contains(item)) //if item doesnt exist in current items instance continue
+                continue;
+
             itemIndex = getIndexItem(item);
 
             double score = visitEntity.getVisitsTimes() * visitScoreCoefficient;
