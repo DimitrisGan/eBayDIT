@@ -403,7 +403,7 @@ public class ItemServiceImpl implements ItemService {
             ItemEntity itemEntity = iter.next();
 //        for (ItemEntity itemEntity : returnEntitiesList) {
 
-            boolean uselessVar = isAuctionFinishedByTime(itemEntity.getItemID());
+//            boolean uselessVar = isAuctionFinishedByTime(itemEntity.getItemID());
 
             ItemDto itemDto =  modelMapper.map(itemEntity, ItemDto.class);
             returnList.add(itemDto);
