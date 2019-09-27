@@ -1,7 +1,6 @@
 package com.ted.eBayDIT.service.impl;
 
 import com.ted.eBayDIT.dto.MessageDto;
-import com.ted.eBayDIT.dto.UserDto;
 import com.ted.eBayDIT.entity.MessageEntity;
 import com.ted.eBayDIT.entity.UserEntity;
 import com.ted.eBayDIT.repository.ConnectivityRepository;
@@ -44,7 +43,7 @@ public class MessageServiceImpl implements MessageService {
 
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
         /*find all the records in Connective Table tha refer to currUser*/
-        List<MessageEntity> messagesInboxList = messageRepo.findByReceiver(currUser);
+        List<MessageEntity> messagesInboxList = messageRepo.findByReceiverAndDeletedByReceiverFalse(currUser);
 
         Collections.reverse(messagesInboxList);
         
@@ -94,7 +93,7 @@ public class MessageServiceImpl implements MessageService {
         ModelMapper modelMapper = new ModelMapper();modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity currUser = this.userRepo.findByUserId(currUserId);
 
-        List<MessageEntity> messagesSentList = messageRepo.findBySender(currUser); //find all the records in Connective Table tha refer to currUser
+        List<MessageEntity> messagesSentList = messageRepo.findBySenderAndDeletedBySenderFalse(currUser); //find all the records in Connective Table tha refer to currUser
 
         Collections.reverse(messagesSentList);
 
@@ -109,12 +108,25 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void deleteMessage(long id) {
+    public void deleteMessage(long id, String userId) {
         MessageEntity msg = this.messageRepo.findById(id);
+        UserEntity currUser = this.userRepo.findByUserId(userId);
 
         if (msg == null) throw new RuntimeException("Can't delete message!Cause message with such id doesn't exist! "); //check if is ended
 
-        messageRepo.delete(msg);
+        if (msg.getSender() == currUser){
+            msg.setDeletedBySender(true);
+            messageRepo.save(msg);
+        }
+
+        if (msg.getReceiver() == currUser){
+            msg.setDeletedByReceiver(true);
+            messageRepo.save(msg);
+        }
+
+        if (msg.isDeletedByReceiver() && msg.isDeletedBySender()) //if is deletes from both users then delete the message from the db
+            messageRepo.delete(msg);
+
     }
 
     @Override
@@ -174,6 +186,9 @@ public class MessageServiceImpl implements MessageService {
         msgEntity.setMessage(message);
         msgEntity.setSubject(subject);
         msgEntity.setRead(false);
+
+        msgEntity.setDeletedByReceiver(false);
+        msgEntity.setDeletedBySender(false);
 
         this.messageRepo.save(msgEntity);
 

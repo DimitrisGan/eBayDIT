@@ -79,7 +79,9 @@ public class MessageController {
     @DeleteMapping(path ="/messages/{id}")
     public ResponseEntity<Object> deleteMessage(@PathVariable Long id) {
 
-        this.messageService.deleteMessage(id);
+        String currUserId = securityService.getCurrentUser().getUserId();
+
+        this.messageService.deleteMessage(id,currUserId );
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

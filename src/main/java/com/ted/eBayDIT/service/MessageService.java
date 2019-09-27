@@ -2,7 +2,6 @@ package com.ted.eBayDIT.service;
 
 
 import com.ted.eBayDIT.dto.MessageDto;
-import com.ted.eBayDIT.dto.UserDto;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface MessageService {
 
     List<MessageDto> getAllSentMessagesFromCurrentUserToAllOtherUsers(String currUserId);
 
-    void deleteMessage(long id);
+    void deleteMessage(long id, String userId);
 
     void markMessageAsRead(long id);
 

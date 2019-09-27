@@ -32,10 +32,16 @@ public class MessageEntity implements Serializable {
     @JoinColumn(name = "receiver_id"/*,referencedColumnName = "id"*/)
     private UserEntity receiver;
 
+    @Column(name="is_deleted_by_sender")
+    private boolean deletedBySender;
+
+    @Column(name="is_deleted_by_receiver")
+    private boolean deletedByReceiver;
 
 
     @Column(name="is_read")
     private boolean read;
+
 
 
     public Long getId() {
@@ -87,7 +93,21 @@ public class MessageEntity implements Serializable {
     }
 
 
+    public boolean isDeletedBySender() {
+        return deletedBySender;
+    }
 
+    public void setDeletedBySender(boolean deletedBySender) {
+        this.deletedBySender = deletedBySender;
+    }
+
+    public boolean isDeletedByReceiver() {
+        return deletedByReceiver;
+    }
+
+    public void setDeletedByReceiver(boolean deletedByReceiver) {
+        this.deletedByReceiver = deletedByReceiver;
+    }
 }
 
 
